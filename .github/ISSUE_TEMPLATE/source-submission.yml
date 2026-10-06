@@ -1,0 +1,37 @@
+name: "Source Submission"
+description: "Source Submission submission. A contribution is not automatic acceptance; it goes to review."
+labels: ["source", "raw"]
+body:
+  - type: markdown
+    attributes:
+      value: "You do not need linguistic training. Say what you know and how you know it. 'Not sure' is useful."
+  - type: textarea
+    id: citation
+    attributes:
+      label: "Author, year, title, publisher or journal, link"
+    validations:
+      required: true
+  - type: textarea
+    id: supports
+    attributes:
+      label: "What does it support?"
+    validations:
+      required: true
+  - type: dropdown
+    id: read
+    attributes:
+      label: "Have you read it yourself?"
+      options:
+        - "Yes"
+        - "Partly"
+        - "No"
+    validations:
+      required: true
+  - type: checkboxes
+    id: cc0
+    attributes:
+      label: "Public domain dedication"
+      description: "Published contributions are dedicated to the public domain under CC0 1.0. This cannot be undone once published."
+      options:
+        - label: "I wrote or recorded this, or have the right to share it, and I dedicate it under CC0 1.0 if it is published."
+          required: true

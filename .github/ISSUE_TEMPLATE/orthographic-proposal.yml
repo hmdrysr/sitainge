@@ -1,0 +1,51 @@
+name: "Orthographic Proposal"
+description: "Orthographic Proposal submission. A contribution is not automatic acceptance; it goes to review."
+labels: ["orthography", "raw"]
+body:
+  - type: markdown
+    attributes:
+      value: "You do not need linguistic training. Say what you know and how you know it. 'Not sure' is useful."
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "What should change?"
+    validations:
+      required: true
+  - type: textarea
+    id: justification
+    attributes:
+      label: "Linguistic justification"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Speaker evidence and examples"
+    validations:
+      required: true
+  - type: textarea
+    id: usability
+    attributes:
+      label: "Typing and reading impact"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives considered"
+    validations:
+      required: false
+  - type: textarea
+    id: consequences
+    attributes:
+      label: "Expected consequences"
+    validations:
+      required: false
+  - type: checkboxes
+    id: cc0
+    attributes:
+      label: "Public domain dedication"
+      description: "Published contributions are dedicated to the public domain under CC0 1.0. This cannot be undone once published."
+      options:
+        - label: "I wrote or recorded this, or have the right to share it, and I dedicate it under CC0 1.0 if it is published."
+          required: true

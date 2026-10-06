@@ -1,0 +1,27 @@
+name: "Technical Bug"
+description: "Technical Bug submission. A contribution is not automatic acceptance; it goes to review."
+labels: ["bug", "raw"]
+body:
+  - type: markdown
+    attributes:
+      value: "You do not need linguistic training. Say what you know and how you know it. 'Not sure' is useful."
+  - type: textarea
+    id: what
+    attributes:
+      label: "What went wrong?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "How to reproduce"
+    validations:
+      required: false
+  - type: checkboxes
+    id: cc0
+    attributes:
+      label: "Public domain dedication"
+      description: "Published contributions are dedicated to the public domain under CC0 1.0. This cannot be undone once published."
+      options:
+        - label: "I wrote or recorded this, or have the right to share it, and I dedicate it under CC0 1.0 if it is published."
+          required: true

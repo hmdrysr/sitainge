@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "New here? Contribute by chatbot interview"
+    url: "https://github.com/hmdrysr/sitainge/blob/main/contribute/README.md"
+    about: "Answer questions in a chat and get a ready-to-submit file. No technical skills needed."

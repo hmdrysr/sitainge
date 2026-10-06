@@ -1,0 +1,33 @@
+name: "Correction"
+description: "Correction submission. A contribution is not automatic acceptance; it goes to review."
+labels: ["correction", "raw"]
+body:
+  - type: markdown
+    attributes:
+      value: "You do not need linguistic training. Say what you know and how you know it. 'Not sure' is useful."
+  - type: input
+    id: record
+    attributes:
+      label: "Which entry or page?"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: "What is wrong? (transcription, meaning, pronunciation, attribution, citation)"
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: "What should it say?"
+    validations:
+      required: false
+  - type: checkboxes
+    id: cc0
+    attributes:
+      label: "Public domain dedication"
+      description: "Published contributions are dedicated to the public domain under CC0 1.0. This cannot be undone once published."
+      options:
+        - label: "I wrote or recorded this, or have the right to share it, and I dedicate it under CC0 1.0 if it is published."
+          required: true

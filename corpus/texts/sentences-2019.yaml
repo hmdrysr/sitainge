@@ -1,0 +1,15 @@
+- id: CTG-TXT-RAW-00002
+  state: RAW
+  original: "Äar namm Hamèd."
+  english: "My name is Hamid."
+  source: SRC-2019-HY-VOCAB
+  evidence_level: unassessed
+  notes: Needs native-speaker verification.
+- id: CTG-TXT-RAW-00003
+  state: RAW
+  original: "Duan öt ayunn/ai."
+  variants: ["Duan öt ayunn", "Duan öt ai"]
+  english: "Come to the store."
+  source: SRC-2019-HY-VOCAB
+  evidence_level: unassessed
+  notes: Needs native-speaker verification.

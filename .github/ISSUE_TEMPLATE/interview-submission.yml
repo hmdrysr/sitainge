@@ -1,0 +1,36 @@
+name: "Interview Submission"
+description: "Paste the output of the chatbot interview here. A contribution is not automatic acceptance; it goes to review."
+labels: ["interview", "raw"]
+title: "Interview submission: "
+body:
+  - type: markdown
+    attributes:
+      value: "Paste everything between the START and END lines from your chatbot interview. Guide: contribute/README.md. Do not add your name, phone, address or ID."
+  - type: textarea
+    id: submission
+    attributes:
+      label: "Interview output"
+      description: "Paste the whole block, from === SITAINGE SUBMISSION START === to === SITAINGE SUBMISSION END ==="
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: consent
+    attributes:
+      label: "What should we do with this?"
+      options:
+        - "Publish it (CC0)"
+        - "Discuss with me first - do not publish yet"
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: "Confirmations"
+      options:
+        - label: "This is my own speech, or I have the right to share it, and I dedicate it under CC0 1.0 if it is published. This cannot be undone once published."
+          required: true
+        - label: "I (or a parent or guardian helping me) have read the output and it is what I said."
+          required: true
+        - label: "I understand it is AI-assisted and unverified until reviewers check it."
+          required: true

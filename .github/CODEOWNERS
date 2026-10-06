@@ -1,0 +1,9 @@
+# Placeholders: replace with real reviewer handles once the Editorial Board is appointed.
+# No handle is assigned yet; see docs/governance/decision-log.md (open decisions).
+/docs/grammar/            @TBD-linguistic-reviewers
+/docs/phonology/          @TBD-linguistic-reviewers
+/lexicon/                 @TBD-lexicon-reviewers
+/docs/hamidian-script/    @TBD-orthography-reviewers
+/cultural/                @TBD-heritage-reviewers
+/archive/ /audio/         @TBD-archive-ethics-reviewers
+/standards/ /schemas/     @TBD-steward

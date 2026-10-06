@@ -1,0 +1,56 @@
+TEST FIXTURE ONLY. Every form below is a placeholder, not Sitainge.
+=== SITAINGE SUBMISSION START ===
+sitainge_interview_version: 1
+interview_id: "SIT-INT-00000000-TEST"
+date: "2026-01-01"
+chatbot: "test"
+language_of_interview: "English"
+consent:
+  publish_cc0: "yes"
+  adult_or_guardian_present: "yes"
+  credit: "anonymous"
+  credit_name: ""
+speaker:
+  locality_as_given: "TEST-PLACE"
+  age_group: "30-49"
+  background_note: ""
+  other_languages: ""
+  name_for_language_as_given: ""
+items:
+  - n: 1
+    type: "word"
+    prompt_english: "I"
+    context_given: ""
+    response_as_given: "[TEST] form-a"
+    variants_given: ["[TEST] form-b"]
+    pronunciation_note: ""
+    usage_note: ""
+    status: "used"
+    speaker_confidence: "sure"
+    speaker_comment: ""
+  - n: 2
+    type: "word"
+    prompt_english: "tree"
+    context_given: ""
+    response_as_given: ""
+    variants_given: []
+    pronunciation_note: ""
+    usage_note: ""
+    status: "not_used"
+    speaker_confidence: ""
+    speaker_comment: "[TEST] we say something else"
+  - n: 3
+    type: "sentence"
+    prompt_english: "Come to the shop."
+    context_given: "to a friend"
+    response_as_given: "[TEST] sentence"
+    variants_given: []
+    pronunciation_note: ""
+    usage_note: ""
+    status: "used"
+    speaker_confidence: "fairly_sure"
+    speaker_comment: ""
+review:
+  read_back_confirmed: "yes"
+  item_count: 3
+=== SITAINGE SUBMISSION END ===

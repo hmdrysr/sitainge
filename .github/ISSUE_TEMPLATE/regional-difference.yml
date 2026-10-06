@@ -1,0 +1,80 @@
+name: "Regional Difference"
+description: "Regional Difference submission. A contribution is not automatic acceptance; it goes to review."
+labels: ["regional", "raw"]
+body:
+  - type: markdown
+    attributes:
+      value: "You do not need linguistic training. Say what you know and how you know it. 'Not sure' is useful."
+  - type: input
+    id: item
+    attributes:
+      label: "Word, sound or phrase"
+    validations:
+      required: true
+  - type: textarea
+    id: difference
+    attributes:
+      label: "How it differs between places"
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: "How do you know this? (speaker, family, village, recording, book)"
+    validations:
+      required: true
+  - type: input
+    id: locality
+    attributes:
+      label: "Where is this used? (village, area, or 'not sure')"
+    validations:
+      required: false
+  - type: input
+    id: speaker
+    attributes:
+      label: "Who says it? (age group, gender if you wish, relation to you; no full names needed)"
+    validations:
+      required: false
+  - type: input
+    id: recording
+    attributes:
+      label: "Do you have a recording? (link or 'no')"
+    validations:
+      required: false
+  - type: dropdown
+    id: confidence
+    attributes:
+      label: "How sure are you?"
+      options:
+        - "Very sure"
+        - "Fairly sure"
+        - "Not sure"
+    validations:
+      required: true
+  - type: dropdown
+    id: consent
+    attributes:
+      label: "What should we do with this?"
+      options:
+        - "Publish it (CC0)"
+        - "Discuss with me first - do not publish yet"
+    validations:
+      required: true
+  - type: dropdown
+    id: credit
+    attributes:
+      label: "How should we credit you?"
+      options:
+        - "My name"
+        - "Contributor ID only"
+        - "Anonymous"
+    validations:
+      required: true
+  - type: checkboxes
+    id: cc0
+    attributes:
+      label: "Public domain dedication"
+      description: "Published contributions are dedicated to the public domain under CC0 1.0. This cannot be undone once published."
+      options:
+        - label: "I wrote or recorded this, or have the right to share it, and I dedicate it under CC0 1.0 if it is published."
+          required: true
