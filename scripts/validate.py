@@ -34,6 +34,21 @@ for path in glob.glob("datasets/*.jsonl") + glob.glob("lexicon/*/*.jsonl"):
         forms[(r.get("form_as_submitted"), r.get("english_gloss"))].append(r.get("id"))
 for k, v in forms.items():
     if len(v) > 1: warnings.append(f"possible duplicate {k}: {v}")
+aud_ids = set()
+for path in glob.glob("audio/catalogue/*.jsonl"):
+    for n, line in enumerate(open(path, encoding="utf-8"), 1):
+        if not line.strip(): continue
+        where = f"{path}:{n}"
+        try: r = json.loads(line)
+        except json.JSONDecodeError as e: errors.append(f"{where} invalid JSON: {e}"); continue
+        for k in ("id","sha256","consent","file","speaker_id","source"):
+            if not r.get(k): errors.append(f"{where} missing {k}")
+        if r.get("id") in aud_ids: errors.append(f"{where} duplicate audio id {r.get('id')}")
+        aud_ids.add(r.get("id"))
+        if r.get("consent") not in CONSENT | {"research-only"}: errors.append(f"{where} bad audio consent")
+        if r.get("consent") != "public" and not str(r.get("file","")).startswith(("audio/staging/","audio/private/")):
+            errors.append(f"{where} non-public audio must not be stored outside audio/staging or audio/private")
+print(f"{len(aud_ids)} audio catalogue entries")
 print(f"{len(ids)} records checked; {len(errors)} errors; {len(warnings)} warnings")
 for m in errors: print("ERROR  ", m)
 for m in warnings: print("WARNING", m)

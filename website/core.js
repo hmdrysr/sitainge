@@ -9,31 +9,38 @@
     const c = root.crypto || (typeof globalThis !== 'undefined' ? globalThis.crypto : null);
     const subtle = (c && c.subtle) || null;
     if (!subtle) return '';
-    const buf = await subtle.digest('SHA-256', new TextEncoder().encode(text));
+    const data = typeof text === 'string' ? new TextEncoder().encode(text) : text;
+    const buf = await subtle.digest('SHA-256', data);
     return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('');
   }
 
-  function itemFrom(base, a, n) {
+  function itemFrom(base, a, n, aud) {
     let status = a.status; const resp = clean(a.response);
     if (!status && resp) status = 'used';
     if (!status) return null;
     let comment = clean(a.comment);
     if (status !== 'used' && resp) comment = (comment ? comment + ' | ' : '') + 'also typed: ' + resp;
-    return {
+    const o = {
       n, type: base.type, prompt_english: base.prompt, context_given: base.ctx || '',
       response_as_given: status === 'used' ? resp : '',
       variants_given: (a.variants || []).map(clean).filter(Boolean),
       pronunciation_note: clean(a.pron), usage_note: clean(a.usage), status,
       speaker_confidence: status === 'used' ? (a.conf || '') : '', speaker_comment: comment
     };
+    if (aud && status === 'used') {
+      o.audio_file = 'audio/item-' + String(n).padStart(4, '0') + '.' + aud.ext;
+      o.audio_sha256 = aud.sha; o.audio_ms = aud.ms; o.audio_mime = aud.mime;
+    }
+    return o;
   }
 
-  function buildItems(state, blocks) {
-    const items = []; let n = 0;
+  function buildItems(state, blocks, audio) {
+    const items = [], keys = []; let n = 0; audio = audio || {};
     for (const b of blocks) b.items.forEach((it, i) => {
       const a = state.answers[b.id + ':' + i]; if (!a) return;
-      const o = itemFrom({ type: b.kind, prompt: it.en, ctx: it.ctx }, a, n + 1);
-      if (o) { n++; items.push(o); }
+      const k = b.id + ':' + i;
+      const o = itemFrom({ type: b.kind, prompt: it.en, ctx: it.ctx }, a, n + 1, audio[k]);
+      if (o) { n++; items.push(o); keys.push(k); }
     });
     for (const h of state.heritage || []) {
       const original = clean(h.original); if (!original) continue;
@@ -45,7 +52,9 @@
       items.push({ n, type: h.type || 'other', prompt_english: 'Shared by speaker (' + (label ? label[1] : 'heritage item') + ')',
         context_given: clean(h.context), response_as_given: original, variants_given: [], pronunciation_note: '', usage_note: '',
         status: 'used', speaker_confidence: h.conf || '', speaker_comment: parts.join('; ') });
+      keys.push('heritage');
     }
+    Object.defineProperty(items, '_keys', { value: keys });
     return items;
   }
 
@@ -55,6 +64,9 @@
     if (!c.cc0) e.push('Please confirm the public-domain (CC0) statement.');
     if (!c.publish) e.push('Please choose what to do with your contribution.');
     if (!c.credit) e.push('Please choose how you want to be credited.');
+    if (!c.audio) e.push('Please choose what to do about voice recordings.');
+    if (c.audio === 'public' && c.publish !== 'yes') e.push('Recordings cannot be published while the text is set to "Discuss with me first". Change one of them.');
+    if (c.audio === 'none' && items.some((it) => it.audio_file)) e.push('Recordings exist but you chose no recordings.');
     if (c.credit === 'name' && !clean(c.creditName)) e.push('You chose to be credited by name; please type the name to show.');
     if (!items.length) e.push('There is nothing to export yet.');
     if (items.length > LIMITS.items) e.push('Too many items for one submission (limit ' + LIMITS.items + '). Export now and start a second submission.');
@@ -79,8 +91,8 @@
     return hits;
   }
 
-  async function buildSubmission(state, blocks, now, rand) {
-    const items = buildItems(state, blocks);
+  async function buildSubmission(state, blocks, now, rand, audio) {
+    const items = buildItems(state, blocks, audio);
     const errors = validate(state, items);
     const pad = (x) => String(x).padStart(2, '0');
     const d = now || new Date();
@@ -96,6 +108,7 @@
       '  adult_or_guardian_present: ' + Y(c.adult ? 'yes' : 'no'),
       '  credit: ' + Y(c.credit || 'anonymous'),
       '  credit_name: ' + Y(c.credit === 'name' ? clean(c.creditName) : ''),
+      '  audio_consent: ' + Y(c.audio || 'none'),
       'speaker:', '  locality_as_given: ' + Y(clean(s.locality)), '  age_group: ' + Y(s.age || ''),
       '  background_note: ' + Y(clean(s.background)), '  other_languages: ' + Y(clean(s.otherLanguages)),
       '  name_for_language_as_given: ' + Y(clean(s.languageName)), 'items:');
@@ -106,10 +119,12 @@
         '    pronunciation_note: ' + Y(it.pronunciation_note), '    usage_note: ' + Y(it.usage_note),
         '    status: ' + Y(it.status), '    speaker_confidence: ' + Y(it.speaker_confidence),
         '    speaker_comment: ' + Y(it.speaker_comment));
+      if (it.audio_file) L.push('    audio_file: ' + Y(it.audio_file), '    audio_sha256: ' + Y(it.audio_sha256), '    audio_ms: ' + it.audio_ms, '    audio_mime: ' + Y(it.audio_mime));
     });
     L.push('review:', '  read_back_confirmed: ' + Y(state.readBack ? 'yes' : 'no'), '  item_count: ' + items.length,
       '  items_sha256: ' + Y(sha), '=== SITAINGE SUBMISSION END ===');
-    return { text: L.join('\n') + '\n', items, errors, id, sha, pii: scanPII(state, items) };
+    const audioList = items.map((it, i) => (it.audio_file ? { name: it.audio_file, key: items._keys[i] } : null)).filter(Boolean);
+    return { text: L.join('\n') + '\n', items, errors, id, sha, pii: scanPII(state, items), audioList };
   }
 
   const api = { LIMITS, clean, buildItems, validate, scanPII, buildSubmission, sha256hex };

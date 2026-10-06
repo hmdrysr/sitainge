@@ -14,7 +14,7 @@
   function fresh() {
     const d = new Date(), p = (x) => String(x).padStart(2, '0');
     return { v: 1, interviewId: 'SIT-INT-' + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + '-' + rid(),
-      consent: { adult: false, cc0: false, publish: '', credit: '', creditName: '', save: true },
+      consent: { adult: false, cc0: false, publish: '', credit: '', creditName: '', save: true, audio: '' },
       speaker: { locality: '', age: '', background: '', otherLanguages: '', languageName: '' },
       answers: {}, heritage: [], readBack: false, piiOk: false };
   }
@@ -29,7 +29,81 @@
       try { if (state.consent.save) localStorage.setItem(KEY, JSON.stringify(state)); else localStorage.removeItem(KEY); } catch (e) { /* storage unavailable: carry on */ }
     }, 250);
   }
-  function wipe() { try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ } state = fresh(); }
+  /* ---------- audio (kept on the device; IndexedDB only when saving is allowed) ---------- */
+  const audioMem = {}; const urls = []; let idb = null; let rec = null;
+  function openDB() {
+    return new Promise((res) => { try { const r = indexedDB.open('sitainge-audio', 1); r.onupgradeneeded = () => r.result.createObjectStore('clips'); r.onsuccess = () => res(r.result); r.onerror = () => res(null); r.onblocked = () => res(null); } catch (e) { res(null); } });
+  }
+  function idbTx(mode, fn) { return new Promise((ok) => { if (!idb) { ok(null); return; } try { const tx = idb.transaction('clips', mode); const out = fn(tx.objectStore('clips')); tx.oncomplete = () => ok(out && out.result !== undefined ? out.result : true); tx.onerror = () => ok(null); tx.onabort = () => ok(null); } catch (e) { ok(null); } }); }
+  const idbPut = (k, v) => (state.consent.save ? idbTx('readwrite', (st) => st.put(v, k)) : Promise.resolve(null));
+  const idbDel = (k) => idbTx('readwrite', (st) => st.delete(k));
+  const idbClear = () => idbTx('readwrite', (st) => st.clear());
+  function idbLoadAll() {
+    return new Promise((ok) => { if (!idb) { ok(); return; } try {
+      const tx = idb.transaction('clips', 'readonly'), st = tx.objectStore('clips'), rq = st.openCursor();
+      rq.onsuccess = () => { const cur = rq.result; if (cur) { audioMem[cur.key] = cur.value; cur.continue(); } };
+      tx.oncomplete = () => ok(); tx.onerror = () => ok(); tx.onabort = () => ok();
+    } catch (e) { ok(); } });
+  }
+  function blobBytes(b) {
+    if (b.arrayBuffer) return b.arrayBuffer().then((x) => new Uint8Array(x));
+    return new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(new Uint8Array(r.result)); r.onerror = no; r.readAsArrayBuffer(b); });
+  }
+  const extFor = (m) => { m = (m || '').toLowerCase(); return m.includes('webm') ? 'webm' : m.includes('ogg') ? 'ogg' : (m.includes('mp4') || m.includes('aac') || m.includes('m4a')) ? 'm4a' : m.includes('wav') ? 'wav' : 'bin'; };
+  function mimeFor() {
+    if (window.MediaRecorder && MediaRecorder.isTypeSupported) for (const m of ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus']) if (MediaRecorder.isTypeSupported(m)) return m;
+    return '';
+  }
+  function abortRecording() {
+    if (!rec) return; const r = rec; rec = null; clearInterval(r.timer);
+    try { r.mr.ondataavailable = null; r.mr.onstop = null; if (r.mr.state !== 'inactive') r.mr.stop(); } catch (e) { /* ignore */ }
+    try { r.stream.getTracks().forEach((t) => t.stop()); } catch (e) { /* ignore */ }
+  }
+  async function audioMeta() {
+    const out = {};
+    for (const [k, c] of Object.entries(audioMem)) { const bytes = await blobBytes(c.blob); out[k] = { sha: await Core.sha256hex(bytes), ms: c.ms, ext: extFor(c.mime), mime: c.mime, bytes }; }
+    return out;
+  }
+  function audioPanel(key) {
+    const box = h('div', { class: 'card' }), say = h('div', { class: 'small mut', 'aria-live': 'polite' }), maxMs = 90000;
+    function showIdle() {
+      box.replaceChildren(h('strong', { text: 'Record your voice (optional)' }),
+        h('p', { class: 'small mut', text: 'Say only your answer. Please do not say your name, phone number or address.' }), say,
+        h('div', { class: 'row' }, h('button', { type: 'button', onclick: startRec }, 'Record')));
+    }
+    function showClip() {
+      const c = audioMem[key], url = URL.createObjectURL(c.blob); urls.push(url);
+      box.replaceChildren(h('strong', { text: 'Your recording' }), h('audio', { controls: true, src: url, preload: 'metadata' }),
+        h('div', { class: 'small mut', text: Math.max(1, Math.round(c.ms / 1000)) + (Math.max(1, Math.round(c.ms / 1000)) === 1 ? ' second' : ' seconds') }),
+        h('div', { class: 'row' }, h('button', { type: 'button', onclick: () => { delete audioMem[key]; idbDel(key); showIdle(); } }, 'Delete recording'),
+          h('button', { type: 'button', onclick: startRec }, 'Record again')));
+    }
+    async function startRec() {
+      if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) { say.textContent = 'Recording is not supported in this browser. You can still type your answer.'; return; }
+      let stream; try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch (e) { say.textContent = 'The microphone is blocked. Allow it in your browser settings, or just type.'; return; }
+      const mime = mimeFor(); let mr;
+      try { mr = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 48000 } : { audioBitsPerSecond: 48000 }); }
+      catch (e) { stream.getTracks().forEach((t) => t.stop()); say.textContent = 'Recording could not start in this browser.'; return; }
+      const chunks = [], started = Date.now(), timeEl = h('strong', { text: 'Recording... 0 s' });
+      const stop = () => { try { if (mr.state !== 'inactive') mr.stop(); } catch (e) { /* ignore */ } };
+      rec = { key, mr, stream, timer: setInterval(() => { const ms = Date.now() - started; timeEl.textContent = 'Recording... ' + Math.floor(ms / 1000) + ' s'; if (ms >= maxMs) stop(); }, 250) };
+      mr.ondataavailable = (ev) => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+      mr.onstop = () => {
+        if (rec) clearInterval(rec.timer); stream.getTracks().forEach((t) => t.stop()); rec = null;
+        const type = mr.mimeType || mime || 'audio/webm', blob = new Blob(chunks, { type });
+        if (!blob.size) { say.textContent = 'Nothing was recorded. Please try again.'; showIdle(); return; }
+        audioMem[key] = { blob, mime: type, ms: Date.now() - started }; idbPut(key, audioMem[key]); showClip();
+      };
+      mr.start();
+      box.replaceChildren(timeEl, h('div', { class: 'row' }, h('button', { class: 'primary', type: 'button', onclick: stop }, 'Stop')));
+    }
+    if (audioMem[key]) showClip(); else showIdle();
+    return box;
+  }
+  async function wipe() {
+    abortRecording(); try { localStorage.removeItem(KEY); } catch (e) { /* ignore */ }
+    for (const k of Object.keys(audioMem)) delete audioMem[k]; await idbClear(); state = fresh();
+  }
 
   /* ---------- helpers ---------- */
   function h(tag, props, ...kids) {
@@ -45,7 +119,7 @@
     return el;
   }
   const verbatim = { spellcheck: 'false', autocapitalize: 'off', autocorrect: 'off', autocomplete: 'off', lang: 'und' };
-  function render(...nodes) { app.replaceChildren(...nodes.flat().filter(Boolean)); window.scrollTo(0, 0); app.focus(); }
+  function render(...nodes) { abortRecording(); urls.splice(0).forEach((u) => URL.revokeObjectURL(u)); app.replaceChildren(...nodes.flat().filter(Boolean)); window.scrollTo(0, 0); app.focus(); }
   function keyOf(b, i) { return BLOCKS[b].id + ':' + i; }
   function answered(a) { return !!(a && (a.status || Core.clean(a.response))); }
   function blockCount(b) { return BLOCKS[b].items.filter((_, i) => answered(state.answers[keyOf(b, i)])).length; }
@@ -80,6 +154,7 @@
           h('li', { text: 'It never sends anything by itself. You decide if, when and how to share.' }),
           h('li', { text: 'It shows English prompts only. It never suggests a Sitainge word, never corrects you and never judges an answer.' }),
           h('li', { text: 'It records exactly what you type, in Latin letters or Bangla script. Phone autocorrect is turned off for answer boxes.' }),
+          h('li', { text: 'Voice recordings are optional, made only when you press Record, kept on your device, and shared only with the rest of your submission when you choose. Your voice can identify you, so you choose separately what may happen to recordings.' }),
           h('li', { text: 'It adds a fingerprint code to your file so reviewers can tell if it was damaged or changed on the way.' }),
           h('li', { text: 'Everything is reviewed by people before it is used. Nothing is accepted automatically, and accepting a form never means other forms are wrong.' }))),
       h('h2', { text: 'Before you start' }),
@@ -88,13 +163,18 @@
       h('h2', { text: 'What should we do with it?' }),
       choice('radio', 'pub', 'Publish it (CC0) after review', c.publish === 'yes', () => { c.publish = 'yes'; save(); }),
       choice('radio', 'pub', 'Discuss with me first. Do not publish yet.', c.publish === 'no', () => { c.publish = 'no'; save(); }),
+      h('h2', { text: 'Voice recordings' }),
+      h('p', { class: 'small mut', text: 'A recording lets reviewers hear how it is really said, which is the strongest evidence. Your voice may identify you.' }),
+      choice('radio', 'aud', 'Keep my recordings for research only. They are not published.', c.audio === 'research_only', () => { c.audio = 'research_only'; save(); }),
+      choice('radio', 'aud', 'Publish my recordings under CC0 after review. This cannot be undone.', c.audio === 'public', () => { c.audio = 'public'; save(); }),
+      choice('radio', 'aud', 'No recordings. I will only type.', c.audio === 'none', () => { c.audio = 'none'; save(); }),
       h('h2', { text: 'How should we credit you?' }),
       choice('radio', 'cr', 'Anonymously', c.credit === 'anonymous', () => { c.credit = 'anonymous'; save(); }),
       choice('radio', 'cr', 'By a contributor ID only', c.credit === 'contributor_id', () => { c.credit = 'contributor_id'; save(); }),
       choice('radio', 'cr', 'By name', c.credit === 'name', () => { c.credit = 'name'; save(); }),
       credName,
       h('h2', { text: 'Privacy on this device' }),
-      choice('checkbox', 'save', 'Save my draft on this device so I can continue later. Untick this on a shared phone or computer.', c.save, (v) => { c.save = v; save(); }),
+      choice('checkbox', 'save', 'Save my draft and recordings on this device so I can continue later. Untick this on a shared phone or computer.', c.save, (v) => { c.save = v; if (!v) idbClear(); else Object.entries(audioMem).forEach(([k, val]) => idbPut(k, val)); save(); }),
       h('p', { class: 'small mut', text: 'Please do not enter your full name, phone number, address, email or any ID number in the answers.' }),
       err,
       h('div', { class: 'row' }, h('button', { class: 'primary', type: 'button', onclick: () => {
@@ -103,6 +183,8 @@
         if (!c.cc0) m.push('Please confirm the public-domain statement.');
         if (!c.publish) m.push('Please choose what to do with your contribution.');
         if (!c.credit) m.push('Please choose how to be credited.');
+        if (!c.audio) m.push('Please choose what to do about voice recordings.');
+        if (c.audio === 'public' && c.publish !== 'yes') m.push('Recordings cannot be published while the text is set to "Discuss with me first".');
         if (c.credit === 'name' && !Core.clean(c.creditName)) m.push('Please type the name you want shown.');
         if (m.length) { err.replaceChildren(h('div', { class: 'notice error' }, m.map((x) => h('div', { text: x })))); return; }
         save(); screenAbout();
@@ -178,7 +260,7 @@
         h('p', { class: 'en', text: it.en }), it.ctx ? h('p', { class: 'ctx', text: it.ctx }) : null,
         answerBox,
         h('div', { class: 'row', role: 'group', 'aria-label': 'Answer type' }, STATUS.map(([v, t]) => h('button', { type: 'button', 'aria-pressed': String(a.status === v), onclick: () => { a.status = a.status === v ? '' : v; save(); screenItem(bi, ii); } }, t))),
-        variants, answering ? more : null),
+        variants, answering && state.consent.audio && state.consent.audio !== 'none' ? audioPanel(key) : null, answering ? more : null),
       h('div', { class: 'row' },
         h('button', { type: 'button', onclick: () => { save(); screenHub(); } }, 'Back to list'),
         ii > 0 ? h('button', { type: 'button', onclick: () => { save(); screenItem(bi, ii - 1); } }, 'Previous') : null,
@@ -213,7 +295,8 @@
   }
 
   async function screenReview() {
-    const sub = await Core.buildSubmission(state, BLOCKS);
+    const meta = await audioMeta();
+    const sub = await Core.buildSubmission(state, BLOCKS, undefined, undefined, meta);
     const groups = [];
     BLOCKS.forEach((b, bi) => {
       const rows = [];
@@ -224,7 +307,8 @@
         const vs = (a.variants || []).map(Core.clean).filter(Boolean);
         rows.push(h('div', { class: 'item' }, h('div', null,
           h('div', { class: 'tag', text: it.en + (it.ctx ? ' (' + it.ctx + ')' : '') }), h('div', { class: 'a', text: text || '(empty)' }),
-          vs.length ? h('div', { class: 'tag', text: 'Other ways: ' + vs.join(' · ') }) : null),
+          vs.length ? h('div', { class: 'tag', text: 'Other ways: ' + vs.join(' · ') }) : null,
+          st === 'used' && audioMem[keyOf(bi, ii)] ? h('div', { class: 'tag', text: 'Recording saved (' + Math.max(1, Math.round(audioMem[keyOf(bi, ii)].ms / 1000)) + ' s)' }) : null),
           h('button', { type: 'button', onclick: () => screenItem(bi, ii) }, 'Edit')));
       });
       if (rows.length) groups.push(h('div', { class: 'card' }, h('strong', { text: b.title }), rows));
@@ -238,62 +322,73 @@
     const rb = choice('checkbox', 'rb', 'I read everything above. It is exactly what I said.', state.readBack, (v) => { state.readBack = v; save(); go.disabled = !ready(); });
     const ready = () => !sub.errors.length && state.readBack && (!sub.pii.length || state.piiOk);
     const go = h('button', { class: 'primary', type: 'button', disabled: !ready(), onclick: () => screenExport() }, 'Prepare my submission');
-    render(h('h1', { text: 'Read it back' }), h('p', { class: 'mut', text: sub.items.length + ' item' + (sub.items.length === 1 ? '' : 's') + '. Edit anything that is not exactly what you said.' }),
+    const nAud = sub.audioList.length;
+    render(h('h1', { text: 'Read it back' }), h('p', { class: 'mut', text: sub.items.length + ' item' + (sub.items.length === 1 ? '' : 's') + (nAud ? ', ' + nAud + ' with a recording' : '') + '. Edit anything that is not exactly what you said.' }),
       groups, errBox, piiBox, rb, h('div', { class: 'row' }, h('button', { type: 'button', onclick: screenHub }, 'Back to list'), go));
   }
 
   async function screenExport() {
-    const sub = await Core.buildSubmission(state, BLOCKS);
+    const meta = await audioMeta();
+    const sub = await Core.buildSubmission(state, BLOCKS, undefined, undefined, meta);
     if (sub.errors.length || !state.readBack) { screenReview(); return; }
-    const text = sub.text, name = 'sitainge-' + sub.id + '.txt', status = h('div', { class: 'notice good', 'aria-live': 'polite' });
+    const text = sub.text, hasAudio = sub.audioList.length > 0, status = h('div', { class: 'notice good', 'aria-live': 'polite' });
     const say = (m) => { status.textContent = m; };
+    let payload, name;
+    if (hasAudio) {
+      const files = [{ name: 'submission.txt', data: new TextEncoder().encode(text) }];
+      for (const a of sub.audioList) files.push({ name: a.name, data: meta[a.key].bytes });
+      payload = new Blob(window.SitaingeZip.zipStore(files), { type: 'application/zip' }); name = 'sitainge-' + sub.id + '.zip';
+    } else { payload = new Blob([text], { type: 'text/plain' }); name = 'sitainge-' + sub.id + '.txt'; }
+    const mb = (payload.size / 1048576).toFixed(1);
     async function copy() {
       try { await navigator.clipboard.writeText(text); return true; } catch (e) {
         const t = h('textarea', { style: 'position:fixed;opacity:0' }); t.value = text; document.body.append(t); t.select();
         let ok = false; try { ok = document.execCommand('copy'); } catch (e2) { ok = false; } t.remove(); return ok;
       }
     }
+    function download() {
+      const url = URL.createObjectURL(payload);
+      const a = h('a', { href: url, download: name }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
+    }
     const btns = [];
-    const file = typeof File === 'function' ? new File([text], name, { type: 'text/plain' }) : null;
+    const file = typeof File === 'function' ? new File([payload], name, { type: payload.type }) : null;
     if (navigator.share) btns.push(h('button', { class: 'primary', type: 'button', onclick: async () => {
       try {
         if (file && navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], title: 'Sitainge submission ' + sub.id });
-        else await navigator.share({ title: 'Sitainge submission ' + sub.id, text });
+        else if (!hasAudio) await navigator.share({ title: 'Sitainge submission ' + sub.id, text });
+        else { say('This browser cannot share files. Use Download file instead.'); return; }
         say('Shared. Keep your receipt code below.');
       } catch (e) { if (e && e.name !== 'AbortError') say('Sharing did not work here. Use Download or Copy instead.'); }
     } }, 'Share (WhatsApp, email, any app)'));
-    btns.push(h('button', { class: btns.length ? '' : 'primary', type: 'button', onclick: () => {
-      const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
-      const a = h('a', { href: url, download: name }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 4000);
-      say('Downloaded as ' + name + '. Send that file to the project, or keep it safe.');
-    } }, 'Download file'));
-    btns.push(h('button', { type: 'button', onclick: async () => say((await copy()) ? 'Copied. Paste it where you are sending it.' : 'Copy did not work. Select the text below and copy it by hand.') }, 'Copy text'));
+    btns.push(h('button', { class: btns.length ? '' : 'primary', type: 'button', onclick: () => { download(); say('Downloaded as ' + name + '. Send that file to the project, or keep it safe.'); } }, 'Download file'));
+    btns.push(h('button', { type: 'button', onclick: async () => say((await copy()) ? (hasAudio ? 'Text copied. The recordings are only in the downloaded file.' : 'Copied. Paste it where you are sending it.') : 'Copy did not work. Select the text below and copy it by hand.') }, 'Copy text'));
     if (CFG.contactEmail) btns.push(h('button', { type: 'button', onclick: async () => {
-      await copy();
+      if (hasAudio) download(); else await copy();
       location.href = 'mailto:' + encodeURIComponent(CFG.contactEmail).replace('%40', '@') + '?subject=' + encodeURIComponent('Sitainge submission ' + sub.id) +
-        '&body=' + encodeURIComponent('Paste the copied text here, or attach the downloaded file.\n\nReceipt code: ' + sub.id + (sub.sha ? '-' + sub.sha.slice(0, 8) : ''));
-      say('Your email app should open. The text is copied; paste it into the email.');
+        '&body=' + encodeURIComponent((hasAudio ? 'Attach the file ' + name + ' that was just downloaded.' : 'Paste the copied text here, or attach the downloaded file.') + '\n\nReceipt code: ' + sub.id + (sub.sha ? '-' + sub.sha.slice(0, 8) : ''));
+      say(hasAudio ? 'The file was downloaded and your email app should open. Attach the downloaded file to the email.' : 'Your email app should open. The text is copied; paste it into the email.');
     } }, 'Email it'));
     btns.push(h('button', { type: 'button', onclick: async () => {
       await copy(); window.open(CFG.githubIssueUrl, '_blank', 'noopener,noreferrer');
-      say('Copied. On GitHub, paste it into the big box (a free GitHub account is needed).');
+      say(hasAudio ? 'Text copied. GitHub gets text only; send the downloaded file with your recordings by email or share.' : 'Copied. On GitHub, paste it into the big box (a free GitHub account is needed).');
     } }, 'Post on GitHub (needs account)'));
     render(
       h('h1', { text: 'Your submission is ready' }),
       h('p', { text: 'It has not been sent anywhere. Choose how to share it:' }),
+      hasAudio ? h('div', { class: 'notice warn small', text: 'One file with ' + sub.audioList.length + ' recording' + (sub.audioList.length === 1 ? '' : 's') + ' (' + mb + ' MB). Send the file itself. Some email services refuse files over 20 MB; if so, use Share or send it in two parts.' }) : null,
       h('div', { class: 'row' }, btns), status,
       h('div', { class: 'card' }, h('strong', { text: 'Receipt code' }), h('p', { text: sub.id + (sub.sha ? '-' + sub.sha.slice(0, 8) : '') }),
         h('p', { class: 'small mut', text: 'Quote this code if you ever need to ask about your contribution. The long fingerprint inside the file lets reviewers check it arrived undamaged.' })),
-      h('div', { class: 'notice warn small', text: 'Reviewers check everything before use. Published contributions are CC0 and cannot be taken back. If you chose "Discuss with me first", nothing is published until you agree.' }),
+      h('div', { class: 'notice warn small', text: 'Reviewers check everything before use. Published contributions are CC0 and cannot be taken back. If you chose "Discuss with me first", nothing is published until you agree.' + (hasAudio ? ' Recordings follow the choice you made: ' + (state.consent.audio === 'public' ? 'publish after review.' : 'research only, not published.') : '') }),
       h('details', null, h('summary', { text: 'See exactly what will be shared' }), h('pre', { class: 'out', text })),
       h('div', { class: 'row' }, h('button', { type: 'button', onclick: screenReview }, 'Back and edit'),
-        h('button', { type: 'button', onclick: () => { if (confirm('Delete everything from this device and start a new contribution? Make sure you have shared or downloaded your file first.')) { wipe(); screenConsent(); } } }, 'Delete draft and start new'))
+        h('button', { type: 'button', onclick: async () => { if (confirm('Delete everything from this device, including recordings, and start a new contribution? Make sure you have shared or downloaded your file first.')) { await wipe(); screenConsent(); } } }, 'Delete draft and start new'))
     );
   }
 
   /* ---------- shell ---------- */
-  document.getElementById('menu-clear').addEventListener('click', () => {
-    if (confirm('Delete your draft from this device? This cannot be undone.')) { wipe(); screenConsent(); }
+  document.getElementById('menu-clear').addEventListener('click', async () => {
+    if (confirm('Delete your draft and recordings from this device? This cannot be undone.')) { await wipe(); screenConsent(); }
   });
   const net = document.getElementById('net');
   const setNet = () => { net.textContent = navigator.onLine ? '' : 'Offline: that is fine'; };
@@ -301,6 +396,9 @@
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('./sw.js').catch(() => { /* offline cache is optional */ });
   }
-  const c = state.consent;
-  if (c.adult && c.cc0 && c.publish && c.credit) screenHub(); else screenConsent();
+  (async () => {
+    if (state.consent.save) { idb = await openDB(); await idbLoadAll(); }
+    const c = state.consent;
+    if (c.adult && c.cc0 && c.publish && c.credit && c.audio) screenHub(); else screenConsent();
+  })();
 })();

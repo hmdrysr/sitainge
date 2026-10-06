@@ -1,6 +1,6 @@
 /* Offline cache for the page's own static files only. It never touches contributions. */
-const CACHE = 'sitainge-site-v1';
-const FILES = ['./', './index.html', './style.css', './items.js', './core.js', './app.js', './config.js', './manifest.webmanifest', './icon.svg'];
+const CACHE = 'sitainge-site-v2';
+const FILES = ['./', './index.html', './style.css', './items.js', './core.js', './zip.js', './app.js', './config.js', './manifest.webmanifest', './icon.svg'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));

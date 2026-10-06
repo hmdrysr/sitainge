@@ -2,7 +2,7 @@
 globalThis.SitaingeItems = require('../../website/items.js');
 const Core = require('../../website/core.js');
 const { BLOCKS } = globalThis.SitaingeItems;
-const state = { interviewId:'SIT-INT-20990101-TEST', consent:{adult:true,cc0:true,publish:'yes',credit:'anonymous',creditName:'',save:true},
+const state = { interviewId:'SIT-INT-20990101-TEST', consent:{adult:true,cc0:true,publish:'yes',credit:'anonymous',creditName:'',save:true,audio:'none'},
  speaker:{locality:'TEST-PLACE',age:'30-49',background:'',otherLanguages:'',languageName:'[TEST] name'},
  answers:{ 'people:0':{status:'used',response:'[TEST] "quoted" \u00e9 \u2028 form',variants:['[TEST] v1','[TEST] v2'],pron:'',usage:'',conf:'sure',comment:'line1\nline2'},
            'people:1':{status:'not_used',response:'typed text',variants:[],pron:'',usage:'',conf:'',comment:''},

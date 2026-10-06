@@ -1,0 +1,5 @@
+# Audio staging and private recordings must never be committed
+audio/staging/
+audio/private/
+*.webm
+*.m4a

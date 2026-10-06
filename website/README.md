@@ -28,9 +28,16 @@ After this, every change under `website/` redeploys automatically.
 | Script injection | No inline scripts, no innerHTML with user text, strict CSP, no external libraries or fonts. |
 | Evidence contamination | Output marked `capture_method: web_form`; every record enters RAW, evidence level `unassessed`; nothing is accepted automatically. |
 | Song lyrics and rights | Prompt limits "song" items to traditional oral songs; known composers: title and performer only. |
+| Voice identifiability | Separate audio consent (research-only, publish under CC0, or none); recordings can never be published while the text is set to "discuss first"; recording starts only on a button press, the microphone stops when you leave the screen, and nothing records in the background. |
+| Audio damaged or swapped | Each clip has its own SHA-256 inside the file; the reviewer script rejects a mismatch or a missing clip. |
+| Audio leaking into the public repository | Reviewer script writes audio only to `audio/staging/` (gitignored); non-public audio is never allowed in the repository tree; validator checks the audio catalogue. |
 | Oversized or spam content | Field and item limits; reviewers validate and nothing is auto-published. |
 
 ## Limits (honest)
+- Recordings are one clip per answer (up to 90 seconds), for words and sentences. Heritage items (proverbs, songs, stories) are text only for now.
+- Browsers record in whatever format they support (WebM/Opus on most phones, M4A on iPhones). Quality depends on the phone and the room.
+- A bundle with many clips can be several MB. Some email services refuse files over about 20 MB; contributors can use Share, or send in two parts.
+- The GitHub issue route carries text only; recordings must be sent as the downloaded file.
 - A static page cannot receive data. Contributors without a GitHub account must send the exported file by share sheet or email. Someone with no way to send a file or email is not served yet.
 - The page cannot stop a determined person from submitting false data. Review, not the page, is the safeguard.
 - A fully anonymous direct-submit button would need a form service or small server, which brings privacy, cost and data-handling trade-offs. Not included by default.

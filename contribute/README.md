@@ -4,7 +4,7 @@ You can help document Sitainge by talking to an AI chatbot. It asks you to trans
 
 ## Two ways to contribute
 - **Web page (no chatbot, no account):** the contribution page at `https://hmdrysr.github.io/sitainge/` (once published; see `website/README.md`). It works offline and sends nothing until you choose.
-- **Chatbot interview:** the steps below.
+- **Chatbot interview:** the steps below. Chatbots cannot record your voice. To add voice recordings, use the web page.
 
 ## What you need
 - A phone or computer and any AI chatbot (Claude, ChatGPT, Gemini or similar).
@@ -19,7 +19,7 @@ You can help document Sitainge by talking to an AI chatbot. It asks you to trans
 5. Submit it, using one of these:
    - **Yourself:** open <https://github.com/hmdrysr/sitainge/issues/new?template=interview-submission.yml>, paste the block, tick the boxes, press **Submit new issue**.
    - **Let the chatbot do it:** if your chatbot can create GitHub issues, it will ask your permission first. It only posts an issue; it can never change the project's files.
-   - **No GitHub account:** send the block to the project contact (to be added by the project owner).
+   - **No GitHub account:** email the block to ctg@hamidyasir.com.
 
 ## Good to know
 - **Licence:** published contributions are dedicated to the public domain under CC0 1.0. Anyone may use them, including for AI, and this cannot be undone once published. Choose "Discuss with me first" if you are unsure.
@@ -33,10 +33,10 @@ Submissions arrive as issues labelled `interview` and `raw`. A steward assigns a
 
 ```
 pip install pyyaml
-python3 scripts/ingest_interview.py submission.txt --speaker-id CTG-SPK-00001
+python3 scripts/ingest_interview.py submission.txt --speaker-id CTG-SPK-00001   # or a .zip with audio from the web page
 python3 scripts/validate.py
 ```
 
-The script keeps a full raw copy in `datasets/interviews/` and creates RAW lexicon records in `lexicon/raw/`. Nothing is accepted automatically. All items start at evidence level `unassessed`, are marked `ai_assisted`, and go through the normal review levels.
+The script keeps a full raw copy in `datasets/interviews/` and creates RAW lexicon records in `lexicon/raw/`. For zips with recordings it verifies every clip's fingerprint, saves the clips in `audio/staging/` (gitignored, never committed) and writes a catalogue entry in `audio/catalogue/`. Move audio out of staging only according to its consent: research-only audio goes to the long-term archive's restricted access, public audio to the archive and release. Nothing is accepted automatically. All items start at evidence level `unassessed`, are marked `ai_assisted`, and go through the normal review levels.
 
 Method notes: interviews are conducted in English so that Bangla wording does not pull answers toward Bangla forms; elicitation comes before any verification so speakers are not shown existing forms first; the chatbot never supplies Sitainge.
