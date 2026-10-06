@@ -1,0 +1,2 @@
+# Research Standards
+Claim, evidence, source, analysis, editorial decision: every major conclusion must be traceable through that chain. Interlinear glossing follows the Leipzig Glossing Rules (MPI-EVA and University of Leipzig; last change 31 May 2015) unless a deviation is documented. Each chapter ends with: Established / Uncertain / Missing / Required fieldwork / Open questions / Future research.

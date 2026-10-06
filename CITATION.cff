@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this resource, please cite it using these metadata."
+title: "Sitainge: The Chittagonian Language Project"
+version: "0.1.0"
+type: dataset
+license: CC0-1.0
+date-released: "2026-10-07"
+authors:
+  - name: "Chittagonian Language Project contributors"
+abstract: "Pre-release research standards, governance, schemas and raw starter material for an evidence-governed Chittagonian language record. No accepted reference data yet."
