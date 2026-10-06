@@ -1,0 +1,17 @@
+name: Unpack zip
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          unzip -o sitainge-v0.1.0.zip
+          rm sitainge-v0.1.0.zip
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Release 0.1.0 scaffold and interview kit"
+          git push
