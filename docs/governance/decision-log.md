@@ -17,5 +17,7 @@
 | D-009 | 2026-10-07 | Interview contributions: interviews run in English, elicitation before verification, chatbot never supplies Sitainge, AI submission only after the speaker's explicit yes and only as a GitHub issue | Avoid Bangla priming and leading questions; keep AI from creating evidence; no AI edits to repository files |
 | D-010 | 2026-10-07 | Repository LICENSE is the official CC0 text added through GitHub; the release zip does not include a LICENSE file | Avoid overwriting the official text with a notice |
 
+| D-011 | 2026-10-07 | Contribution web page is static, sends nothing by itself, and exports a fingerprinted file; no third-party form service by default | Privacy, offline-first, no cost or account for contributors; trade-off: contributors need a way to send a file or email |
+
 ## Open decisions
 Project contact address for contributors without GitHub accounts (placeholder in `contribute/interview-prompt.txt` and `contribute/README.md`); Editorial Board membership; Project Steward; regional reviewer recruitment; confirmation from Hamid Yasir for the 2019 materials; long-term archive and persistent-identifier service; contributor agreement text.

@@ -59,6 +59,7 @@ OUTPUT (when the speaker finishes)
 
 === SITAINGE SUBMISSION START ===
 sitainge_interview_version: 1
+capture_method: "chatbot"
 interview_id: SIT-INT-<today's date as YYYYMMDD, or unknown>-<4 random letters/digits>
 date: <YYYY-MM-DD or unknown>
 chatbot: <your name/model if you know it, else unknown>

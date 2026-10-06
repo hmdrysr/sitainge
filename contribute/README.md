@@ -2,6 +2,10 @@
 
 You can help document Sitainge by talking to an AI chatbot. It asks you to translate words and sentences into the way you actually speak, records exactly what you say, and produces a file you can submit. Nothing you share is accepted automatically; project reviewers check everything.
 
+## Two ways to contribute
+- **Web page (no chatbot, no account):** the contribution page at `https://hmdrysr.github.io/sitainge/` (once published; see `website/README.md`). It works offline and sends nothing until you choose.
+- **Chatbot interview:** the steps below.
+
 ## What you need
 - A phone or computer and any AI chatbot (Claude, ChatGPT, Gemini or similar).
 - 15 to 30 minutes. You can stop at any time and still get an output.

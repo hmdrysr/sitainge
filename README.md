@@ -18,7 +18,7 @@ Authority is never declared. Every entry must show why it is documented, who use
 
 ## Contribute
 
-Not technical? Talk to a chatbot: it interviews you, records exactly what you say, and gives you a file to submit. Start at [`contribute/README.md`](contribute/README.md).
+Not technical? Talk to a chatbot: it interviews you, records exactly what you say, and gives you a file to submit. Start at [`contribute/README.md`](contribute/README.md), or use the contribution page described in [`website/README.md`](website/README.md).
 
 ## Core rules
 

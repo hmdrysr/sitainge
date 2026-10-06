@@ -1,6 +1,6 @@
 """Reviewer tool. Converts a chatbot interview submission into RAW records.
 Structural only; it never judges linguistic truth and never accepts anything."""
-import argparse, glob, json, os, re, sys, unicodedata
+import argparse, glob, hashlib, json, os, re, sys, unicodedata
 import yaml
 
 START, END = "=== SITAINGE SUBMISSION START ===", "=== SITAINGE SUBMISSION END ==="
@@ -37,6 +37,11 @@ def check(d):
         errs.append(f"item_count {cnt} does not match {len(d['items'])} items")
     if str(d["review"].get("read_back_confirmed")).lower() != "yes":
         errs.append("read_back_confirmed is not yes")
+    want = d["review"].get("items_sha256")
+    if want:
+        got = hashlib.sha256(json.dumps(d["items"], ensure_ascii=False, separators=(",", ":")).encode("utf-8")).hexdigest()
+        if got != want:
+            errs.append("items_sha256 does not match: the submission may have been edited or damaged in transit")
     return errs
 
 def next_id(root):
@@ -59,6 +64,7 @@ def main():
     for e in errs: print("PROBLEM:", e)
     if errs and not a.allow_errors: sys.exit("fix the problems above or use --allow-errors after review")
     iid = str(d["interview_id"]); sp = d["speaker"]; c = d["consent"]
+    web = d.get("capture_method", "chatbot") == "web_form"
     publish = str(c.get("publish_cc0")).lower() == "yes"
     consent = "public" if publish else "permission pending"
     nid = next_id(a.root); recs = []; other = []
@@ -76,11 +82,11 @@ def main():
               "speaker_id": a.speaker_id, "recording": None, "source": f"SRC-{iid}",
               "evidence_level": "unassessed",
               "confidence": CONF.get(it.get("speaker_confidence"), "unverified"),
-              "ai_assisted": True,
-              "notes": "Elicited by AI-assisted interview; AI-assisted / unverified; needs native-speaker verification." + (f" Speaker comment: {it['speaker_comment']}" if it.get("speaker_comment") else ""),
+              "ai_assisted": not web,
+              "notes": ("Captured by web form; unverified; needs native-speaker verification." if web else "Elicited by AI-assisted interview; AI-assisted / unverified; needs native-speaker verification.") + (f" Speaker comment: {it['speaker_comment']}" if it.get("speaker_comment") else ""),
               "comparative_data": None,
               "provenance": {"submitted_by": "interview contributor (credit: %s)" % c.get("credit","anonymous"),
-                             "date_submitted": str(d.get("date","unknown")), "origin": f"chatbot interview {iid}",
+                             "date_submitted": str(d.get("date","unknown")), "origin": ("web form " if web else "chatbot interview ") + iid,
                              "reviewer": None, "review_date": None, "decision_history": []},
               "consent": consent})
             nid += 1
@@ -93,7 +99,7 @@ def main():
     if a.dry_run: return
     os.makedirs(os.path.dirname(arch), exist_ok=True); os.makedirs(os.path.dirname(lex), exist_ok=True)
     if os.path.exists(arch): sys.exit(f"{arch} already exists; refusing to overwrite")
-    d["_ingest"] = {"speaker_id": a.speaker_id, "state": "RAW", "ai_assisted": True, "evidence_level": "unassessed"}
+    d["_ingest"] = {"speaker_id": a.speaker_id, "state": "RAW", "ai_assisted": not web, "evidence_level": "unassessed"}
     with open(arch,"w",encoding="utf-8") as f: yaml.safe_dump(d, f, allow_unicode=True, sort_keys=False)
     if recs:
         with open(lex,"w",encoding="utf-8") as f:

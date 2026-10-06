@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0b5d4b">
+<title>Sitainge: share how you speak</title>
+<meta name="description" content="Help document Sitainge (Chittagonian). Works offline. Nothing is sent until you choose.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>Sitainge</strong> <span>contribution page</span></div>
+  <div class="top-actions">
+    <span id="net" class="net" aria-live="polite"></span>
+    <button id="menu-clear" class="link" type="button">Delete my draft</button>
+  </div>
+</header>
+<main id="app" tabindex="-1"><noscript><p>This page needs JavaScript to run. Nothing is sent anywhere. Alternatively, use the chatbot interview in the project repository.</p></noscript></main>
+<footer class="foot">
+  <p>Nothing leaves your device until you choose to share. No sign-up, no tracking, no cookies. Everything you give is reviewed by people before it is used, and nothing is accepted automatically.</p>
+  <p><a href="https://github.com/hmdrysr/sitainge" rel="noopener noreferrer">Project on GitHub</a> · Public domain (CC0 1.0) if published</p>
+</footer>
+<script src="config.js"></script>
+<script src="items.js"></script>
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
