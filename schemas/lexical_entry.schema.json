@@ -2,30 +2,185 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Chittagonian lexical entry",
   "type": "object",
-  "required": ["id","state","form_as_submitted","english_gloss","source","evidence_level","confidence","ai_assisted","provenance","consent"],
+  "required": [
+    "id",
+    "state",
+    "form_as_submitted",
+    "english_gloss",
+    "source",
+    "evidence_level",
+    "confidence",
+    "ai_assisted",
+    "provenance",
+    "consent"
+  ],
   "properties": {
-    "id": {"type":"string","pattern":"^CTG-LEX-(RAW|REV|ACC|ARC)-[0-9]{5}$"},
-    "state": {"enum":["RAW","REVIEW","ACCEPTED","ARCHIVED"]},
-    "form_as_submitted": {"type":"string"},
-    "reference_form": {"type":["string","null"]},
-    "variants": {"type":"array","items":{"type":"string"}},
-    "pronunciation": {"type":["string","null"]},
-    "ipa": {"type":["string","null"]},
-    "english_gloss": {"type":"string"},
-    "part_of_speech": {"type":["string","null"]},
-    "example_sentence": {"type":["string","null"]},
-    "region": {"type":["string","null"]},
-    "generation": {"type":["string","null"]},
-    "register": {"type":["string","null"]},
-    "speaker_id": {"type":["string","null"],"pattern":"^CTG-SPK-[0-9]{5}$"},
-    "recording": {"type":["string","null"]},
-    "source": {"type":"string"},
-    "evidence_level": {"enum":["A","B","C","D","E","unassessed"]},
-    "confidence": {"type":"string"},
-    "ai_assisted": {"type":"boolean"},
-    "comparative_data": {"type":["object","null"]},
-    "provenance": {"type":"object","required":["submitted_by","date_submitted","origin","decision_history"]},
-    "consent": {"enum":["public","research-only","restricted","private","withdrawn","permission pending"]},
-    "notes": {"type":["string","null"]}
+    "id": {
+      "type": "string",
+      "pattern": "^CTG-LEX-(RAW|REV|ACC|ARC)-[0-9]{5}$"
+    },
+    "state": {
+      "enum": [
+        "RAW",
+        "REVIEW",
+        "ACCEPTED",
+        "ARCHIVED"
+      ]
+    },
+    "form_as_submitted": {
+      "type": "string"
+    },
+    "reference_form": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pronunciation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ipa": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "english_gloss": {
+      "type": "string"
+    },
+    "part_of_speech": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "example_sentence": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "region": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "generation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "register": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "speaker_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^CTG-SPK-[0-9]{5}$"
+    },
+    "recording": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source": {
+      "type": "string"
+    },
+    "evidence_level": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "unassessed"
+      ]
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "ai_assisted": {
+      "type": "boolean"
+    },
+    "comparative_data": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "submitted_by",
+        "date_submitted",
+        "origin",
+        "decision_history"
+      ]
+    },
+    "consent": {
+      "enum": [
+        "public",
+        "research-only",
+        "restricted",
+        "private",
+        "withdrawn",
+        "permission pending"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ipa_status": {
+      "enum": [
+        "none",
+        "speaker-described",
+        "audio-transcribed",
+        "phonetician-verified",
+        "ai-drafted-unverified",
+        null
+      ],
+      "description": "How the ipa field was obtained. Required whenever ipa is not null."
+    },
+    "ipa_source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Who or what the IPA came from (speaker ID, recording ID, reviewer)."
+    },
+    "spellings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Everyday-register spellings as typed. All are valid; none is marked wrong."
+    },
+    "form_note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "For example: respectful or dictionary form, everyday form, or phrase."
+    }
   }
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+- Two registers proposed: formal (IPA) and everyday (romanized, any spelling) (D-014, D-015, D-016; OD-004, OD-005). Marked Proposed.
+- Schema: `ipa_status`, `ipa_source`, `spellings`, `form_note`.
+- First native-speaker session data ingested as RAW: 8 entries (`lexicon/raw/2026-10-07-owner-session-1.jsonl`, D-017).
+- AI Test Log 1 (`docs/methodology/ai-test-2026-10-07.md`): failure modes of unverified AI guesses; proposed working-paper changes.
+- 24 candidate sources (`docs/research-gaps/starter-sources.md`); S001 dead link noted; S006 added.
+- CONTRIBUTING: spelling and IPA note.
+
 ## 0.1.0 — 2026-10-07 (first release)
 First versioned release of the Chittagonian Language Project scaffold.
 - Governance, evidence policy, ethics, privacy and research standards.

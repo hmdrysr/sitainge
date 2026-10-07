@@ -13,3 +13,7 @@ Your submission is a contribution, not an automatic acceptance. It will be revie
 Licence and consent: public contributions are dedicated to the public domain under CC0 1.0, which cannot be undone once published. If you are not sure, choose "Discuss first" and nothing will be published. Recordings that must stay research-only, restricted or private are not uploaded here; contact the project steward about the archive. Speakers are identified by ID (for example `CTG-SPK-00041`), not by name, unless they consent.
 
 Credit: you may be credited by name, by contributor ID, or anonymously.
+
+## Spelling and IPA
+
+Chittagonian has no established spelling, so no spelling is wrong. Write it the way you would type it to a friend. Only say "that is not Chittagonian" if a form is not used. You do not need to write IPA. Formal IPA forms are added later from recordings or sound descriptions, with their source recorded (see D-014 to D-016 in `docs/governance/decision-log.md`).

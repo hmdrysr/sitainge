@@ -3,10 +3,23 @@
 Status: **Proposed.** No letter-to-sound mapping is fixed. A mapping needs Chittagonian phonological evidence that has not yet been gathered.
 
 ## Principles
-- Pronunciation is fixed; spelling is flexible.
+- Pronunciation is fixed; spelling is flexible in the everyday register. The formal register is written in IPA.
 - Write naturally, preserve the pronunciation, avoid confusion.
 - No mandatory single spelling. Variants with the same pronunciation and meaning and no serious ambiguity are all accepted. A reference form exists for indexing only.
 - Never silently overwrite a contributor's original spelling. Store original form, variant, pronunciation, reference form, meaning.
+
+## Two registers (proposed 2026-10-07, decision D-014)
+
+The Hamidian Script proposal has two registers. Both are official. Diversity of writing is accepted as long as forms remain interoperable and understood by the wider community.
+
+| Register | Use | Written as | Spelling |
+|---|---|---|---|
+| Formal | Court papers, news, legal and official documents | IPA | Fixed by pronunciation |
+| Everyday | Social media, texts, informational use | Romanized, mass-adapted | Not fixed; every spelling accepted |
+
+- Every lexical entry can hold both forms. Everyday spellings are stored as typed (see D-003, D-015). The IPA form is the formal reference, and several everyday spellings can point to one IPA form.
+- **IPA needs a source.** Contributors are not asked for IPA. It comes from recordings transcribed by someone trained, or from sound descriptions given by a speaker. The status of each IPA form is recorded in `ipa_status` (see `schemas/lexical_entry.schema.json`). An AI may draft IPA only as `ai-drafted-unverified`, and may not enter it as fact (D-016).
+- **Not yet decided:** whether the formal register replaces the Latin letters of the Core and Precision layers below, or sits beside them with a mapping. The letter-to-sound mapping stays unfixed until phonological evidence exists. Broad (phonemic) or narrow (phonetic) IPA is also undecided.
 
 ## Design constraints
 Ordinary Latin keyboards and mobile typing; readability; searchability; Unicode (NFC); minimal diacritics, optional wherever omission creates no real ambiguity. Not a copy of Turkish, English or any other orthography.
