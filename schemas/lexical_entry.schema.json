@@ -154,6 +154,7 @@
       "enum": [
         "none",
         "speaker-described",
+        "speaker-chosen-by-ear",
         "audio-transcribed",
         "phonetician-verified",
         "ai-drafted-unverified",

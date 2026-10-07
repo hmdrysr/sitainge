@@ -1,0 +1,58 @@
+# OPTIONAL. Not active until you paste it as .github/workflows/dadi-ingest.yml (Actions > New workflow > set up yourself).
+# One-time: Settings > Actions > General > Workflow permissions > tick "Allow GitHub Actions to create and approve pull requests".
+# Use: Actions > "Dadi ingest" > Run workflow > issue number + speaker id (e.g. CTG-SPK-00007).
+# It reads a contribution issue created by Dadi, converts it to RAW records with scripts/ingest_interview.py,
+# validates, and opens a pull request. It never accepts anything and never merges. A steward still reviews.
+# It is manual on purpose: the speaker id must be assigned by a person, and issues are public input.
+name: Dadi ingest
+on:
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: Issue number of the Dadi contribution
+        required: true
+      speaker:
+        description: Speaker id assigned by a steward (CTG-SPK-00000)
+        required: true
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install pyyaml jsonschema
+      - name: Extract the submission block
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          gh issue view "$ISSUE" --json body,title -q .body > body.txt
+          python3 - <<'PY'
+          import re,sys
+          b=open('body.txt',encoding='utf-8').read()
+          m=re.search(r'=== SITAINGE SUBMISSION START ===.*?=== SITAINGE SUBMISSION END ===',b,re.S)
+          if not m: sys.exit('No complete submission block in this issue.')
+          open('submission.txt','w',encoding='utf-8').write(m.group(0)+'\n')
+          PY
+      - name: Ingest and validate
+        env:
+          SPEAKER: ${{ inputs.speaker }}
+        run: |
+          python3 scripts/ingest_interview.py submission.txt --speaker-id "$SPEAKER"
+          python3 scripts/validate.py
+          rm -f submission.txt body.txt
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ inputs.issue }}
+        run: |
+          git config user.name "dadi-ingest"; git config user.email "actions@users.noreply.github.com"
+          br="dadi-ingest-issue-$ISSUE"
+          git checkout -b "$br"; git add -A; git commit -m "Ingest Dadi contribution from issue #$ISSUE as RAW"
+          git push origin "$br"
+          gh pr create --title "Ingest Dadi contribution #$ISSUE (RAW, unverified)" --body "Created from issue #$ISSUE. RAW records only; nothing accepted. A steward must review before merging. Closes #$ISSUE when merged." --base main

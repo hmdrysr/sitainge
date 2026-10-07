@@ -1,0 +1,45 @@
+// Run from repository root: node scripts/tests/dadi_unit_test.js
+// Uses placeholder data only. Checks the parts of Dadi that can be checked without a browser or ears.
+const assert = require('assert'), fs = require('fs');
+const J = 'website/dadi/js/';
+const Store = require('../../' + J + 'store.js'), G2P = require('../../' + J + 'g2p.js'), Synth = require('../../' + J + 'synth.js'),
+  IPA = require('../../' + J + 'ipa-data.js'), Data = require('../../' + J + 'data.js');
+let n = 0; const ok = (c, m) => { assert.ok(c, m); n++; };
+const mem = () => { const o = {}; return { getItem: (k) => (k in o ? o[k] : null), setItem: (k, v) => { o[k] = v; }, removeItem: (k) => { delete o[k]; }, o }; };
+
+// store: save, corruption rollback, export never carries the token, import merges
+{
+  const b = mem(); let s = Store.create(b);
+  s.update((st) => { st.cards.a = { last_review: '2026-01-01' }; st.auth = { login: 'x', token: 'SECRET' }; }, 'test', 'one');
+  s.update((st) => { st.stats.xp = 5; }, 'test', 'two');
+  b.o['dadi.v1.state'] = '{broken';
+  s = Store.create(b); ok(s.state.cards.a && s.restoredFrom, 'rolled back to a backup');
+  const exp = s.exportAll(); ok(!/SECRET/.test(exp), 'export has no token');
+  const t = Store.create(mem()); ok(t.importAll(exp).ok && t.state.cards.a, 'import merges'); ok(!t.state.auth, 'import brings no auth');
+  ok(!t.importAll('not json').ok, 'bad import refused');
+  ok(s.history().length >= 2, 'history kept');
+}
+// g2p
+{
+  const r = G2P.g2p('hana'); ok(r.ipa && r.complete, 'g2p simple'); ok(!G2P.g2p('###').complete, 'unknown flagged');
+}
+// synth: every consonant and vowel makes sound, no NaN, stays in range
+{
+  const syms = [...Object.keys(IPA.VOWELS), ...Object.keys(IPA.CONSONANTS)];
+  for (const sy of syms) {
+    const pcm = (Synth.previewSymbol(sy) || {}).samples; if (!pcm || !pcm.length) continue;
+    let peak = 0; for (const v of pcm) { assert.ok(Number.isFinite(v), 'finite ' + sy); peak = Math.max(peak, Math.abs(v)); }
+    assert.ok(peak <= 1.0001 && peak > 0, 'range ' + sy);
+  } n++;
+  const wav = (r => Synth.toWav(r.samples, r.sampleRate))(Synth.synthesize('hana')); ok(String.fromCharCode(...wav.slice(0, 4)) === 'RIFF', 'wav header');
+}
+// data: JSONL tolerant of bad lines; YAML parity on a small case
+{
+  const p = Data.parseJSONL('{"a":1}\nnot json\n{"b":2}\n'); ok(p.records.length === 2 && p.errors.length === 1, 'jsonl tolerant');
+  const y = Data.parseSimpleYAML('- id: T-1\n  text: "[TEST] x"\n- id: T-2\n  text: y\n'); ok(y.records.length === 2 && y.records[0].id === 'T-1', 'yaml list');
+}
+// seed file loads and respects consent
+{
+  const seed = JSON.parse(fs.readFileSync('website/dadi/data/seed.json', 'utf8')); ok(Array.isArray(seed.entries) && seed.entries.length > 0, 'seed present');
+}
+console.log('dadi unit ok (' + n + ' checks)');

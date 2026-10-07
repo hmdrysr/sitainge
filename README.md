@@ -20,6 +20,8 @@ Authority is never declared. Every entry must show why it is documented, who use
 
 Not technical? Talk to a chatbot: it interviews you, records exactly what you say, and gives you a file to submit. Start at [`contribute/README.md`](contribute/README.md), or use the contribution page described in [`website/README.md`](website/README.md).
 
+Want to learn or practise? **Dadi** (`website/dadi/`, by Hamid Yasir) is a lesson and contribution app that reads this repository. Developer notes: [`docs/dadi/HANDOFF.md`](docs/dadi/HANDOFF.md).
+
 ## Core rules
 
 1. Document, do not invent. Unknown stays "Unknown."

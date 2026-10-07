@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Dadi learning and contribution app (`website/dadi/`, PWA): listen/repeat/recall lessons, FSRS review, dictionary scraped from the repository, IPA keyboard that sounds each key, GitHub sign-in contribution, offline backups (D-019 to D-027). Relay in `dadi-worker/`, docs in `docs/dadi/`, optional ingest workflow text.
+- Schema: `ipa_status` gains `speaker-chosen-by-ear`.
 - Two registers proposed: formal (IPA) and everyday (romanized, any spelling) (D-014, D-015, D-016; OD-004, OD-005). Marked Proposed.
 - Schema: `ipa_status`, `ipa_source`, `spellings`, `form_note`.
 - First native-speaker session data ingested as RAW: 8 entries (`lexicon/raw/2026-10-07-owner-session-1.jsonl`, D-017).

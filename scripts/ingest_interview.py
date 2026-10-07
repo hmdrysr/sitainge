@@ -10,6 +10,24 @@ CONF = {"sure":"speaker: sure","fairly_sure":"speaker: fairly sure","not_sure":"
 
 def nfc(v): return unicodedata.normalize("NFC", v) if isinstance(v, str) else v
 
+IPA_NOTE = re.compile(r"^IPA:\s*(.+?)\s*\[status:\s*([a-z\-]+)\]\s*(.*)$", re.S)
+IPA_STATUS = {"none", "speaker-described", "speaker-chosen-by-ear", "audio-transcribed", "phonetician-verified", "ai-drafted-unverified"}
+
+def split_ipa(note):
+    """The Dadi app writes the IPA a speaker chose as: 'IPA: <ipa> [status: <status>]'. Anything else stays a plain note."""
+    m = IPA_NOTE.match(note or "")
+    if not m: return None, None, note or None
+    status = m.group(2) if m.group(2) in IPA_STATUS else "speaker-chosen-by-ear"
+    return nfc(m.group(1)), status, (m.group(3) or None)
+
+def next_txt_id(root):
+    top = 0
+    for p in glob.glob(os.path.join(root, "corpus", "texts", "*")):
+        for line in open(p, encoding="utf-8"):
+            m = re.search(r"CTG-TXT-RAW-(\d{5})", line)
+            if m: top = max(top, int(m.group(1)))
+    return top + 1
+
 def extract(text):
     if START in text:
         text = text.split(START,1)[1]
@@ -92,18 +110,20 @@ def main():
     web = d.get("capture_method", "chatbot") == "web_form"
     publish = str(c.get("publish_cc0")).lower() == "yes"
     consent = "public" if publish else "permission pending"
-    nid = next_id(a.root); recs = []; other = []
+    nid = next_id(a.root); tid = next_txt_id(a.root); recs = []; other = []; texts = []
     acons = c.get("audio_consent", "none")
     audio_consent = "public" if (acons == "public" and publish) else "research-only"
     aud_ids = {it["n"]: f"AUD-{iid}-{int(it['n']):04d}" for it in d["items"] if it.get("audio_file") and it["status"] == "used"}
     for it in d["items"]:
         if it["status"] != "used": continue
         if it["type"] == "word":
+            ipa, ipa_status, pron_rest = split_ipa(it.get("pronunciation_note"))
             recs.append({
               "id": f"CTG-LEX-RAW-{nid:05d}", "state": "RAW",
               "form_as_submitted": nfc(str(it["response_as_given"])), "reference_form": None,
               "variants": [nfc(str(v)) for v in (it.get("variants_given") or [])],
-              "pronunciation": it.get("pronunciation_note") or None, "ipa": None,
+              "pronunciation": pron_rest, "ipa": ipa, "ipa_status": ipa_status or "none", "ipa_source": (f"{iid}" if ipa else None),
+              "spellings": [nfc(str(it["response_as_given"]))] + [nfc(str(v)) for v in (it.get("variants_given") or [])],
               "english_gloss": it["prompt_english"], "part_of_speech": None,
               "example_sentence": None, "region": sp.get("locality_as_given") or None,
               "generation": sp.get("age_group") or None, "register": it.get("context_given") or None,
@@ -120,11 +140,21 @@ def main():
             nid += 1
         else:
             other.append(it)
+            if it["type"] == "sentence" and it["status"] == "used":
+                texts.append({"id": f"CTG-TXT-RAW-{tid:05d}", "state": "RAW", "type": "sentence", "original": nfc(str(it["response_as_given"])),
+                    "variants": [nfc(str(v)) for v in (it.get("variants_given") or [])], "english": it["prompt_english"],
+                    "region": sp.get("locality_as_given") or None, "source": f"SRC-{iid}", "evidence_level": "unassessed",
+                    "confidence": CONF.get(it.get("speaker_confidence"), "unverified"), "ai_assisted": not web, "consent": consent,
+                    "notes": ("Captured by web form; unverified." if web else "AI-assisted interview; unverified.") + (f" Speaker comment: {it['speaker_comment']}" if it.get("speaker_comment") else ""),
+                    "provenance": {"submitted_by": "interview contributor (credit: %s)" % c.get("credit","anonymous"), "date_submitted": str(d.get("date","unknown")),
+                                   "origin": ("web form " if web else "chatbot interview ") + iid, "reviewer": None, "review_date": None, "decision_history": []}})
+                tid += 1
     base = os.path.join(a.root)
     arch = os.path.join(base,"datasets","interviews",f"{iid}.yaml")
     lex = os.path.join(base,"lexicon","raw",f"{iid}.jsonl")
+    txt = os.path.join(base,"corpus","texts",f"{iid}.jsonl")
     stage = os.path.join(base, "audio", "staging", iid); cat = os.path.join(base, "audio", "catalogue", f"{iid}.jsonl")
-    print(f"{len(d['items'])} items, {len(recs)} word records, {len(other)} non-word items kept in the raw copy; consent={consent}")
+    print(f"{len(d['items'])} items, {len(recs)} word records, {len(texts)} sentence records, {len(other)} non-word items kept in the raw copy; consent={consent}")
     if a.dry_run: return
     os.makedirs(os.path.dirname(arch), exist_ok=True); os.makedirs(os.path.dirname(lex), exist_ok=True)
     if os.path.exists(arch): sys.exit(f"{arch} already exists; refusing to overwrite")
@@ -133,6 +163,11 @@ def main():
     if recs:
         with open(lex,"w",encoding="utf-8") as f:
             for r in recs: f.write(json.dumps(r, ensure_ascii=False)+"\n")
+    if texts:
+        os.makedirs(os.path.dirname(txt), exist_ok=True)
+        if os.path.exists(txt): sys.exit(f"{txt} already exists; refusing to overwrite")
+        with open(txt,"w",encoding="utf-8") as f:
+            for r in texts: f.write(json.dumps(r, ensure_ascii=False)+"\n")
     if aud_ids:
         if os.path.exists(stage): sys.exit(f"{stage} already exists; refusing to overwrite")
         os.makedirs(stage); os.makedirs(os.path.dirname(cat), exist_ok=True)
