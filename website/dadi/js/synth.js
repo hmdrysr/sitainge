@@ -7,7 +7,7 @@
 (function (root) {
   'use strict';
   const IPA = (typeof require !== 'undefined' && typeof module !== 'undefined') ? require('./ipa-data.js') : root.DadiIPA;
-  const SR = 22050;
+  let SR = 22050; /* sample rate of the current render; audio.js passes the device's own rate so the browser never has to resample (resampling was a source of hiss) */
 
   /* ---------- parsing ---------- */
   const LIGATURES = { 'ʧ': 'tʃ', 'ʤ': 'dʒ', 'ʦ': 'ts', 'ʣ': 'dz', 'ʨ': 'tɕ', 'ʥ': 'dʑ' };
@@ -248,7 +248,7 @@
     let coef = null, p = null;
     for (let s = 0; s < N; s++) {
       const t = s - lead;
-      if (s % 24 === 0 || !p) {
+      if (s % 2 === 0 || !p) {
         const tt = Math.max(0, Math.min(t, total - 1));
         p = {}; for (const k of keys) p[k] = val(k, tt);
         const prog = total > 0 ? Math.min(1, Math.max(0, t / total)) : 0;
@@ -302,6 +302,7 @@
   /* Public: ipa string -> samples. opts: { f0, speed, seed } */
   function synthesize(ipa, opts) {
     opts = opts || {};
+    SR = Math.max(16000, Math.min(48000, Math.round(opts.sr || 22050)));
     const parsed = parse(ipa);
     const blocks = plan(parsed.segs, opts);
     if (!blocks.length) return { samples: new Float32Array(0), sampleRate: SR, unsupported: parsed.unsupported, approximated: parsed.approximated, segments: 0 };
@@ -326,6 +327,6 @@
     return new Uint8Array(buf);
   }
 
-  const api = { SR, parse, plan, synthesize, previewSymbol, toWav };
+  const api = { get SR() { return SR; }, parse, plan, synthesize, previewSymbol, toWav };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.DadiSynth = api;
 })(typeof self !== 'undefined' ? self : this);

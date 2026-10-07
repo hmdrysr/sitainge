@@ -10,13 +10,13 @@ It does four jobs:
 1. **Learn.** Short lessons (6 items): listen, repeat, recall. Review is scheduled by FSRS.
 2. **Dictionary.** Words and sentences the app finds in the repository, with a trust label on each.
 3. **Teach (contribute).** Native speakers and learners add words, spellings, variants, IPA and reports. Nothing leaves the device until the person sends it.
-4. **Type tab and IPA keyboard.** The Type tab is a free keyboard; the same keyboard opens in Teach. QWERTY plus IPA symbols grouped under the Roman letter they relate to. Every key sounds when tapped, and "Hear it" plays the whole word.
+4. **Write.** A sound keyboard (QWERTY plus every IPA symbol; each key says its sound) and a translator that looks English up in the project's own words (`translate.js`), with a bookmarklet for ordinary web pages and an optional connection to the person's own AI (`ai.js`).
 
-Also: a first-time tour (`tour()` in `app.js`, repeatable from Me), a Look sheet for brightness and five colour schemes (no account needed), and a Word voice setting (automatic, device voice, or Dadi's own sound).
+Also: **Watch and listen** (vetted videos, tap to play, report button), a first-time tour (`tour()`), Me > Appearance (brightness and five colour schemes, no account needed) and Me > Voice (device voice, clear offline voice, Dadi sound). Design rules: `DESIGN.md`.
 
 ## Non-negotiable rules (from the project and the owner)
 - No invented Chittagonian. The app never writes a Chittagonian form or IPA that a person did not supply. Machine readings of a spelling are labelled "approximate" and are saved with `ai-drafted-unverified`.
-- Offline first, mobile first, open source and open standards only. No tracking, no ads, no third-party scripts, no fonts or images fetched from other sites.
+- Offline first, mobile first, open source and open standards only. No tracking, no ads, no third-party scripts or fonts. The only outside content is a YouTube video after the person taps play (privacy-enhanced embed) and, on the landing page, credited Wikimedia Commons photos.
 - Data is never lost silently: checksummed saves, two rolling backups, an append-only history of every change and deletion, export and import.
 - No spelling is wrong (D-015). Two registers are official: formal IPA, and everyday romanized writing (D-014).
 - Bangla script appears only in the Rosetta layer, not in Dadi's Chittagonian content.
@@ -34,6 +34,9 @@ website/dadi/
   js/
     ipa-data.js     vowels (F1-F3), consonants (manner/place/voice), approximations, key layout
     synth.js        formant synthesizer, WAV export (pure JS, runs in Node for tests)
+    espeak.js       optional clear offline voice (eSpeak NG, GPL, vendor/espeak-ng/, removable)
+    translate.js    English to siṭaiṅga lookup from the project's words; page bookmarklet
+    ai.js           connect your own AI (key stays in the browser, never exported)
     native-tts.js   device voice: IPA to a sound-alike script (Bangla or Devanagari) that a device voice can read
     g2p.js          spelling to approximate IPA (rules table)
     audio.js        WebAudio playback, caching, pitch/speed
@@ -48,10 +51,14 @@ website/dadi/
 dadi-worker/relay.js           sign-in relay (no secrets)
 workflows-to-install/dadi-tools.yml   the one workflow (install once; see SETUP.md)
 scripts/dadi_ingest_issue.py   contribution issue to RAW records, automatic speaker id
-scripts/build_dadi_seed.js     seed builder
+scripts/build_dadi_seed.js     seed and glossary builder
+scripts/check_videos.py        weekly video vetting (never approves)
+scripts/update_media.py        photos from Wikimedia Commons (never approves)
 scripts/ingest_interview.py    reviewer ingest (reads Dadi submissions, incl. IPA + status)
 scripts/tests/dadi_*.js        tests
-docs/dadi/                     this documentation + optional ingest workflow text
+docs/dadi/                     this documentation (DESIGN.md, SETUP.md, IPA_AND_AUDIO.md, AUTH_SETUP.md, CONTENT_RULES.md)
+docs/contribute/               ai-tokens.md, moderators.md
+website/index.html, site.css, site.js, data/*.json   the project landing page and its data + optional ingest workflow text
 ```
 
 ## `config.js`

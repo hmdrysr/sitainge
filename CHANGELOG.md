@@ -1,6 +1,12 @@
 # Changelog
 
 ## Unreleased
+- Dadi redesign (D-032): five tabs, large titles, grouped lists and shelves, sheets, five colour schemes with light and dark, fixed-proportion IPA keyboard, tested from 320 to 1280 px.
+- Voices (D-033): device voice, optional clear offline voice (eSpeak NG, GPL, vendored and removable), and Dadi's own synthesizer; choose in Me > Voice. Fixed hiss and clicks in the synthesizer.
+- Translator and "connect your own AI" in Dadi (D-037). Bookmarklet translates ordinary web pages from the project's words.
+- Landing page (D-034, D-035): why the project exists, how to use Dadi, how to contribute, interactive map of Chittagong Division, administrative divisions, local government, history, videos and photos.
+- Video and photo vetting: weekly Dadi tools task, in-app reports, moderators' guide (D-036).
+- AI contribution guide and `AGENTS.md` (D-038).
 - Dadi learning and contribution app (`website/dadi/`, PWA): listen/repeat/recall lessons, FSRS review, dictionary scraped from the repository, IPA keyboard that sounds each key, GitHub sign-in contribution, offline backups (D-019 to D-027). Relay in `dadi-worker/`, docs in `docs/dadi/`, optional ingest workflow text.
 - Schema: `ipa_status` gains `speaker-chosen-by-ear`.
 - Two registers proposed: formal (IPA) and everyday (romanized, any spelling) (D-014, D-015, D-016; OD-004, OD-005). Marked Proposed.

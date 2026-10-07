@@ -52,7 +52,7 @@
     layer.append(back, box); document.body.classList.add('sheet-open');
     const close = () => { back.remove(); box.remove(); sheetClose = null; document.body.classList.remove('sheet-open'); if (opts && opts.onClose) opts.onClose(); };
     back.addEventListener('click', close); sheetClose = close;
-    const first = box.querySelector('button, input, select, textarea, a'); if (first) first.focus({ preventScroll: true });
+    box.setAttribute('tabindex', '-1'); box.style.outline = 'none'; box.focus({ preventScroll: true });
     return { close, box };
   }
   function closeSheet() { if (sheetClose) sheetClose(); }
@@ -113,7 +113,7 @@
 
   /* ---------- router ---------- */
   const ROUTES = [
-    [/^#\/learn$/, learnView], [/^#\/lesson\/(\d+)$/, lessonView], [/^#\/review$/, reviewView], [/^#\/words$/, wordsView], [/^#\/type$/, typeView],
+    [/^#\/learn$/, learnView], [/^#\/lesson\/(\d+)$/, lessonView], [/^#\/review$/, reviewView], [/^#\/words$/, wordsView], [/^#\/(?:write|type)$/, writeView], [/^#\/watch$/, watchView],
     [/^#\/teach$/, teachView], [/^#\/teach\/new(?:\?(.*))?$/, teachNew], [/^#\/me$/, meView], [/^#\/about$/, aboutView]
   ];
   function nav(hash) { if (location.hash === hash) route(); else location.hash = hash; }
@@ -125,7 +125,9 @@
     for (const [re, f] of ROUTES) { m = hash.match(re); if (m) { fn = f; break; } }
     main.textContent = '';
     if (!fn) { nav('#/learn'); return; }
-    setTab(hash.split('/')[1] === 'lesson' || hash.split('/')[1] === 'review' ? 'learn' : hash.split('/')[1].split('?')[0]);
+    const seg = hash.split('/')[1].split('?')[0];
+    document.body.classList.toggle('focus', seg === 'lesson' || seg === 'review');
+    setTab(seg === 'lesson' || seg === 'review' || seg === 'watch' ? 'learn' : seg === 'type' ? 'write' : seg === 'about' ? 'me' : seg);
     fn(main, ...m.slice(1)); window.scrollTo(0, 0);
   }
   function sessionStorageGet(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
@@ -134,69 +136,112 @@
 
 
   /* ---------- look: theme and colour scheme (no account needed) ---------- */
-  const SCHEMES = [['indigo', 'Indigo', '#1f2a6b'], ['forest', 'Forest', '#1f5a3e'], ['ocean', 'Ocean', '#0f5d75'], ['plum', 'Plum', '#5b2a6e'], ['contrast', 'High contrast', '#000000']];
+  const SCHEMES = [['indigo', 'Indigo', '#3447c9'], ['forest', 'Forest', '#1f7a50'], ['ocean', 'Ocean', '#0b6f8c'], ['plum', 'Plum', '#7a3b98'], ['contrast', 'High contrast', '#000000']];
   const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
   function applyLook() {
     const s = S().settings, t = s.theme || 'system', eff = t === 'system' ? (mq && mq.matches ? 'dark' : 'light') : t;
     const el = document.documentElement; el.setAttribute('data-theme', eff); el.setAttribute('data-scheme', s.scheme || 'indigo');
-    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', getComputedStyle(document.querySelector('.top')).backgroundColor);
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', getComputedStyle(document.body).backgroundColor);
   }
   if (mq && mq.addEventListener) mq.addEventListener('change', () => applyLook());
   function lookSheet() {
-    const s = S().settings; let sh;
+    let sh; const box = h('div');
     const set = (k, v) => { Store.update((st) => { st.settings[k] = v; }, 'settings', k + ' ' + v); applyLook(); redraw(); };
-    const box = h('div');
     function redraw() {
-      const cur = S().settings;
-      put(box, h('h2', null, 'Look'),
-        h('p', { class: 'muted small' }, 'Saved on this device. No account needed.'),
+      const cur = S().settings; box.textContent = '';
+      put(box, h('h2', null, 'Appearance'), h('p', { class: 'muted small' }, 'Saved on this device. No account needed.'),
         h('h3', null, 'Brightness'),
-        h('div', { class: 'seg', role: 'group', 'aria-label': 'Brightness' }, [['system', 'Match my device'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => h('button', { type: 'button', class: 'chip', 'aria-pressed': String((cur.theme || 'system') === v), onclick: () => set('theme', v) }, t))),
-        h('h3', null, 'Colours'),
-        h('div', { class: 'swatches', role: 'group', 'aria-label': 'Colour scheme' }, SCHEMES.map(([v, t, c]) => h('button', { type: 'button', class: 'swatch', 'aria-pressed': String((cur.scheme || 'indigo') === v), onclick: () => set('scheme', v) }, h('i', { style: 'background:' + c }), t))),
-        h('div', { class: 'row', style: 'margin-top:14px' }, h('button', { class: 'btn', type: 'button', onclick: () => sh.close() }, 'Done')));
+        h('div', { class: 'segc', role: 'group', 'aria-label': 'Brightness' }, [['system', 'Auto'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => h('button', { type: 'button', 'aria-pressed': String((cur.theme || 'system') === v), onclick: () => set('theme', v) }, t))),
+        h('h3', null, 'Colour'),
+        h('div', { class: 'swatches', role: 'group', 'aria-label': 'Colour' }, SCHEMES.map(([v, t, c]) => h('button', { type: 'button', class: 'swatch', 'aria-pressed': String((cur.scheme || 'indigo') === v), onclick: () => set('scheme', v) }, h('i', { style: 'background:' + c }), t))),
+        h('button', { class: 'btn block', type: 'button', style: 'margin-top:24px', onclick: () => sh.close() }, 'Done'));
     }
-    redraw(); sh = sheet(box, { label: 'Look' });
+    redraw(); sh = sheet(box, { label: 'Appearance' });
   }
 
-  /* ---------- Type: the IPA keyboard on its own ---------- */
-  function typeView(root) {
-    const field = h('textarea', { class: 'input ipa typebox', rows: '2', placeholder: 'Tap here, then tap keys. Each key says its sound.', 'aria-label': 'Type with sounds', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
-    const out = h('p', { class: 'muted small', 'aria-live': 'polite' });
-    put(root, h('h1', null, 'Type with sounds'), field,
-      h('div', { class: 'row', style: 'margin:10px 0' },
-        h('button', { class: 'btn', type: 'button', onclick: async () => { if (!field.value.trim()) { out.textContent = 'Type something first.'; return; } const r = await audio.play(field.value.trim()); out.textContent = r.ok ? (r.device ? 'Played with your device\'s voice, which is an approximation.' : 'Played with Dadi\'s own sound. It is an approximation.') : (r.reason || 'Could not play.'); } }, 'Hear the word'),
-        h('button', { class: 'btn ghost', type: 'button', onclick: () => openKeyboard(field) }, 'Show keyboard'),
-        h('button', { class: 'btn ghost', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(field.value); toast('Copied.'); } catch (e) { toast('Could not copy. Select the text and copy it.'); } } }, 'Copy'),
-        h('a', { class: 'btn ghost', href: '#/teach/new', onclick: (e) => { e.preventDefault(); nav('#/teach/new?ipa=' + encodeURIComponent(field.value.trim())); } }, 'Add as a contribution')),
+  /* ---------- Write: sound keyboard and translator ---------- */
+  let writeMode = 'keys', trText = '';
+  function writeView(root) {
+    put(root, h('h1', { class: 'title' }, 'Write'),
+      h('p', { class: 'lede' }, writeMode === 'keys' ? 'Type a word by sound. Every key says its sound.' : 'Turn English into siṭaiṅga, using only words the project holds.'),
+      h('div', { class: 'segc', role: 'group', 'aria-label': 'Mode' }, [['keys', 'Keyboard'], ['translate', 'Translate']].map(([v, t]) => h('button', { type: 'button', 'aria-pressed': String(writeMode === v), onclick: () => { writeMode = v; route(); } }, t))));
+    const body = h('div', { class: 'sec' }); root.append(body);
+    if (writeMode === 'keys') keysPane(body); else translatePane(body);
+  }
+  function keysPane(body) {
+    const field = h('textarea', { class: 'input ipa typebox', rows: '3', placeholder: 'Tap here, then tap keys', 'aria-label': 'Type with sounds', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
+    const out = h('p', { class: 'muted small', 'aria-live': 'polite', style: 'margin-top:12px' });
+    field.addEventListener('click', () => { if (dock.hidden) openKeyboard(field); });
+    put(body, field,
+      h('div', { class: 'row', style: 'margin-top:12px' },
+        h('button', { class: 'btn', type: 'button', onclick: async () => { if (!field.value.trim()) { out.textContent = 'Type something first.'; return; } const r = await audio.play(field.value.trim()); out.textContent = r.ok ? (r.how === 'dadi' ? 'Played with Dadi\'s own sound, which is an approximation.' : 'Played with a device or clear voice reading a sound-alike. It is an approximation.') : (r.reason || 'Could not play.'); } }, 'Hear it'),
+        h('button', { class: 'btn tint', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(field.value); toast('Copied.'); } catch (e) { toast('Could not copy. Select the text and copy it.'); } } }, 'Copy'),
+        h('a', { class: 'btn tint', href: '#/teach/new', onclick: (e) => { e.preventDefault(); nav('#/teach/new?ipa=' + encodeURIComponent(field.value.trim())); } }, 'Add as a contribution')),
       out,
-      h('p', { class: 'muted' }, 'An on-screen keyboard with the usual letters and every IPA symbol. Tap a key to hear it. Then press "Hear the word" to hear the whole thing, and swap symbols until it sounds like you.'),
-      h('p', { class: 'note' }, 'Not sure how to write a sound? Tap a key that is close to it. The row above the keys shows related sounds. Try them until one matches your voice. What you choose is saved as "chosen by ear", which reviewers treat as a lead, not a fact.'));
+      h('div', { class: 'note' }, 'Not sure how to write a sound? Tap a key that is close. The strip above the keys offers neighbours. Tap one to swap it in, then press Hear it. What you pick is saved as "chosen by ear", which reviewers treat as a lead, not a fact.'));
     openKeyboard(field);
+  }
+  let glossCache = null;
+  const glossary = () => { const n = index.all.length; if (!glossCache || glossCache.n !== n) glossCache = { n, G: DadiTranslate.load(DadiTranslate.makeGlossary(index.all)) }; return glossCache.G; };
+  function bookmarklet() {
+    const base = new URL('./', location.href).href;
+    return "javascript:(function(){var s=document.createElement('script');s.src='" + base + "js/translate.js';s.onload=function(){DadiTranslate.pageFromUrl('" + base + "data/glossary.json').catch(function(e){alert(e.message)})};document.body.appendChild(s)})()";
+  }
+  function translatePane(body) {
+    const T = DadiTranslate, G = glossary();
+    const input = h('textarea', { class: 'input', rows: '4', placeholder: 'Type or paste English', 'aria-label': 'English text', autocapitalize: 'sentences' }, trText);
+    const result = h('div', { class: 'card', hidden: true, 'aria-live': 'polite' }), aiBox = h('div');
+    let last = null;
+    function paint() {
+      trText = input.value; aiBox.textContent = '';
+      if (!trText.trim()) { result.hidden = true; last = null; return; }
+      last = T.translate(trText, G); result.hidden = false; result.textContent = '';
+      const out = h('div', { class: 'tr-out' }); last.parts.forEach((p) => out.append(p.t === 'hit' ? h('mark', { title: p.s + ' (' + (p.level === 'unassessed' ? 'not yet assessed' : 'level ' + p.level) + ')' }, p.out) : p.s));
+      const pct = Math.round(last.coverage * 100);
+      put(result, out, h('div', { class: 'meter', role: 'img', 'aria-label': pct + ' percent of words replaced' }, h('i', { style: 'width:' + pct + '%' })),
+        h('p', { class: 'small muted' }, last.hits + ' of ' + last.words + ' words replaced from the project dictionary. Highlighted words are unverified. Everything else stays in English.'),
+        h('div', { class: 'row' },
+          h('button', { class: 'btn small tint', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(T.plain(last)); toast('Copied.'); } catch (e) { toast('Could not copy.'); } } }, 'Copy'),
+          h('button', { class: 'btn small tint', type: 'button', onclick: () => aiRun() }, DadiAI.ready(DadiAI.load()) ? 'Ask my AI' : 'Copy a prompt for my AI')));
+    }
+    async function aiRun() {
+      const cfg = DadiAI.load(), prompt = DadiAI.buildPrompt(trText, last.parts.filter((p) => p.t === 'hit'), {});
+      if (!DadiAI.ready(cfg)) { try { await navigator.clipboard.writeText(prompt); toast('Prompt copied. Paste it into your AI.'); } catch (e) { toast('Could not copy.'); } return; }
+      aiBox.textContent = ''; aiBox.append(h('p', { class: 'muted small' }, h('span', { class: 'spin' }), 'Asking your AI...'));
+      try { const t = await DadiAI.ask(cfg, prompt); aiBox.textContent = ''; put(aiBox, h('div', { class: 'card', style: 'margin-top:12px' }, h('p', { class: 'small muted' }, 'AI draft, unverified. Nothing here is evidence.'), h('div', { class: 'tr-out' }, t))); }
+      catch (e) { aiBox.textContent = ''; aiBox.append(h('p', { class: 'err' }, e.message)); }
+    }
+    input.addEventListener('input', paint);
+    const bm = h('textarea', { class: 'input', readonly: true, rows: '3', 'aria-label': 'Bookmarklet code', style: 'font-size:12px;font-family:ui-monospace,Menlo,monospace' }, bookmarklet());
+    put(body, input, h('div', { class: 'stack', style: 'margin-top:12px' }, result, aiBox),
+      h('div', { class: 'group-title' }, 'Translate any web page'),
+      h('div', { class: 'card stack' },
+        h('p', { class: 'small', style: 'margin:0' }, 'Make a bookmark whose address is the code below. Open any page, tap the bookmark, and its words are replaced in place from the project dictionary. Undo restores the page. Some sites block bookmarklets. If yours does, paste the text above instead.'),
+        bm, h('button', { class: 'btn small tint', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(bm.value); toast('Code copied.'); } catch (e) { bm.select(); toast('Select the code and copy it.'); } } }, 'Copy bookmark code')),
+      h('p', { class: 'group-foot' }, 'This tool looks up meanings. It does not know grammar, so word order and endings follow English. It will improve as speakers add words.'));
+    paint();
   }
 
   /* ---------- first-time tour ---------- */
   const TOUR = [
     ['Welcome to Dadi', 'Dadi helps you learn siṭaiṅga, the Chittagonian language, and lets speakers add what they know. This quick tour shows where things are. You can skip it any time.', ''],
     ['Learn', 'Short lessons. You listen, repeat, then answer before you see the answer. Words you miss come back sooner.', 'learn'],
-    ['Words', 'The dictionary. It reads the project\'s public files on GitHub. Each entry shows how much it can be trusted.', 'words'],
-    ['Type', 'The on-screen keyboard with the usual letters and every IPA symbol. Every key says its sound, so you can write a word without knowing IPA.', 'type'],
+    ['Words', 'The dictionary. Each entry shows how far it can be trusted.', 'words'],
+    ['Write', 'A sound keyboard with every IPA symbol, where each key says its sound, and a translator that works from the project\'s own words.', 'write'],
     ['Teach', 'Add a word, another way people say it, or a correction. Nothing leaves your device until you press Send.', 'teach'],
-    ['Me', 'Your progress, voice settings, backups, and sign-in with GitHub. Sign-in is optional.', 'me'],
-    ['Colours', 'The round button at the top changes brightness and colours. You do not need an account for that.', 'look']
+    ['Me', 'Voice, appearance, your own AI, backups and sign-in with GitHub. Sign-in is optional.', 'me']
   ];
   function tour(start) {
-    let i = start || 0; const box = h('div');
-    const hl = (t) => { document.querySelectorAll('.tour-hl').forEach((n) => n.classList.remove('tour-hl')); const n = t === 'look' ? document.getElementById('look') : document.querySelector('.tabs a[data-tab="' + t + '"]'); if (n) n.classList.add('tour-hl'); };
-    let sh;
+    let i = start || 0; const box = h('div'); let sh;
+    const hl = (t) => { document.querySelectorAll('.tour-hl').forEach((n) => n.classList.remove('tour-hl')); const n = t ? document.querySelector('.tabs a[data-tab="' + t + '"]') : null; if (n) n.classList.add('tour-hl'); };
     const finish = () => { hl(''); Store.update((st) => { st.settings.tourDone = true; }, 'settings', 'tour done'); if (sh) sh.close(); };
     function draw() {
-      const [title, text, target] = TOUR[i]; hl(target);
-      put(box, h('p', { class: 'small muted' }, 'Step ' + (i + 1) + ' of ' + TOUR.length), h('h2', null, title), h('p', null, text),
-        h('div', { class: 'row', style: 'margin-top:14px' },
-          i > 0 ? h('button', { class: 'btn ghost', type: 'button', onclick: () => { i--; draw(); } }, 'Back') : null,
-          i < TOUR.length - 1 ? h('button', { class: 'btn', type: 'button', onclick: () => { i++; draw(); } }, 'Next') : h('button', { class: 'btn', type: 'button', onclick: finish }, 'Start learning'),
-          i < TOUR.length - 1 ? h('button', { class: 'link', type: 'button', onclick: finish }, 'Skip the tour') : null));
+      const [title, text, target] = TOUR[i]; hl(target); box.textContent = '';
+      put(box, h('p', { class: 'small muted' }, (i + 1) + ' of ' + TOUR.length), h('h2', null, title), h('p', null, text),
+        h('div', { class: 'stack', style: 'margin-top:16px' },
+          i < TOUR.length - 1 ? h('button', { class: 'btn block', type: 'button', onclick: () => { i++; draw(); } }, 'Next') : h('button', { class: 'btn block', type: 'button', onclick: finish }, 'Start learning'),
+          h('div', { class: 'row' }, i > 0 ? h('button', { class: 'btn small tint', type: 'button', onclick: () => { i--; draw(); } }, 'Back') : null,
+            i < TOUR.length - 1 ? h('button', { class: 'btn small tint', type: 'button', onclick: finish }, 'Skip the tour') : null)));
     }
     draw(); sh = sheet(box, { label: 'Tour', onClose: () => { hl(''); Store.update((st) => { st.settings.tourDone = true; }, 'settings', 'tour closed'); } });
   }
@@ -211,44 +256,78 @@
   function closeKeyboard() { dock.hidden = true; dock.textContent = ''; document.body.classList.remove('kb-open'); kb.unmount(); }
 
   /* ---------- Learn ---------- */
+  let videosCache = null;
+  async function loadVideos() {
+    if (videosCache) return videosCache;
+    try { const r = await fetch('../data/videos.json'); if (!r.ok) throw new Error('HTTP ' + r.status); videosCache = (await r.json()).filter((v) => !['rejected', 'flagged', 'unavailable'].includes(v.status)); } catch (e) { videosCache = []; }
+    return videosCache;
+  }
   function learnView(root) {
-    const st = S(), playable = index.playable();
-    const learned = playable.filter((e) => st.cards[e.id]).length, due = dueIds().length;
-    put(root, 
-      h('section', { class: 'hero' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }),
-        h('div', null, h('h1', null, 'Learn siṭaiṅga'), h('p', { class: 'muted' }, 'Words and sentences that people have shared with the project. Listen, answer before the reveal, and come back to what you forget.'))),
-      h('div', { class: 'chips' }, h('span', { class: 'chip' }, 'Streak: ' + (st.stats.streak || 0) + ' day' + ((st.stats.streak || 0) === 1 ? '' : 's')),
-        h('span', { class: 'chip' }, 'Practice points: ' + (st.stats.xp || 0)), h('span', { class: 'chip' }, learned + ' of ' + playable.length + ' started')),
-      due ? h('a', { class: 'btn block', href: '#/review' }, 'Review ' + due + ' due word' + (due === 1 ? '' : 's')) : null,
-      h('details', { class: 'note' }, h('summary', null, 'How much to trust what you hear'),
-        h('ul', null,
-          h('li', null, 'Machine reading: no one has said the IPA yet. The sound comes from reading the spelling like Latin letters. It can be wrong.'),
-          h('li', null, 'IPA from a person: a speaker chose the sounds. Still unreviewed, so treat it as likely rather than certain.'),
-          h('li', null, 'Recording: a real speaker. None exist yet.')),
-        h('p', { class: 'small', style: 'margin-top:8px' }, 'All content is unverified and gets better as speakers fix it. You can fix any word with the Teach tab.')),
-      h('h2', null, 'Your quilt'),
-      h('p', { class: 'muted small' }, 'Each patch is a word you have started. The cloth fills as you practise.'),
-      quilt(playable, st),
-      h('h2', { style: 'margin-top:20px' }, 'Lessons'),
-      lessonPath(st));
-  }
-  function quilt(playable, st) {
-    const q = h('div', { class: 'quilt', role: 'img', 'aria-label': 'Quilt of started words' });
-    playable.forEach((e, i) => q.append(h('span', { class: 'patch' + (st.cards[e.id] ? ' on p' + (i % 4) : '') })));
-    if (!playable.length) q.append(h('span', { class: 'muted small' }, 'No playable words yet.'));
-    return q;
-  }
-  function lessonPath(st) {
-    if (!lessonList.length) return h('div', { class: 'note' }, 'There are no lessons yet because no entry can be played. Open Teach and add what you know. Words with Latin-letter spellings play right away.');
-    const ol = h('ol', { class: 'path' });
-    lessonList.forEach((ids, i) => {
-      const es = ids.map((id) => index.byId.get(id)).filter(Boolean), done = !!st.stats.lessonsDone[i];
-      const thumbs = h('div', { class: 'thumbs' }); es.slice(0, 6).forEach((e) => thumbs.append(h('span', { html: Art.art(e.gloss) })));
-      ol.append(h('li', null, h('span', { class: 'node' + (done ? ' done' : '') }, done ? '✓' : String(i + 1)),
-        h('button', { class: 'lesson-btn', type: 'button', onclick: () => nav('#/lesson/' + i) }, h('b', null, 'Lesson ' + (i + 1)),
-          h('span', { class: 'muted small' }, es.map((e) => e.gloss).slice(0, 4).join(', ') + (es.length > 4 ? ', ...' : '')), thumbs)));
+    const st = S(), playable = index.playable(), due = dueIds().length;
+    const nextIdx = lessonList.findIndex((_, i) => !st.stats.lessonsDone[i]), learned = playable.filter((e) => st.cards[e.id]).length;
+    put(root, h('h1', { class: 'title' }, 'Learn'), h('p', { class: 'lede' }, 'siṭaiṅga, one small lesson at a time.'));
+    if (due) put(root, h('a', { class: 'cont', href: '#/review' }, h('div', null, h('div', { class: 'k' }, 'Ready now'), h('h2', null, 'Review ' + due + ' word' + (due === 1 ? '' : 's')), h('p', null, 'Just before you would forget them.')), h('span', { class: 'go', html: PLAY })));
+    else if (nextIdx >= 0) put(root, h('a', { class: 'cont', href: '#/lesson/' + nextIdx }, h('div', null, h('div', { class: 'k' }, nextIdx ? 'Up next' : 'Start here'), h('h2', null, 'Lesson ' + (nextIdx + 1)), h('p', null, 'About three minutes.')), h('span', { class: 'go', html: PLAY })));
+    else if (!lessonList.length) put(root, h('div', { class: 'card', style: 'margin-top:16px' }, h('b', null, 'No lessons yet'), h('p', { class: 'muted', style: 'margin:4px 0 12px' }, 'Lessons are built from words that can be played. Add what you know and they appear.'), h('a', { class: 'btn small', href: '#/teach/new' }, 'Add a word')));
+    put(root, h('div', { class: 'stats' },
+      h('div', { class: 'stat' }, h('b', null, String(st.stats.streak || 0)), h('span', null, 'day streak')),
+      h('div', { class: 'stat' }, h('b', null, String(st.stats.xp || 0)), h('span', null, 'points')),
+      h('div', { class: 'stat' }, h('b', null, String(learned)), h('span', null, 'of ' + playable.length + ' started'))));
+    if (lessonList.length) {
+      const shelf = h('div', { class: 'hscroll' });
+      lessonList.forEach((ids, i) => {
+        const es = ids.map((id) => index.byId.get(id)).filter(Boolean), done = !!st.stats.lessonsDone[i];
+        const mosaic = h('div', { class: 'mosaic' }); es.slice(0, 4).forEach((e) => mosaic.append(h('span', { html: Art.art(e.gloss) })));
+        shelf.append(h('button', { class: 'tile', type: 'button', onclick: () => nav('#/lesson/' + i) }, h('div', { class: 'tile-art' + (done ? ' done' : '') }, mosaic), h('span', { class: 'tile-t' }, 'Lesson ' + (i + 1)), h('span', { class: 'tile-s' }, es.map((e) => e.gloss).slice(0, 4).join(', '))));
+      });
+      put(root, h('section', { class: 'sec' }, h('div', { class: 'sh' }, h('h2', null, 'Lessons')), shelf));
+    }
+    const vsec = h('section', { class: 'sec', hidden: true }); root.append(vsec);
+    loadVideos().then((vs) => {
+      if (!vs.length || !vsec.isConnected) return;
+      const shelf = h('div', { class: 'hscroll' });
+      vs.forEach((v) => shelf.append(videoTile(v)));
+      put(vsec, h('div', { class: 'sh' }, h('h2', null, 'Watch and listen'), h('a', { href: '#/watch' }, 'See all')), shelf); vsec.hidden = false;
     });
-    return ol;
+    put(root, h('details', { class: 'note', style: 'margin-top:24px' }, h('summary', null, 'How much to trust what you hear'),
+      h('ul', null,
+        h('li', null, 'Machine reading: nobody has said the IPA yet. The sound comes from reading the spelling like Latin letters. It can be wrong.'),
+        h('li', null, 'IPA from a person: a speaker chose the sounds. Still unreviewed, so likely rather than certain.'),
+        h('li', null, 'Recording: a real speaker. None exist yet.')),
+      h('p', { class: 'small', style: 'margin:8px 0 0' }, 'Everything is unverified and gets better as speakers fix it. You can fix any word from the Teach tab.')));
+  }
+  function videoTile(v) {
+    return h('button', { class: 'tile vtile', type: 'button', onclick: () => videoSheet(v) },
+      h('div', { class: 'tile-art', html: PLAY }), h('span', { class: 'tile-t' }, v.label || v.title), h('span', { class: 'tile-s' }, v.channel + (v.status === 'approved' ? '' : ' · awaiting review')));
+  }
+  function videoSheet(v) {
+    const frame = h('div', { class: 'vframe' }, h('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) + '?rel=0&playsinline=1', title: v.label || v.title, allow: 'encrypted-media; picture-in-picture', allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin' }));
+    sheet(h('div', null, frame, h('h2', { style: 'margin-top:16px' }, v.label || v.title), h('p', { class: 'muted small' }, v.channel + '. ' + (v.status === 'approved' ? 'Checked by a moderator.' : 'Not yet checked by a moderator.') + ' Plays from YouTube with its privacy-enhanced player, only because you tapped play.'),
+      h('div', { class: 'row' }, h('button', { class: 'btn small tint', type: 'button', onclick: () => { closeSheet(); reportSheet({ kind: 'video', id: v.id, label: v.label || v.title }); } }, 'Report a problem'), h('a', { class: 'btn small tint', href: 'https://www.youtube.com/watch?v=' + encodeURIComponent(v.id), target: '_blank', rel: 'noopener noreferrer' }, 'Open on YouTube'))), { label: v.label || v.title });
+  }
+  async function watchView(root) {
+    put(root, h('h1', { class: 'title' }, 'Watch and listen'), h('p', { class: 'lede' }, 'Videos by people who speak or teach siṭaiṅga. Moderators check each one. If something is off, report it.'));
+    const g = h('div', { class: 'stack' }); root.append(g);
+    const vs = await loadVideos(); if (!g.isConnected) return;
+    if (!vs.length) { g.append(h('div', { class: 'card' }, 'No videos are available right now. Check your connection and try again.')); return; }
+    vs.forEach((v) => g.append(h('button', { class: 'cell card', type: 'button', style: 'padding:12px 16px', onclick: () => videoSheet(v) }, h('span', { class: 'play', html: PLAY }), h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, v.label || v.title), h('span', { class: 'cell-s' }, v.channel + (v.status === 'approved' ? '' : ' · awaiting review'))))));
+  }
+  /* Reports: a video, a photo or any entry. Signed in: sent as an issue. Otherwise: a prefilled GitHub page or copied text. */
+  function reportSheet(what) {
+    what = what || { kind: 'content', id: '', label: '' };
+    const reasons = what.kind === 'video' ? [['low-quality', 'Poor quality or hard to follow'], ['wrong-language', 'Not siṭaiṅga, or mostly another language'], ['inaccurate', 'Teaches things that are wrong'], ['unsuitable', 'Unsuitable or offensive'], ['broken', 'Will not play'], ['other', 'Something else']] : [['inaccurate', 'Something is wrong'], ['low-quality', 'Poor quality'], ['unsuitable', 'Unsuitable or offensive'], ['other', 'Something else']];
+    const why = h('select', { class: 'input', 'aria-label': 'What is wrong' }, reasons.map(([v, t]) => h('option', { value: v }, t)));
+    const note = h('textarea', { class: 'input', rows: '3', placeholder: 'Anything that helps a moderator (optional)', 'aria-label': 'Details' });
+    const title = '[' + (what.kind === 'video' ? 'Video' : 'Content') + ' report] ' + (what.id || what.label || 'general');
+    const text = () => title + '\n\nItem: ' + (what.label || '') + (what.id ? ' (' + what.id + ')' : '') + '\nProblem: ' + why.value + '\nDetails: ' + (note.value.trim() || 'none') + '\n';
+    let sh;
+    const box = h('div', null, h('h2', null, 'Report a problem'), h('p', { class: 'muted small' }, what.label ? 'About: ' + what.label : 'Tell moderators about content that should be fixed or removed.'), h('label', { class: 'f' }, 'What is wrong?'), why, h('label', { class: 'f' }, 'Details'), note,
+      h('div', { class: 'stack', style: 'margin-top:16px' },
+        signedIn() ? h('button', { class: 'btn block', type: 'button', onclick: async () => { try { const r = await gh.createIssue(S().auth.token, { title, body: text() }); sh.close(); toast('Report sent. Thank you.'); void r; } catch (e) { toast('Could not send: ' + e.message); } } }, 'Send report') : null,
+        h('a', { class: 'btn block' + (signedIn() ? ' tint' : ''), target: '_blank', rel: 'noopener noreferrer', href: CFG.repoUrl + '/issues/new?labels=' + (what.kind === 'video' ? 'video-report' : 'content-report') + '&title=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(text()), onclick: () => { Store.update((st) => { st.stats.reports = (st.stats.reports || 0) + 1; }, 'report', what.kind + ' ' + (what.id || '')); } }, 'Open on GitHub'),
+        h('button', { class: 'btn block tint', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(text()); toast('Copied. Send it to a moderator.'); } catch (e) { toast('Could not copy.'); } } }, 'Copy the report')),
+      h('p', { class: 'group-foot' }, 'Reports are public on GitHub. Do not include personal details.'));
+    sh = sheet(box, { label: 'Report a problem' });
   }
 
   /* ---------- lesson engine (listen, answer, spaced re-asking) ---------- */
@@ -349,11 +428,11 @@
   /* ---------- Words (dictionary) ---------- */
   let wordFilter = { q: '', kind: 'all', ipaOnly: false };
   function wordsView(root) {
-    const input = h('input', { class: 'search', type: 'search', placeholder: 'Search English or siṭaiṅga spelling', 'aria-label': 'Search the dictionary', value: wordFilter.q, autocomplete: 'off' });
-    const list = h('ul', { class: 'rows' }), count = h('p', { class: 'muted small', 'aria-live': 'polite' });
+    const input = h('input', { class: 'search', type: 'search', placeholder: 'Search', 'aria-label': 'Search the dictionary', value: wordFilter.q, autocomplete: 'off' });
+    const list = h('div', { class: 'group' }), count = h('p', { class: 'group-foot', 'aria-live': 'polite' });
     const chip = (label, key, val, pressed) => h('button', { class: 'chip', type: 'button', 'aria-pressed': String(pressed), onclick: () => { if (key === 'ipaOnly') wordFilter.ipaOnly = !wordFilter.ipaOnly; else wordFilter.kind = val; paint(); chips.replaceWith((chips = makeChips())); } }, label);
     const makeChips = () => h('div', { class: 'chips' }, chip('Everything', 'kind', 'all', wordFilter.kind === 'all'), chip('Words', 'kind', 'word', wordFilter.kind === 'word'),
-      chip('Sentences and sayings', 'kind', 'text', wordFilter.kind === 'text'), chip('IPA from a person', 'ipaOnly', null, wordFilter.ipaOnly));
+      chip('Sentences', 'kind', 'text', wordFilter.kind === 'text'), chip('IPA from a person', 'ipaOnly', null, wordFilter.ipaOnly));
     let chips = makeChips();
     function paint() {
       wordFilter.q = input.value;
@@ -364,17 +443,17 @@
       list.textContent = '';
       r.slice(0, 200).forEach((e) => {
         const can = e._pron.complete;
-        list.append(h('li', null, h('div', { class: 'pic', html: Art.art(e.gloss) }),
+        list.append(h('div', { class: 'entry' }, h('div', { class: 'pic', html: Art.art(e.gloss) }),
           h('button', { class: 'main', type: 'button', onclick: () => detail(e) }, h('span', { class: 'form' }, e.spellings[0] || e.form), h('span', { class: 'gloss' }, e.gloss), h('span', null, trustBadge(e))),
           h('button', { class: 'play', type: 'button', html: PLAY, disabled: !can, 'aria-label': 'Hear ' + (e.spellings[0] || e.form), onclick: () => audio.play(e._pron.ipa) })));
       });
       count.textContent = r.length + ' entr' + (r.length === 1 ? 'y' : 'ies') + (r.length > 200 ? ' (showing 200; search to narrow)' : '');
-      if (!r.length) list.append(h('li', { style: 'display:block' }, h('p', null, 'Nothing matches. If you know this word, '), h('a', { class: 'btn small', href: '#/teach/new?gloss=' + encodeURIComponent(wordFilter.q) }, 'Add it')));
+      if (!r.length) list.append(h('div', { class: 'cellwrap' }, h('p', null, 'Nothing matches. If you know this word, add it.'), h('a', { class: 'btn small', href: '#/teach/new?gloss=' + encodeURIComponent(wordFilter.q) }, 'Add it')));
     }
     input.addEventListener('input', paint);
     const src = repoInfo.from === 'github' ? 'From GitHub, updated ' + when(repoInfo.at) : (Store.cachedRepo() ? 'Saved copy from ' + when(Store.cachedRepo().fetchedAt) : 'Built-in copy');
-    put(root, h('h1', null, 'Words'), input, chips, count, list,
-      h('p', { class: 'muted small', style: 'margin-top:16px' }, src + '. ', h('button', { class: 'link', type: 'button', onclick: () => refreshRepo() }, 'Update now')));
+    put(root, h('h1', { class: 'title' }, 'Words'), h('p', { class: 'lede' }, 'Everything the project holds, with how far to trust it.'), input, chips, list, count,
+      h('p', { class: 'group-foot' }, src + '. ', h('button', { class: 'link', type: 'button', onclick: () => refreshRepo() }, 'Update now')));
     paint();
   }
   function detail(e) {
@@ -390,13 +469,13 @@
     sheet(h('div', null, h('div', { class: 'row' }, h('div', { style: 'width:64px;height:64px', html: Art.art(e.gloss) }), h('div', null, h('div', { class: 'word' + ((e.spellings[0] || e.form).length > 24 ? ' long' : ''), style: 'font-size:1.9rem' }, e.spellings[0] || e.form), h('div', { class: 'muted' }, e.gloss))),
       e.spellings.length > 1 ? h('p', { class: 'small' }, 'Also written: ' + e.spellings.slice(1).join(', ')) : null,
       h('p', { class: 'ipa' }, can ? '/' + p.ipa + '/' : ''), h('p', { class: 'small muted' }, how),
-      h('div', { class: 'row' }, h('button', { class: 'btn small', type: 'button', disabled: !can, onclick: () => audio.play(p.ipa) }, 'Hear it'), h('button', { class: 'btn small ghost', type: 'button', disabled: !can, onclick: () => audio.play(p.ipa, { speed: 0.6 }) }, 'Hear it slowly')),
+      h('div', { class: 'row' }, h('button', { class: 'btn small', type: 'button', disabled: !can, onclick: () => audio.play(p.ipa) }, 'Hear it'), h('button', { class: 'btn small tint', type: 'button', disabled: !can, onclick: () => audio.play(p.ipa, { speed: 0.6 }) }, 'Hear it slowly')),
       facts,
       h('h3', null, 'Help improve this entry'),
       h('div', { class: 'row' },
-        h('a', { class: 'btn small ghost', href: '#/teach/new?action=variant&rel=' + encodeURIComponent(e.id) }, 'I say it differently'),
-        h('a', { class: 'btn small ghost', href: '#/teach/new?action=ipa&rel=' + encodeURIComponent(e.id) }, 'Fix the pronunciation'),
-        h('a', { class: 'btn small ghost', href: '#/teach/new?action=report&rel=' + encodeURIComponent(e.id) }, 'Report a problem'))), { label: e.gloss });
+        h('a', { class: 'btn small tint', href: '#/teach/new?action=variant&rel=' + encodeURIComponent(e.id) }, 'I say it differently'),
+        h('a', { class: 'btn small tint', href: '#/teach/new?action=ipa&rel=' + encodeURIComponent(e.id) }, 'Fix the pronunciation'),
+        h('a', { class: 'btn small tint', href: '#/teach/new?action=report&rel=' + encodeURIComponent(e.id) }, 'Report a problem'))), { label: e.gloss });
   }
 
   /* ---------- Teach (contribute) ---------- */
@@ -413,25 +492,26 @@
   function teachView(root) {
     const queued = S().queue.filter((q) => q.status === 'queued'), sent = S().queue.filter((q) => q.status === 'sent' || q.status === 'exported');
     const want = wantedWords();
-    put(root, h('h1', null, 'Teach Dadi'),
-      h('p', null, 'If you speak siṭaiṅga, add what you say. Write it any way you would write it to a friend: there is no wrong spelling here. Reviewers read everything before it is used, and nothing is accepted automatically.'),
+    put(root, h('h1', { class: 'title' }, 'Teach'),
+      h('p', { class: 'lede' }, 'If you speak siṭaiṅga, add what you say, in any spelling you would use with a friend. Reviewers read everything first. Nothing is accepted automatically.'),
       h('a', { class: 'btn block', href: '#/teach/new' }, 'Add a word or sentence'),
-      h('h2', { style: 'margin-top:22px' }, 'Waiting to send'));
-    if (!queued.length) put(root, h('p', { class: 'muted' }, 'Nothing waiting. What you add is saved on this device first.'));
+      h('div', { class: 'group-title' }, 'Waiting to send'));
+    if (!queued.length) put(root, h('div', { class: 'card muted' }, 'Nothing waiting. What you add is saved on this device first.'));
     else {
-      queued.forEach((q) => put(root, h('div', { class: 'queue-item' }, h('b', null, (q.action === 'report' ? 'Report: ' : '') + (q.form || q.gloss)), ' ', h('span', { class: 'muted' }, q.gloss && q.form ? q.gloss : ''),
+      const qg = h('div', { class: 'group' }); root.append(qg);
+      queued.forEach((q) => put(qg, h('div', { class: 'cellwrap' }, h('b', null, (q.action === 'report' ? 'Report: ' : '') + (q.form || q.gloss)), ' ', h('span', { class: 'muted' }, q.gloss && q.form ? q.gloss : ''),
         q.ipa ? h('div', { class: 'ipa small' }, '/' + q.ipa + '/') : null,
         h('button', { class: 'link small', type: 'button', onclick: async () => { if (await ask('Remove this?', h('p', null, 'It stays in your history log as removed.'), 'Remove', 'Keep')) { Store.update((st) => { const t = st.queue.find((x) => x.id === q.id); if (t) t.status = 'withdrawn'; }, 'queue-withdrawn', q.form || q.gloss, q.id); route(); } } }, 'Remove'))));
-      put(root, h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { class: 'btn', type: 'button', onclick: sendFlow }, 'Send ' + queued.length + ' to the project'),
-        signedIn() ? h('span', { class: 'small ok' }, 'Signed in' + (S().auth.login ? ' as ' + S().auth.login : '')) : h('button', { class: 'btn ghost small', type: 'button', onclick: signInSheet }, 'Sign in with GitHub')));
+      put(root, h('div', { class: 'stack', style: 'margin-top:16px' }, h('button', { class: 'btn block', type: 'button', onclick: sendFlow }, 'Send ' + queued.length + ' to the project'),
+        signedIn() ? h('p', { class: 'small ok' }, 'Signed in' + (S().auth.login ? ' as ' + S().auth.login : '')) : h('button', { class: 'btn block tint', type: 'button', onclick: signInSheet }, 'Sign in with GitHub')));
     }
     if (want.length) {
-      put(root, h('h2', { style: 'margin-top:26px' }, 'Words we still need'), h('p', { class: 'muted small' }, 'The project does not have these yet. Tap one to add how you say it.'));
+      put(root, h('div', { class: 'group-title' }, 'Words we still need'));
       const box = h('div', { class: 'chips' });
       want.slice(0, 30).forEach((g) => box.append(h('a', { class: 'chip', href: '#/teach/new?gloss=' + encodeURIComponent(g.replace(/ \(.*\)$/, '')) + (/\(/.test(g) ? '&ctx=' + encodeURIComponent(g.replace(/^.*\(|\)$/g, '')) : '') }, g)));
       put(root, box);
     }
-    if (sent.length) put(root, h('p', { class: 'muted small', style: 'margin-top:20px' }, sent.length + ' contribution' + (sent.length === 1 ? '' : 's') + ' sent so far. Thank you.'));
+    if (sent.length) put(root, h('p', { class: 'group-foot', style: 'margin-top:24px' }, sent.length + ' contribution' + (sent.length === 1 ? '' : 's') + ' sent so far. Thank you.'));
   }
 
   function teachNew(root, qs) {
@@ -455,10 +535,10 @@
     ipa.addEventListener('input', () => { if (!manual && ipaStatus.value === 'ai-drafted-unverified') ipaStatus.value = 'speaker-chosen-by-ear'; });
     const ipaBox = h('div', { hidden: action === 'report' },
       h('label', { class: 'f', for: 'f-ipa' }, 'Pronunciation in IPA', h('span', { class: 'f-hint' }, 'You do not need to know IPA. Open the keyboard, tap sounds to hear them, then tap Hear it to check the whole word.')), ipa,
-      h('div', { class: 'ipa-tools' },
+      h('div', { class: 'row', style: 'margin-top:8px' },
         h('button', { class: 'btn small', type: 'button', onclick: () => { openKeyboard(ipa); } }, 'IPA keyboard'),
-        h('button', { class: 'btn small ghost', type: 'button', onclick: () => { if (ipa.value.trim()) audio.play(ipa.value); else toast('Type or build some sounds first.'); } }, 'Hear it'),
-        h('button', { class: 'btn small ghost', type: 'button', onclick: () => {
+        h('button', { class: 'btn small tint', type: 'button', onclick: () => { if (ipa.value.trim()) audio.play(ipa.value); else toast('Type or build some sounds first.'); } }, 'Hear it'),
+        h('button', { class: 'btn small tint', type: 'button', onclick: () => {
           const g = DadiG2P.g2p(form.value || ''); if (!g.complete || !g.ipa) { toast('The spelling reader does not know some characters: ' + (g.unknown.join(' ') || 'empty spelling')); return; }
           ipa.value = g.ipa; manual = false; ipaStatus.value = 'ai-drafted-unverified'; audio.play(g.ipa); toast('A machine reading of your spelling. Adjust it until it sounds like you.');
         } }, 'Suggest from my spelling')),
@@ -466,9 +546,9 @@
     const conf = h('select', { class: 'input', id: 'f-conf' }, h('option', { value: '' }, 'Not said'), h('option', { value: 'sure' }, 'I am sure'), h('option', { value: 'fairly' }, 'Fairly sure'), h('option', { value: 'unsure' }, 'Not sure'));
     const reg = h('select', { class: 'input', id: 'f-reg' }, h('option', { value: '' }, 'Not said'), h('option', { value: 'everyday' }, 'Everyday speech'), h('option', { value: 'respectful' }, 'Respectful, for elders or strangers'), h('option', { value: 'dictionary' }, 'Dictionary or formal form'), h('option', { value: 'friends' }, 'With friends'));
     const note = h('textarea', { class: 'input', id: 'f-note', placeholder: action === 'report' ? 'What is wrong, and what do you say instead?' : 'Where it is used, who says it, anything useful (optional).' }, f.note);
-    const kindSeg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Kind' });
+    const kindSeg = h('div', { class: 'segc', role: 'group', 'aria-label': 'Kind' });
     ['word', 'sentence'].forEach((k) => kindSeg.append(h('button', { type: 'button', 'aria-pressed': String(f.kind === k), disabled: !!rel || null, onclick: (ev) => { f.kind = k; kindSeg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === ev.currentTarget))); } }, k === 'word' ? 'Word' : 'Sentence')));
-    const save = h('button', { class: 'btn block', type: 'button', style: 'margin-top:20px' }, 'Save on this device');
+    const save = h('button', { class: 'btn block', type: 'button', style: 'margin-top:24px' }, 'Save on this device');
     save.addEventListener('click', () => {
       err.textContent = '';
       const g = gloss.value.trim(), fm = form.value.trim(), nt = note.value.trim(), iv = ipa.value.trim();
@@ -482,10 +562,10 @@
       Store.update((st) => { st.queue.push(q); }, 'queue-add', action + ': ' + (fm || g), q.id);
       closeKeyboard(); toast('Saved on this device.'); nav('#/teach');
     });
-    put(root, h('h1', null, titles[action]),
+    put(root, h('h1', { class: 'title' }, titles[action]),
       rel ? h('p', { class: 'muted' }, action === 'report' ? 'About: ' : 'Existing entry: ', h('b', { class: 'ipa' }, (rel.spellings[0] || rel.form)), ' = ' + rel.gloss) : null,
       action === 'report' ? null : h('div', null, h('label', { class: 'f', for: 'f-gloss' }, 'What does it mean in English?'), gloss, !rel ? h('div', { style: 'margin-top:8px' }, kindSeg) : null),
-      action === 'report' || action === 'ipa' ? null : h('div', null, h('label', { class: 'f', for: 'f-form' }, 'How do you say it?', h('span', { class: 'f-hint' }, 'Any spelling is fine. Use Roman letters (Latin script), not Bangla script.')), form,
+      action === 'report' || action === 'ipa' ? null : h('div', null, h('label', { class: 'f', for: 'f-form' }, 'How do you say it?', h('span', { class: 'f-hint' }, 'Any spelling is fine. Use Roman (Latin) letters.')), form,
         h('label', { class: 'f' }, 'Other ways people say it'), varBox, h('button', { class: 'link small', type: 'button', onclick: () => addVar().focus() }, 'Add another way')),
       action === 'ipa' ? h('div', null, h('label', { class: 'f', for: 'f-form' }, 'Spelling'), form) : null,
       ipaBox,
@@ -504,7 +584,7 @@
     const cc0 = chk('p-cc0', 'I understand that what I send becomes public domain under CC0 1.0 if reviewers use it, and that this cannot be taken back.', p.cc0);
     const loc = h('input', { class: 'input', id: 'p-loc', value: p.locality, placeholder: 'For example: the town or area you learned it in', autocomplete: 'off' });
     const age = h('select', { class: 'input', id: 'p-age' }, AGE.map(([v, t]) => h('option', { value: v, selected: p.age === v }, t)));
-    const other = h('input', { class: 'input', id: 'p-other', value: p.otherLanguages, placeholder: 'For example: Bangla, English', autocomplete: 'off' });
+    const other = h('input', { class: 'input', id: 'p-other', value: p.otherLanguages, placeholder: 'For example: English, French', autocomplete: 'off' });
     const credit = h('select', { class: 'input', id: 'p-credit' }, h('option', { value: 'anonymous', selected: p.credit === 'anonymous' }, 'Anonymous'), h('option', { value: 'name', selected: p.credit === 'name' }, 'Use my name'), h('option', { value: 'id', selected: p.credit === 'id' }, 'A contributor ID only'));
     const cname = h('input', { class: 'input', id: 'p-cname', value: p.creditName, placeholder: 'Name to show', autocomplete: 'off' });
     const err = h('p', { class: 'err', role: 'alert' });
@@ -611,50 +691,114 @@
 
   function gateView() {
     main.textContent = '';
-    main.append(h('section', { class: 'hero' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }), h('div', null, h('h1', null, 'Welcome to Dadi'), h('p', null, 'Sign in with GitHub so your lessons and contributions go to the right place automatically.'))),
+    main.append(h('h1', { class: 'title' }, 'Welcome to Dadi'), h('p', { class: 'lede' }, 'Sign in with GitHub so your lessons and contributions go to the right place automatically.'),
       h('button', { class: 'btn block', type: 'button', onclick: signInSheet }, 'Sign in with GitHub'),
-      h('p', { class: 'small muted', style: 'margin-top:14px' }, 'No account yet? GitHub is free. ', h('button', { class: 'link', type: 'button', onclick: () => { try { sessionStorage.setItem('dadi.skipgate', '1'); } catch (e) { /* ignore */ } route(); } }, 'Not now')));
+      h('p', { class: 'small muted', style: 'margin-top:16px' }, 'No account yet? GitHub is free. ', h('button', { class: 'link', type: 'button', onclick: () => { try { sessionStorage.setItem('dadi.skipgate', '1'); } catch (e) { /* ignore */ } route(); } }, 'Not now')));
   }
 
   /* ---------- Me ---------- */
+  const goCell = (t, o) => h('button', { class: 'cell go', type: 'button', onclick: o.onclick }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t', style: o.danger ? 'color:var(--alert)' : '' }, t), o.s ? h('span', { class: 'cell-s' }, o.s) : null), o.end ? h('span', { class: 'cell-end' }, o.end) : null);
+  const actCell = (t, onclick, danger) => h('button', { class: 'cell', type: 'button', onclick }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t', style: 'color:' + (danger ? 'var(--alert)' : 'var(--accent)') }, t)));
+  const selCell = (label, id, opts, val, on) => { const s = h('select', { id, 'aria-label': label }, opts.map(([v, t]) => h('option', { value: v, selected: String(val) === String(v) }, t))); s.addEventListener('change', () => on(s.value)); return h('label', { class: 'cell', for: id }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, label)), s); };
+  const setting = (k, v, note) => Store.update((s2) => { s2.settings[k] = v; }, 'settings', note || (k + ' ' + v));
+  const ENGINES = [['auto', 'Automatic'], ['device', 'Device voice'], ['clear', 'Clear voice'], ['dadi', 'Dadi sound']];
+
+  function voiceSheet() {
+    let sh; const box = h('div');
+    function draw() {
+      const info = audio.engineInfo(), st = S().settings; box.textContent = '';
+      const dv = info.deviceVoices;
+      put(box, h('h2', null, 'Voice'),
+        h('p', { class: 'muted small' }, 'No recordings exist yet, so every voice here reads an approximation. Pick the one you find smoothest. Real recordings will replace them as speakers contribute.'),
+        h('div', { class: 'group', style: 'margin-top:16px' },
+          selCell('Word voice', 's-engine', ENGINES, st.engine || 'auto', (v) => { setting('engine', v); draw(); }),
+          selCell('Speed', 's-speed', [[0.8, 'Slower'], [1, 'Normal'], [1.2, 'Faster']], st.speed || 1, (v) => setting('speed', Number(v))),
+          selCell('Pitch', 's-pitch', [['low', 'Lower'], ['mid', 'Middle'], ['high', 'Higher']], st.pitch || 'mid', (v) => setting('pitch', v))),
+        h('p', { class: 'group-foot' }, 'Automatic uses your device voice if it has a suitable one, then the clear voice if you turned it on, then Dadi\'s own sound.'),
+        h('div', { class: 'group-title' }, 'Device voice'),
+        h('div', { class: 'group' }, dv.length
+          ? selCell('Voice', 's-dev', [['', 'Best match']].concat(dv.map((v) => [v.uri, v.name + ' (' + v.lang + ')'])), st.deviceVoice || '', (v) => setting('deviceVoice', v))
+          : h('div', { class: 'cellwrap small muted' }, 'This device has no suitable voice installed, so Dadi uses another voice.')),
+        h('p', { class: 'group-foot' }, 'Your device reads a sound-alike spelling of each word. Install more voices in your device settings and they appear here.'),
+        h('div', { class: 'group-title' }, 'Clear voice'),
+        h('div', { class: 'group' },
+          selCell('Voice', 's-clear', DadiEspeak.VOICES, st.clearVoice || 'f3', (v) => setting('clearVoice', v)),
+          h('label', { class: 'cell', for: 's-clearon' }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, 'Use automatically')), h('input', { type: 'checkbox', id: 's-clearon', checked: !!st.clearOn, onchange: (e) => setting('clearOn', e.target.checked) })),
+          actCell(st.clearReady ? 'Clear voice is saved on this device' : 'Download the clear voice (18 MB)', async () => {
+            if (st.clearReady) return; toast('Downloading...');
+            try { await audio.prepareClear(); setting('clearReady', true, 'clear voice ready'); toast('Clear voice saved. It works offline now.'); draw(); } catch (e) { toast(e.message); }
+          })),
+        h('p', { class: 'group-foot' }, 'Made with eSpeak NG, free software under the GPL. It runs on your device and works offline after the one-time download.'),
+        h('div', { class: 'stack', style: 'margin-top:24px' },
+          h('button', { class: 'btn block tint', type: 'button', onclick: async () => { const r = await audio.play('hana'); toast(r.ok ? 'Played with: ' + ({ device: 'your device voice', clear: 'the clear voice', dadi: 'Dadi\'s own sound' }[r.how] || 'a voice') + '.' : (r.reason || 'Could not play.')); } }, 'Hear a test word'),
+          h('button', { class: 'btn block', type: 'button', onclick: () => sh.close() }, 'Done')));
+    }
+    draw(); sh = sheet(box, { label: 'Voice' });
+  }
+
+  function aiSheet() {
+    let sh; const cfg = DadiAI.load(); const box = h('div');
+    function draw() {
+      box.textContent = ''; const k = DadiAI.KINDS[cfg.kind];
+      const field = (key, label, ph, type) => h('label', { class: 'cell', style: 'display:grid;grid-template-columns:1fr;gap:4px;padding:12px 16px' }, h('span', { class: 'cell-s' }, label), h('input', { class: 'input', style: 'padding:0;min-height:28px;background:transparent', type: type || 'text', value: cfg[key] || '', placeholder: ph || '', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', oninput: (e) => { cfg[key] = e.target.value; } }));
+      put(box, h('h2', null, 'Connect your AI'),
+        h('p', { class: 'muted small' }, 'Optional. Lets the translator and your own chatbot work with the project\'s words. The key stays in this browser, is never included in backups, and goes only to the address you choose. Its answers are always labelled unverified drafts.'),
+        h('div', { class: 'group', style: 'margin-top:16px' }, selCell('Service', 'ai-kind', Object.keys(DadiAI.KINDS).map((x) => [x, DadiAI.KINDS[x].label]), cfg.kind, (v) => { cfg.kind = v; if (!cfg.endpoint || Object.values(DadiAI.KINDS).some((x) => x.endpoint === cfg.endpoint)) cfg.endpoint = DadiAI.KINDS[v].endpoint || ''; draw(); })),
+        cfg.kind === 'copy' ? h('p', { class: 'group-foot' }, 'With no connection, the translator offers a ready-made prompt to paste into any chatbot. That works everywhere and needs no key.') :
+          h('div', { class: 'group', style: 'margin-top:12px' }, k.needs.includes('endpoint') ? field('endpoint', 'Address', k.endpoint) : null, field('model', 'Model name', 'for example: gpt-4o-mini'), k.needs.includes('key') ? field('key', 'API key', 'kept on this device only', 'password') : null),
+        h('div', { class: 'stack', style: 'margin-top:24px' },
+          h('button', { class: 'btn block', type: 'button', onclick: () => { DadiAI.save(cfg); toast('Saved on this device.'); sh.close(); } }, 'Save'),
+          cfg.kind !== 'copy' ? h('button', { class: 'btn block tint', type: 'button', onclick: async () => { DadiAI.save(cfg); if (!DadiAI.ready(cfg)) { toast('Fill in every field first.'); return; } toast('Testing...'); try { await DadiAI.ask(cfg, 'Reply with the single word: ready'); toast('Connected.'); } catch (e) { toast(e.message); } } }, 'Test the connection') : null,
+          h('button', { class: 'btn block danger', type: 'button', onclick: () => { DadiAI.forget(); toast('Removed from this device.'); sh.close(); } }, 'Remove from this device')));
+    }
+    draw(); sh = sheet(box, { label: 'Connect your AI' });
+  }
+  const profileSheet = () => { let sh; sh = sheet(h('div', null, h('h2', null, 'About you'), h('p', { class: 'muted small' }, 'Used when you send contributions. All optional except the two confirmations.'), profileForm(() => sh.close(), false)), { label: 'About you' }); };
+  function historySheet() {
+    const hist = Store.history().slice(-60).reverse();
+    sheet(h('div', null, h('h2', null, 'History on this device'), h('p', { class: 'muted small' }, 'Every change is recorded. Newest first.'), hist.length ? h('div', { class: 'group', style: 'margin-top:12px' }, hist.map((e) => h('div', { class: 'cellwrap small' }, h('b', null, e.type), e.detail ? ' ' + e.detail : '', h('div', { class: 'muted' }, when(e.t))))) : h('p', { class: 'muted' }, 'Nothing yet.')), { label: 'History' });
+  }
   function meView(root) {
-    const st = S();
-    const acct = signedIn()
-      ? h('div', null, h('p', { class: 'ok' }, 'Signed in' + (st.auth.login ? ' as ' + st.auth.login : '') + '.'), h('button', { class: 'btn ghost small', type: 'button', onclick: () => { Store.update((s2) => { s2.auth = null; }, 'signout', 'signed out'); route(); } }, 'Sign out'))
-      : h('div', null, h('p', { class: 'muted' }, 'Not signed in. You can learn and draft contributions without signing in.'), h('button', { class: 'btn small', type: 'button', onclick: signInSheet }, 'Sign in with GitHub'));
-    const sel = (id, opts, val, on) => { const s = h('select', { class: 'input', id }, opts.map(([v, t]) => h('option', { value: v, selected: String(val) === String(v) }, t))); s.addEventListener('change', () => on(s.value)); return s; };
-    const hist = Store.history().slice(-30).reverse();
+    const st = S(); const eng = audio.engineInfo();
     const file = h('input', { type: 'file', accept: 'application/json,.json', hidden: true });
     file.addEventListener('change', async () => { const f = file.files[0]; if (!f) return; const r = Store.importAll(await f.text()); toast(r.ok ? 'Backup merged.' : r.error); if (r.ok) route(); });
-    put(root, h('h1', null, 'Me'),
-      h('h2', null, 'GitHub'), acct,
-      h('h2', { style: 'margin-top:22px' }, 'About you'), h('p', { class: 'muted small' }, 'Used when you send contributions. All of it is optional except the two confirmations.'), profileForm(null, false),
-      h('h2', { style: 'margin-top:26px' }, 'Sound and display'),
-      h('label', { class: 'f', for: 's-pitch' }, 'Voice pitch'), sel('s-pitch', [['low', 'Lower'], ['mid', 'Middle'], ['high', 'Higher']], st.settings.pitch, (v) => Store.update((s2) => { s2.settings.pitch = v; }, 'settings', 'pitch ' + v)),
-      h('label', { class: 'f', for: 's-speed' }, 'Speed'), sel('s-speed', [[0.8, 'Slower'], [1, 'Normal'], [1.2, 'Faster']], st.settings.speed, (v) => Store.update((s2) => { s2.settings.speed = Number(v); }, 'settings', 'speed ' + v)),
-      h('label', { class: 'f', for: 's-ipa' }, 'Show IPA in lessons'), sel('s-ipa', [['1', 'Yes'], ['0', 'No']], st.settings.showIPA ? '1' : '0', (v) => Store.update((s2) => { s2.settings.showIPA = v === '1'; }, 'settings', 'showIPA ' + v)),
-      h('label', { class: 'f', for: 's-engine' }, 'Word voice'), sel('s-engine', [['auto', 'Automatic: your device voice if it has one, otherwise Dadi\'s own sound'], ['device', 'Your device voice only'], ['dadi', 'Dadi\'s own sound only']], st.settings.engine || 'auto', (v) => Store.update((s2) => { s2.settings.engine = v; }, 'settings', 'engine ' + v)),
-      h('p', { class: 'muted small' }, (() => { const e = audio.engineInfo(); return e.device ? 'Device voice found: ' + e.deviceName + '. It reads a sound-alike of the word, so it is an approximation.' : 'No Bangla or Hindi voice found on this device, so Dadi\'s own sound is used.'; })()),
-      h('div', { class: 'row', style: 'margin-top:8px' }, h('button', { class: 'btn small ghost', type: 'button', onclick: lookSheet }, 'Brightness and colours'), h('button', { class: 'btn small ghost', type: 'button', onclick: () => tour(0) }, 'Show the tour again')),
-      h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { class: 'btn small ghost', type: 'button', onclick: async () => { const r = await audio.play('hana'); toast(r.ok ? (r.device ? 'Played with your device voice.' : 'Played with Dadi\'s own sound.') : (r.reason || 'Could not play.')); } }, 'Test the voice')),
-      h('h2', { style: 'margin-top:26px' }, 'Your data'), h('p', { class: 'muted small' }, Store.persistent ? 'Everything is saved on this device only, with two automatic backups. Nothing is sent unless you press Send.' : 'This browser blocked storage, so changes will be lost when you close the page. Export a backup before you leave.'),
-      h('div', { class: 'row' }, h('button', { class: 'btn small', type: 'button', onclick: () => { const blob = new Blob([Store.exportAll()], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dadi-backup-' + today() + '.json'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500); } }, 'Download a backup'),
-        h('button', { class: 'btn small ghost', type: 'button', onclick: () => file.click() }, 'Restore from a backup'), file,
-        h('button', { class: 'btn small ghost', type: 'button', onclick: () => refreshRepo() }, 'Update words from GitHub')),
-      h('details', { style: 'margin-top:14px' }, h('summary', null, 'History of changes on this device'), hist.length ? h('ul', { class: 'small' }, hist.map((e) => h('li', null, when(e.t) + ': ' + e.type + (e.detail ? ' (' + e.detail + ')' : '')))) : h('p', { class: 'muted small' }, 'Nothing yet.')),
-      h('div', { style: 'margin-top:16px' }, h('button', { class: 'link err', type: 'button', onclick: async () => { if (await ask('Delete everything on this device?', h('p', null, 'This removes progress, drafts and sign-in from this device. Contributions you already sent stay on GitHub. A backup file is the only way back.'), 'Delete', 'Keep')) { Store.wipe(); toast('Deleted.'); route(); } } }, 'Delete everything on this device')),
-      h('p', { style: 'margin-top:22px' }, h('a', { href: '#/about' }, 'About Dadi, credits and how the sounds are made')));
+    const aiOn = DadiAI.ready(DadiAI.load());
+    put(root, h('h1', { class: 'title' }, 'Me'), h('p', { class: 'lede' }, 'Everything here stays on this device.'),
+      h('div', { class: 'group' },
+        goCell('GitHub', { end: signedIn() ? (st.auth.login || 'Signed in') : 'Not signed in', onclick: () => { if (signedIn()) ask('Sign out?', h('p', null, 'Your drafts stay on this device.'), 'Sign out', 'Stay signed in').then((y) => { if (y) { Store.update((s2) => { s2.auth = null; }, 'signout', 'signed out'); route(); } }); else signInSheet(); } }),
+        goCell('About you', { onclick: profileSheet })),
+      h('p', { class: 'group-foot' }, 'You can learn and draft contributions without signing in. Signing in lets you send in one tap.'),
+      h('div', { class: 'group-title' }, 'Sound and look'),
+      h('div', { class: 'group' },
+        goCell('Voice', { end: (ENGINES.find((x) => x[0] === (st.settings.engine || 'auto')) || ENGINES[0])[1], s: eng.device ? 'Device voice found' : null, onclick: voiceSheet }),
+        goCell('Appearance', { end: ((st.settings.theme || 'system') === 'system' ? 'Auto' : st.settings.theme === 'dark' ? 'Dark' : 'Light') + ', ' + (SCHEMES.find((x) => x[0] === (st.settings.scheme || 'indigo')) || SCHEMES[0])[1], onclick: lookSheet }),
+        h('label', { class: 'cell', for: 's-ipa' }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, 'Show IPA in lessons')), h('input', { type: 'checkbox', id: 's-ipa', checked: !!st.settings.showIPA, onchange: (e) => setting('showIPA', e.target.checked, 'showIPA ' + e.target.checked) }))),
+      h('div', { class: 'group-title' }, 'Tools'),
+      h('div', { class: 'group' }, goCell('Connect your AI', { end: aiOn ? 'On' : 'Off', onclick: aiSheet })),
+      h('div', { class: 'group-title' }, 'Your data'),
+      h('div', { class: 'group' },
+        actCell('Download a backup', () => { const blob = new Blob([Store.exportAll()], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dadi-backup-' + today() + '.json'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500); }),
+        actCell('Restore from a backup', () => file.click()), file,
+        actCell('Update words from GitHub', () => refreshRepo()),
+        goCell('History of changes', { onclick: historySheet }),
+        actCell('Delete everything on this device', async () => { if (await ask('Delete everything on this device?', h('p', null, 'This removes progress, drafts, sign-in and your AI key from this device. Contributions you already sent stay on GitHub. A backup file is the only way back.'), 'Delete', 'Keep')) { DadiAI.forget(); Store.wipe(); toast('Deleted.'); route(); } }, true)),
+      h('p', { class: 'group-foot' }, Store.persistent ? 'Saved on this device with two automatic backups. Nothing is sent unless you press Send.' : 'This browser blocked storage, so changes are lost when you close the page. Download a backup before you leave.'),
+      h('div', { class: 'group-title' }, 'Help'),
+      h('div', { class: 'group' },
+        goCell('Show the tour again', { onclick: () => tour(0) }),
+        goCell('Report a problem with content', { onclick: () => reportSheet({ kind: 'content', id: '', label: '' }) }),
+        goCell('About Dadi', { onclick: () => nav('#/about') })));
   }
   const applyTheme = () => applyLook();
 
   function aboutView(root) {
-    put(root, h('h1', null, 'About Dadi'),
+    put(root, h('h1', { class: 'title' }, 'About Dadi'),
       h('div', { class: 'credit' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }), h('p', null, 'Dadi is the learning and contribution tool for siṭaiṅga, the Chittagonian language, made for the Sitainge project. Created by ', h('b', null, CFG.creator), '.')),
       h('p', null, 'The name is the word many Chittagonians use for grandmother, because most people of this generation learned the language from theirs.'),
       h('h2', null, 'How it works'),
       h('p', null, 'Words and sentences come from the project\'s public files on GitHub (', h('a', { href: CFG.repoUrl, target: '_blank', rel: 'noopener noreferrer' }, CFG.repo), '). Contributions go back as reviewable issues. Nothing is accepted automatically, and everything starts as unverified.'),
       h('h2', null, 'How the sounds are made'),
-      h('p', null, 'There are no recordings yet. Dadi has a small speech synthesizer built into the app. It turns IPA into sound with rules from textbook acoustics, so every symbol on the IPA keyboard can be heard, offline. When an entry has no IPA, Dadi reads the spelling like Latin letters and says so. These sounds approximate speech. They are good for telling sounds apart and for checking what you typed, but they are not a speaker. Real recordings will replace them as speakers contribute.'),
+      h('p', null, 'There are no recordings yet. Words can be read three ways: by your device\'s own voice, by an optional clear voice (eSpeak NG, free software) that runs on your device, or by Dadi\'s small built-in synthesizer, which also makes the sound of every key on the IPA keyboard. All three read an approximation, so they are good for telling sounds apart and checking what you typed, but they are not a speaker. Real recordings will replace them as speakers contribute.'),
       h('h2', null, 'How lessons work'),
       h('p', null, 'Each lesson has you listen, choose the meaning, then answer before you see the answer. Words you miss come back a few cards later in the same session, then on a schedule from FSRS, the open spaced-repetition scheduler used in Anki (MIT licence, by the Open Spaced Repetition project).'),
       h('h2', null, 'Licence and privacy'),
@@ -664,9 +808,7 @@
 
   /* ---------- start ---------- */
   async function boot() {
-    document.getElementById('mark').innerHTML = Art.dadi();
     applyLook();
-    const lk = document.getElementById('look'); if (lk) lk.addEventListener('click', lookSheet);
     const net = document.getElementById('net'); const upd = () => { net.textContent = navigator.onLine ? '' : 'Offline'; }; upd(); window.addEventListener('online', upd); window.addEventListener('offline', upd);
     if (Store.restoredFrom) toast('Your saved data was repaired from ' + Store.restoredFrom + '.');
     const cached = Store.cachedRepo();
@@ -674,6 +816,7 @@
     else { const seed = await loadSeed(); if (seed && seed.entries) { setEntries(seed.entries); repoInfo = { from: 'seed', at: seed.builtAt, errors: [], err: null }; } }
     route();
     if (!S().settings.tourDone) setTimeout(() => tour(0), 600);
+    if (window.ResizeObserver) new ResizeObserver(() => { document.documentElement.style.setProperty('--kb-h', (dock.hidden ? 0 : dock.offsetHeight) + 'px'); }).observe(dock);
     if (navigator.onLine) refreshRepo({ quiet: true });
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { /* works without it */ });
   }

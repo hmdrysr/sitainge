@@ -1,8 +1,8 @@
 {
-  "name": "Sitainge: Contribute",
-  "short_name": "Sitainge",
-  "description": "Share how you speak Sitainge (Chittagonian). Works offline; nothing is sent until you choose.",
-  "start_url": "./",
+  "name": "siṭaiṅga: Contribute",
+  "short_name": "siṭaiṅga",
+  "description": "Share how you speak siṭaiṅga (Chittagonian). Works offline; nothing is sent until you choose.",
+  "start_url": "./contribute.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -3,12 +3,17 @@
 ## What the sound engine is
 `js/synth.js` is a small source-filter (formant) synthesizer written for this project: a voiced pulse source and noise, three or four resonators set from vowel F1-F3 values, a nasal zero/pole pair, a frication band, and trill modulation. It renders at 22,050 Hz and can export WAV. It runs in the browser and in Node.
 
-Why not eSpeak-NG: it is GPL (the repository is CC0), it is large to ship, and it cannot be tapped per symbol with predictable results. The choice is recorded as D-021. It can be revisited if licensing and size allow.
+eSpeak NG is GPL and the repository is CC0, so it is not part of the dedication. It is shipped only as an optional, separately licensed component (D-033): `vendor/espeak-ng/` with its own NOTICE.md. Delete that folder and `js/espeak.js` to remove it. It is not used for single keyboard keys because they need predictable results; those always use `synth.js`. It can be revisited if licensing and size allow.
 
 ## Which voice plays a word
-Setting "Word voice": automatic (default), device voice only, or Dadi's own sound only. Automatic uses the device's text-to-speech when it has a Bangla or Hindi voice, and Dadi's synthesizer otherwise. Device voices read spelling, not IPA, so `native-tts.js` first writes the IPA as a sound-alike in Bangla script or Devanagari. That text is used only to drive the voice; it is never shown or stored. It is an approximation, and no device voice knows Chittagonian. Keyboard keys always use Dadi's synthesizer, because a single symbol cannot be spoken reliably by a device voice and the delay would make typing feel slow.
+Me > Voice has a Word voice setting: **Automatic**, **Device voice**, **Clear voice** or **Dadi sound**.
+- *Device voice*: the browser's own text-to-speech reads a sound-alike script made from the IPA (`native-tts.js`). The person may pick a specific installed voice. The script is only used to drive the voice and is never shown.
+- *Clear voice*: eSpeak NG in WebAssembly (`espeak.js`). One download (about 18 MB), then offline. Six voice variants. Output is resampled smoothly to the device rate (Catmull-Rom).
+- *Dadi sound*: `synth.js`, rendered at the device's own sample rate so the browser never resamples it.
+- *Automatic*: device voice if one is suitable, then the clear voice if the person turned it on, then Dadi sound.
+Single keyboard keys always use Dadi sound.
 
-The synthesizer was changed on 2026-10-08 to remove a hiss (random pitch wobble) and a click on nasal sounds (a filter that kept stale state), and a gentle low-pass was added. Spectra and level checks are in `scripts/tests/dadi_unit_test.js` terms only: finite, in range. How it sounds still needs a listener.
+Jitter and hiss history (2026-10-08): random pitch noise, a nasal filter that kept stale state, 22.05 kHz buffers resampled by the browser, and coefficient steps every 24 samples were found and removed (coefficients now update every 2 samples; low-pass at 5.2 kHz). Nobody on the project can hear the output from the build environment, so the fix is checked with spectra and level measurements only. A native speaker's ear is the real test.
 
 ## Honest limits
 - It is a teaching aid, not a native voice. It sounds synthetic.

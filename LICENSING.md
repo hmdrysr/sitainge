@@ -20,6 +20,9 @@ Because CC0 is permanent, only material that its owner and speaker are content t
 - Recordings with consent status research-only, restricted, private, withdrawn or permission pending are **not** deposited here. They stay in the independent long-term archive under that archive's terms. Those terms are separate from this repository's licence.
 - A contributor who is unsure should choose "discuss first" on the submission form, and nothing will be published.
 
+## Third-party software shipped with the site
+`website/dadi/vendor/espeak-ng/` is eSpeak NG (GPL-3.0-or-later), compiled to WebAssembly, with its licence and notice beside it. It is an optional voice, separate from the CC0 material, and can be removed by deleting that folder and `website/dadi/js/espeak.js` (D-033). `website/dadi/js/fsrs.umd.js` is ts-fsrs (MIT). Map outlines come from geoBoundaries and OCHA ROAP (CC BY 3.0 IGO), credited on the landing page. Photos are Wikimedia Commons files under their own licences, hotlinked and credited, not copied into the repository.
+
 ## Contributor dedication
 By submitting a contribution through the public forms, the contributor confirms that they wrote or recorded it (or have the right to share it) and dedicate it to the public domain under CC0 1.0. This replaces the earlier plan for per-material licences. A plain-language contributor agreement must still be drafted (what is submitted, how it may be used, withdrawal limits, archival preservation, AI use).
 

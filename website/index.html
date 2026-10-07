@@ -2,33 +2,161 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
-<meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#0b5d4b">
-<title>Sitainge: share how you speak</title>
-<meta name="description" content="Help document Sitainge (Chittagonian). Works offline. Nothing is sent until you choose.">
-<link rel="manifest" href="manifest.webmanifest">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https://upload.wikimedia.org; connect-src 'self'; frame-src https://www.youtube-nocookie.com; manifest-src 'self'; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>siṭaiṅga: the Chittagonian language project</title>
+<meta name="description" content="siṭaiṅga is the Chittagonian language (ISO 639-3 ctg), spoken by 13 million people or more. An open project to document it, check it with speakers, and teach it with Dadi, a free app.">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand"><strong>Sitainge</strong> <span>contribution page</span></div>
-  <div class="top-actions">
-    <span id="net" class="net" aria-live="polite"></span>
-    <button id="menu-clear" class="link" type="button">Delete my draft</button>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="#top" aria-label="siṭaiṅga, home">siṭaiṅga</a>
+    <nav class="links" aria-label="Sections">
+      <a href="#why">Why</a><a href="#dadi">Dadi</a><a href="#contribute">Contribute</a><a href="#place">The place</a><a href="#watch">Watch</a>
+    </nav>
+    <a class="pill" href="dadi/">Open Dadi</a>
   </div>
 </header>
-<main id="app" tabindex="-1"><noscript><p>This page needs JavaScript to run. Nothing is sent anywhere. Alternatively, use the chatbot interview in the project repository.</p></noscript></main>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-in">
+      <h1>siṭaiṅga</h1>
+      <p class="lead">The Chittagonian language, kept by the people who speak it.</p>
+      <p class="sub">Millions of people speak it every day, and very little of it is written down. This open project gathers it, checks it with speakers, and teaches it back.</p>
+      <div class="actions">
+        <a class="btn primary" href="dadi/">Open Dadi</a>
+        <a class="btn" href="dadi/#/teach">Add what you know</a>
+      </div>
+      <ul class="facts" aria-label="Quick facts">
+        <li><b>ctg</b><span>ISO 639-3 code</span></li>
+        <li><b>13 million+</b><span>speakers</span></li>
+        <li><b>11</b><span>districts in Chittagong Division</span></li>
+        <li><b>800s</b><span>port on record since</span></li>
+      </ul>
+    </div>
+    <svg class="hero-art" viewBox="0 0 800 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+      <circle cx="610" cy="70" r="34" class="a1"/>
+      <path class="a2" d="M0 150 Q90 80 190 128 T380 110 T580 135 T800 100 V220 H0Z"/>
+      <path class="a3" d="M0 175 Q120 120 240 160 T470 150 T800 140 V220 H0Z"/>
+      <path class="a4" d="M0 200 Q200 170 400 192 T800 180 V220 H0Z"/>
+      <g class="a5"><path d="M120 178h70l-8 12h-54z"/><path d="M135 178v-26h6v26zM162 178v-20h6v20z"/><path d="M135 152h40v4h-40z"/></g>
+      <g class="a5"><path d="M470 192h86l-8 10h-70z"/><path d="M500 192v-14h30v14z"/></g>
+    </svg>
+  </section>
+
+  <section id="why" class="sec">
+    <div class="wrap narrow">
+      <h2>Why this exists</h2>
+      <p>siṭaiṅga is a living language with no standard spelling and almost no teaching materials. Most people who speak it learned it from their grandmothers. When families move and homes change, that chain gets thinner.</p>
+      <p>This project does not replace anyone's way of speaking. It writes down what speakers say, keeps every spelling side by side, and records who said it and how sure we are. Nothing is called correct until speakers and reviewers have checked it.</p>
+      <p>Everything is public domain (CC0), so schools, researchers, writers and app builders can use it freely.</p>
+    </div>
+  </section>
+
+  <section id="dadi" class="sec alt">
+    <div class="wrap">
+      <h2>Dadi, the app</h2>
+      <p class="lede">Named for the word most Chittagonians use for grandmother. Free, works offline, nothing to sign up for.</p>
+      <div class="cards">
+        <article class="card"><h3>Learn</h3><p>Short lessons: listen, repeat, then answer before the reveal. Words you miss come back sooner.</p></article>
+        <article class="card"><h3>Type with sounds</h3><p>An on-screen keyboard with every IPA symbol. Each key says its sound, so you can write a word without knowing IPA.</p></article>
+        <article class="card"><h3>Translate</h3><p>Turn text or a whole web page into siṭaiṅga, using only words the project holds. Anything it does not know stays in English.</p></article>
+        <article class="card"><h3>Teach</h3><p>Add a word, another way people say it, or a fix. It goes to the project's public files as an unverified lead.</p></article>
+      </div>
+      <ol class="steps">
+        <li><b>Open Dadi.</b> On a phone, use "Add to Home Screen" to install it like any app.</li>
+        <li><b>Practise a few words a day.</b> The first lesson takes about three minutes.</li>
+        <li><b>Say it your way.</b> If a word is different where you come from, tell Dadi. That is how the dictionary improves.</li>
+      </ol>
+      <p><a class="btn primary" href="dadi/">Open Dadi</a></p>
+    </div>
+  </section>
+
+  <section id="contribute" class="sec">
+    <div class="wrap">
+      <h2>How to contribute</h2>
+      <p class="lede">You do not need to be a linguist. Pick what fits you.</p>
+      <div class="cards three">
+        <article class="card"><h3>Speak</h3><p>Add words and sentences in Dadi, in any spelling you would use with a friend. There is no wrong spelling.</p></article>
+        <article class="card"><h3>Check</h3><p>Tell us when an entry is wrong, or when you say it differently. Speakers from every area are needed.</p></article>
+        <article class="card"><h3>Be interviewed by an AI</h3><p>Use any chatbot with the project's interview prompt. It asks, you answer, and you send the result.</p></article>
+        <article class="card"><h3>Lend some AI time</h3><p>Spare tokens on your own AI account can do careful, checked work for the project, in chunks that never get wasted.</p></article>
+        <article class="card"><h3>Watch and vet</h3><p>Moderators review learning videos and photos, so learners only see good material.</p></article>
+        <article class="card"><h3>Build</h3><p>The code, data and notes are open. A hand-off guide explains how everything works.</p></article>
+      </div>
+      <p class="links-row"><a href="https://github.com/hmdrysr/sitainge/blob/main/CONTRIBUTING.md">Contributor guide</a><a href="https://github.com/hmdrysr/sitainge/blob/main/docs/contribute/ai-tokens.md">Contributing with AI</a><a href="contribute.html">Contribution form</a><a href="https://github.com/hmdrysr/sitainge">Project on GitHub</a></p>
+    </div>
+  </section>
+
+  <section id="keep" class="sec alt">
+    <div class="wrap narrow">
+      <h2>How it is kept, and how it moves forward</h2>
+      <h3>Kept</h3>
+      <p>Every record is stored in open files with its full history, so nothing is lost or quietly changed. Each entry carries an evidence level and a note on who supplied it. Backups are routine, and withdrawn contributions are handled under written rules.</p>
+      <h3>Moving forward</h3>
+      <p>Records start as unverified leads. Speakers and reviewers move them up the evidence levels. Recordings, with separate consent, will replace machine voices. Two written forms are being developed side by side: an everyday form that anyone can type, and a formal form in IPA for documents.</p>
+      <p>AI helps with chores such as formatting and cross-checking, and its output is never treated as evidence.</p>
+    </div>
+  </section>
+
+  <section id="place" class="sec">
+    <div class="wrap">
+      <h2>The place</h2>
+      <p class="lede">siṭaiṅga is spoken across Chittagong Division, in the south-east of Bangladesh. Tap a district.</p>
+      <div class="mapgrid">
+        <figure class="map-fig">
+          <svg id="map" role="group" aria-label="Map of Chittagong Division. Each district is a button."></svg>
+          <figcaption id="map-credit" class="small"></figcaption>
+        </figure>
+        <div class="panel" id="panel" aria-live="polite"></div>
+      </div>
+      <div class="chips" id="district-chips" role="group" aria-label="Districts"></div>
+
+      <div class="grid2">
+        <div>
+          <h3>A short history</h3>
+          <ol class="timeline" id="timeline"></ol>
+        </div>
+        <div>
+          <h3>How the region is governed</h3>
+          <div id="gov"></div>
+        </div>
+      </div>
+
+      <h3>Good things to know</h3>
+      <ul class="plain" id="facts"></ul>
+
+      <div id="gallery-wrap" hidden>
+        <h3>Places</h3>
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="watch" class="sec alt">
+    <div class="wrap">
+      <h2>Watch and listen</h2>
+      <p class="lede">Native speakers explaining and teaching. Videos load from YouTube only when you press play, and a moderator vets this list.</p>
+      <div class="videos" id="videos"></div>
+      <p class="small">See something poor or wrong? Use "Report" on the video. Moderators are listed in the guide in <code>docs/contribute/moderators.md</code>.</p>
+    </div>
+  </section>
+</main>
+
 <footer class="foot">
-  <p>Nothing leaves your device until you choose to share. No sign-up, no tracking, no cookies. Everything you give is reviewed by people before it is used, and nothing is accepted automatically.</p>
-  <p><a href="https://github.com/hmdrysr/sitainge" rel="noopener noreferrer">Project on GitHub</a> · Public domain (CC0 1.0) if published</p>
+  <div class="wrap">
+    <p><b>siṭaiṅga</b> is the native name of the language. <b>Sitainge</b> is the name of this project, a widely used variant.</p>
+    <p>Created by <b>Hamid Yasir</b>. Public domain (CC0 1.0). <a href="https://github.com/hmdrysr/sitainge">GitHub</a> · <a href="https://github.com/hmdrysr/sitainge/blob/main/PRIVACY.md">Privacy</a> · <a href="https://github.com/hmdrysr/sitainge/blob/main/ETHICS.md">Ethics</a></p>
+    <p class="small" id="credits">Facts checked 2026-10-08 from the sources linked on this page. Figures that sources disagree on are given as ranges.</p>
+  </div>
 </footer>
-<script src="config.js"></script>
-<script src="items.js"></script>
-<script src="core.js"></script>
-<script src="zip.js"></script>
-<script src="app.js"></script>
+<noscript><p class="wrap">The map, history and videos need JavaScript. Everything else on this page works without it.</p></noscript>
+<script src="site.js"></script>
 </body>
 </html>

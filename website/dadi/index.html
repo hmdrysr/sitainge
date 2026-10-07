@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src blob:; connect-src 'self' https://api.github.com https://raw.githubusercontent.com https://*.workers.dev; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://upload.wikimedia.org; media-src blob:; frame-src https://www.youtube-nocookie.com; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#1f2a6b">
+<meta name="theme-color" content="#f2f2f7">
 <title>Dadi: learn siṭaiṅga</title>
 <meta name="description" content="Learn siṭaiṅga, the Chittagonian language, from words people have shared, hear every sound, and teach what you know. Works offline.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -14,19 +14,13 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div class="mark" id="mark"></div>
-  <div class="name">Dadi</div>
-  <div class="sub"><span id="net" class="net" aria-live="polite"></span><br>siṭaiṅga · Chittagonian language</div>
-  <button id="look" class="lookbtn" type="button" aria-label="Brightness and colours"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 1.5-2-.6-1.2.2-2.5 1.6-2.5H17a4 4 0 0 0 4-4C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10" cy="7.5" r="1.2"/><circle cx="14.5" cy="7.5" r="1.2"/></svg></button>
-  <div class="stitch-edge"></div>
-</header>
+<div id="net" class="net" aria-live="polite"></div>
 <main id="app" tabindex="-1"><noscript><p>Dadi needs JavaScript to run. Nothing is sent anywhere. You can also read the project at github.com/hmdrysr/sitainge.</p></noscript></main>
 <nav class="tabs" aria-label="Main">
   <a href="#/learn" data-tab="learn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6c4-2 7-2 9 0 2-2 5-2 9 0v13c-4-2-7-2-9 0-2-2-5-2-9 0z"/><path d="M12 6v13"/></svg>Learn</a>
   <a href="#/words" data-tab="words"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l5 5"/></svg>Words</a>
-  <a href="#/type" data-tab="type"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M7 14h10"/></svg>Type</a>
-  <a href="#/teach" data-tab="teach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l3-1L19 7l-2-2L5 17z"/><path d="M15 7l2 2"/></svg>Teach</a>
+  <a href="#/write" data-tab="write"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M7 14h10"/></svg>Write</a>
+  <a href="#/teach" data-tab="teach"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>Teach</a>
   <a href="#/me" data-tab="me"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-5 4-8 8-8s8 3 8 8"/></svg>Me</a>
 </nav>
 <div id="layer"></div>
@@ -37,6 +31,7 @@
 <script src="js/ipa-data.js"></script>
 <script src="js/synth.js"></script>
 <script src="js/native-tts.js"></script>
+<script src="js/espeak.js"></script>
 <script src="js/g2p.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/keyboard.js"></script>
@@ -44,6 +39,8 @@
 <script src="js/srs.js"></script>
 <script src="js/store.js"></script>
 <script src="js/data.js"></script>
+<script src="js/translate.js"></script>
+<script src="js/ai.js"></script>
 <script src="js/github.js"></script>
 <script src="js/submit.js"></script>
 <script src="js/art.js"></script>

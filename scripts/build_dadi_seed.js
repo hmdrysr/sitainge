@@ -17,4 +17,6 @@ for (const f of files) {
 const out = { builtAt: new Date().toISOString(), files, entries };
 fs.mkdirSync(path.join(root, 'website/dadi/data'), { recursive: true });
 fs.writeFileSync(path.join(root, 'website/dadi/data/seed.json'), JSON.stringify(out));
+const T = require('../website/dadi/js/translate.js');
+fs.writeFileSync(path.join(root, 'website/dadi/data/glossary.json'), JSON.stringify(T.makeGlossary(entries)));
 console.log('seed: ' + entries.length + ' entries from ' + files.length + ' files' + (problems.length ? '; ' + problems.length + ' problems: ' + problems.join(' | ') : ''));

@@ -72,11 +72,14 @@
 
   /* ---- voice choice ---- */
   function voices() { try { return root.speechSynthesis ? root.speechSynthesis.getVoices() : []; } catch (e) { return []; } }
-  function pick(prefer) {
-    const vs = voices(); const by = (p) => vs.filter((v) => (v.lang || '').toLowerCase().replace('_', '-').startsWith(p));
-    const order = prefer === 'hi' ? ['hi', 'bn'] : ['bn', 'hi'];
-    for (const p of order) { const m = by(p); if (m.length) { const best = m.find((v) => v.localService) || m[0]; return { voice: best, script: p === 'bn' ? 'bn' : 'dev' }; } }
-    return null;
+  const norm = (v) => (v.lang || '').toLowerCase().replace('_', '-');
+  const usable = () => voices().filter((v) => /^(bn|hi)\b/.test(norm(v)) || /^(bn|hi)-/.test(norm(v)));
+  const score = (v) => (/natural|neural|premium|enhanced|siri|google|online/i.test(v.name) ? 3 : 0) + (v.localService ? 1 : 0) + (/^bn/.test(norm(v)) ? 2 : 0);
+  function list() { return usable().sort((a, b) => score(b) - score(a)).map((v) => ({ uri: v.voiceURI, name: v.name, lang: v.lang })); }
+  function pick(prefer, uri) {
+    const us = usable().sort((a, b) => score(b) - score(a)); if (!us.length) return null;
+    const v = (uri && us.find((x) => x.voiceURI === uri)) || (prefer === 'hi' ? us.find((x) => /^hi/.test(norm(x))) : null) || us[0];
+    return { voice: v, script: /^bn/.test(norm(v)) ? 'bn' : 'dev' };
   }
   const supported = () => !!(root.speechSynthesis && root.SpeechSynthesisUtterance);
   function available() { return supported() && !!pick(); }
@@ -85,8 +88,8 @@
   function speak(ipa, o) {
     o = o || {};
     return new Promise((resolve) => {
-      const p = supported() && pick(o.prefer);
-      if (!p) { resolve({ ok: false, reason: 'No Bangla or Hindi voice on this device.' }); return; }
+      const p = supported() && pick(o.prefer, o.uri);
+      if (!p) { resolve({ ok: false, reason: 'No matching voice on this device.' }); return; }
       const text = toIndic(ipa, p.script); if (!text) { resolve({ ok: false, reason: 'Nothing to say.' }); return; }
       try {
         root.speechSynthesis.cancel();
@@ -101,6 +104,6 @@
   }
   function stop() { try { if (root.speechSynthesis) root.speechSynthesis.cancel(); } catch (e) { /* nothing */ } }
 
-  const api = { toIndic, tokens, available, supported, describe, speak, stop, pick };
+  const api = { list, toIndic, tokens, available, supported, describe, speak, stop, pick };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.DadiNativeTTS = api;
 })(typeof self !== 'undefined' ? self : this);

@@ -1,5 +1,5 @@
 # OPTIONAL. Not active until you paste it as .github/workflows/dadi-ingest.yml (Actions > New workflow > set up yourself).
-# One-time: Settings > Actions > General > Workflow permissions > tick "Allow GitHub Actions to create and approve pull requests".
+# One-time: Settings > Actions > General > Workflow permissions > check "Allow GitHub Actions to create and approve pull requests".
 # Use: Actions > "Dadi ingest" > Run workflow > issue number + speaker id (e.g. CTG-SPK-00007).
 # It reads a contribution issue created by Dadi, converts it to RAW records with scripts/ingest_interview.py,
 # validates, and opens a pull request. It never accepts anything and never merges. A steward still reviews.

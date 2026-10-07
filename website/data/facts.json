@@ -1,0 +1,302 @@
+{
+ "language": {
+  "name": "siṭaiṅga",
+  "english": "Chittagonian",
+  "iso_639_3": "ctg",
+  "glottocode": "chit1275",
+  "speakers_text": "13 million or more",
+  "speakers_note": "Estimates run from 13 million (2006) to 16 million (2007); the sources do not agree, so the project says \"13 million or more\".",
+  "speakers_sources": [
+   "https://en.wikipedia.org/wiki/Chittagonian_language",
+   "https://www.omniglot.com/writing/chittagonian.htm",
+   "https://www.tbsnews.net/node/373636"
+  ],
+  "status": "Not endangered; used for everyday communication, and on TV, radio and in songs.",
+  "status_source": "https://glottolog.org/resource/languoid/iso/ctg"
+ },
+ "city": {
+  "name_english": "Chittagong",
+  "population_city_2022": 3230507,
+  "population_district_2022": 9169464,
+  "source": "https://en.wikipedia.org/wiki/Chittagong"
+ },
+ "timeline": [
+  {
+   "when": "Ancient",
+   "text": "The coast was part of the early kingdoms of Samatata and Harikela. Some accounts place the harbour on a 2nd-century map; that detail still needs a better source.",
+   "source": "https://en.wikipedia.org/wiki/History_of_Chittagong"
+  },
+  {
+   "when": "800s",
+   "text": "Arab traders were using the port by the 9th century and set up a trading post.",
+   "source": "https://en.wikipedia.org/wiki/Chittagong"
+  },
+  {
+   "when": "1340",
+   "text": "Sultan Fakhruddin Mubarak Shah of Sonargaon brought Chittagong into his sultanate. Sources use 1340 for the start of sultanate rule, not for the city's founding: the port was already trading for centuries.",
+   "source": "https://en.wikipedia.org/wiki/Chittagong"
+  },
+  {
+   "when": "1500s",
+   "text": "A Portuguese settlement was allowed in 1528, the first European enclave in the region, and the port was known as Porto Grande.",
+   "source": "https://en.wikipedia.org/wiki/History_of_Chittagong"
+  },
+  {
+   "when": "1666",
+   "text": "The Mughals took the city and called it Islamabad, a name still used for the old town.",
+   "source": "https://en.wikipedia.org/wiki/Chittagong"
+  },
+  {
+   "when": "1793 to 1947",
+   "text": "The East India Company took control in 1793. The railway arrived in 1865, and in 1928 the port was made a Major Port of British India.",
+   "source": "https://en.wikipedia.org/wiki/Chittagong"
+  },
+  {
+   "when": "2018",
+   "text": "On 2 April 2018 a government committee decided to change the official English spelling of the city and several other places. Many people in Chittagong objected: they spoke of lost tradition, confusion over certificates, and harm to trade with partners who know the port by its old name. The press reports of the time describe a committee decision and mention no public consultation or vote. This project writes Chittagong, the name its speakers use.",
+   "source": [
+    "https://www.dhakatribune.com/bangladesh/142256/mixed-reactions-as-govt-changes-english-spellings",
+    "https://www.dhakatribune.com/bangladesh/nation/142669/locals-from-5-districts-irked-over-english"
+   ]
+  },
+  {
+   "when": "Today",
+   "text": "Chittagong is the country's busiest seaport and its second city, home to millions of people who speak siṭaiṅga every day.",
+   "source": "https://en.wikipedia.org/wiki/Chittagong"
+  }
+ ],
+ "port": {
+  "text": "The Port of Chittagong handles over 70 percent of the country's export and import trade, about 3.1 million containers (TEUs) in 2020-21.",
+  "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
+ },
+ "districts": [
+  {
+   "name": "Brahmanbaria",
+   "hq": "Brahmanbaria",
+   "area_km2": 1881.2,
+   "population": 3306563,
+   "census": 2022,
+   "upazilas": 9,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Brahmanbaria_District"
+   ]
+  },
+  {
+   "name": "Cumilla",
+   "hq": "Cumilla",
+   "area_km2": 3146.3,
+   "population": 6212216,
+   "census": 2022,
+   "upazilas": 18,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Comilla_District"
+   ]
+  },
+  {
+   "name": "Chandpur",
+   "hq": "Chandpur",
+   "area_km2": 1645.32,
+   "population": 2635748,
+   "census": 2022,
+   "upazilas": null,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Chandpur_District"
+   ]
+  },
+  {
+   "name": "Lakshmipur",
+   "hq": "Lakshmipur",
+   "area_km2": 1440.39,
+   "population": 1938111,
+   "census": 2022,
+   "upazilas": null,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Lakshmipur_District"
+   ]
+  },
+  {
+   "name": "Noakhali",
+   "hq": "Maijdee (Noakhali Sadar)",
+   "area_km2": 3685.87,
+   "population": 3625252,
+   "census": 2022,
+   "upazilas": 9,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Noakhali_District"
+   ]
+  },
+  {
+   "name": "Feni",
+   "hq": "Feni",
+   "area_km2": 990.36,
+   "population": 1648896,
+   "census": 2022,
+   "upazilas": 6,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Feni_District"
+   ]
+  },
+  {
+   "name": "Khagrachhari",
+   "hq": "Khagrachhari",
+   "area_km2": 2749.16,
+   "population": 714119,
+   "census": 2022,
+   "upazilas": 9,
+   "note": null,
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Khagrachhari_District"
+   ]
+  },
+  {
+   "name": "Rangamati",
+   "hq": "Rangamati",
+   "area_km2": 6116.11,
+   "population": 647587,
+   "census": 2022,
+   "upazilas": 10,
+   "note": "Chittagonian is also used here for trade, alongside local languages.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Rangamati_Hill_District"
+   ]
+  },
+  {
+   "name": "Bandarban",
+   "hq": "Bandarban",
+   "area_km2": 4479.01,
+   "population": 481109,
+   "census": 2022,
+   "upazilas": 7,
+   "note": "Chittagonian is also used here for trade, alongside local languages.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Bandarban_District"
+   ]
+  },
+  {
+   "name": "Chittagong",
+   "hq": "Chittagong",
+   "area_km2": 5282.92,
+   "population": 9169464,
+   "census": 2022,
+   "upazilas": 15,
+   "note": "Chittagonian is the main everyday language here.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Chittagong_District"
+   ]
+  },
+  {
+   "name": "Cox's Bazar",
+   "hq": "Cox's Bazar",
+   "area_km2": 2491.85,
+   "population": 2823265,
+   "census": 2022,
+   "upazilas": 10,
+   "note": "Chittagonian is widely spoken here, with local varieties along the coast.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Chittagong_Division",
+    "https://en.wikipedia.org/wiki/Cox%27s_Bazar_District"
+   ]
+  }
+ ],
+ "government": {
+  "tiers": [
+   [
+    "Division",
+    "8 in the country. Chittagong Division has 11 districts."
+   ],
+   [
+    "District (zila)",
+    "64 in the country, each led by a Deputy Commissioner."
+   ],
+   [
+    "Upazila",
+    "About 495, the sub-district level."
+   ],
+   [
+    "Union parishad",
+    "The smallest rural unit of local government, about 4,500 in the country."
+   ],
+   [
+    "City corporations and pourashavas",
+    "13 city corporations (including Chittagong) and 330 municipalities."
+   ]
+  ],
+  "hill": "Rangamati, Bandarban and Khagrachhari have their own district councils, and a Regional Council made up of those councils was set up under the peace accord of 2 December 1997.",
+  "national": "Bangladesh is a unitary parliamentary republic with a single parliament, the Jatiya Sangsad, of 350 members.",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Administrative_geography_of_Bangladesh",
+   "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts_Peace_Accord",
+   "https://en.wikipedia.org/wiki/Bangladesh"
+  ]
+ },
+ "facts": [
+  {
+   "text": "Cox's Bazar has a sea beach described as the longest natural unbroken one in the world; the same page gives its length as about 120 km in one place and 150 km in another.",
+   "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar"
+  },
+  {
+   "text": "Himchari National Park, just south of Cox's Bazar town, was established in 1980 and has forests, grasslands and waterfalls.",
+   "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar"
+  },
+  {
+   "text": "The Karnaphuli River runs about 270 km from Mizoram to the sea at Chittagong, where the city's port sits at its mouth.",
+   "source": "https://en.wikipedia.org/wiki/Karnaphuli_River"
+  },
+  {
+   "text": "Kaptai Dam (1962) created Kaptai Lake, the largest artificial lake in Bangladesh; its hydroelectric station produces 230 MW.",
+   "source": [
+    "https://en.wikipedia.org/wiki/Karnaphuli_River",
+    "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
+   ]
+  },
+  {
+   "text": "University of Chittagong was established on 18 November 1966 and its campus covers about 2,312 acres at Hathazari.",
+   "source": "https://en.wikipedia.org/wiki/University_of_Chittagong"
+  },
+  {
+   "text": "Mezban is a Chittagong feast and festival, celebrated as a festival since the late 1960s; the name comes from a Persian word meaning host; the traditional meal centres on rice and beef curry.",
+   "source": "https://en.wikipedia.org/wiki/Mezban"
+  },
+  {
+   "text": "The port handles over 70 percent of the country's export-import trade, with about 3.1 million TEUs in 2020-21.",
+   "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
+  },
+  {
+   "text": "Keokradong in Bandarban District, at 986 m, is described as a highest peak of Bangladesh (the same page also names other claimants, so say 'among the highest').",
+   "source": "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
+  },
+  {
+   "text": "Saint Martin's Island, the country's southernmost part, is known locally as Narkel Dweep (Coconut Island) and is described as Bangladesh's only coral island.",
+   "source": "https://en.wikipedia.org/wiki/Saint_Martin%27s_Island"
+  },
+  {
+   "text": "The 2022 census lists 11 ethnic groups in the Chittagong Hill Tracts, including Chakma, Marma, Tripura, Mro and Tanchangya, and at least 11 distinct indigenous languages are cited.",
+   "source": "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
+  }
+ ],
+ "map_credit": "Boundaries: Bangladesh Bureau of Statistics via OCHA ROAP and geoBoundaries (CC BY 3.0 IGO), simplified.",
+ "checked": "2026-10-08",
+ "naming": {
+  "text": "The name Chittagong is used throughout this project. In April 2018 a government committee changed the official English spelling without, as far as the reports show, any public consultation or referendum, and many residents were unhappy about it. The people who live there, and who speak siṭaiṅga, were not asked.",
+  "sources": [
+   "https://www.dhakatribune.com/bangladesh/142256/mixed-reactions-as-govt-changes-english-spellings",
+   "https://www.dhakatribune.com/bangladesh/nation/142669/locals-from-5-districts-irked-over-english"
+  ]
+ }
+}

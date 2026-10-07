@@ -121,7 +121,7 @@ Have you read it yourself?: Partly
 ```
 Title: Source: Living Dictionaries, Chittagonian
 Citation: Living Tongues Institute for Endangered Languages. 2026. Chittagonian Living Dictionary. https://livingdictionaries.app/chittagonian
-What does it support?: Community dictionary with 32 entries when I checked (words with English and Bengali translations, audio from speakers, photos), for Chattogram. Lists names Chatgaiya, Chittainga, saṭgãia, siʈaiŋga. Small, but it has speaker audio, which is the project's priority. The site says to ask the dictionary's team before reusing content; attribution alone is not permission. Contributors and Grammar pages not read. The site uses Bengali glosses, which the project keeps to the Rosetta layer.
+What does it support?: Community dictionary with 32 entries when I checked (words with English and Bengali translations, audio from speakers, photos), for Chittagong. Lists names Chatgaiya, Chittainga, saṭgãia, siʈaiŋga. Small, but it has speaker audio, which is the project's priority. The site says to ask the dictionary's team before reusing content; attribution alone is not permission. Contributors and Grammar pages not read. The site uses Bengali glosses, which the project keeps to the Rosetta layer.
 Have you read it yourself?: Partly
 ```
 
