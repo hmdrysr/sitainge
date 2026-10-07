@@ -4,7 +4,8 @@ Status: working register. Names are documented, not assigned. Latin spellings ar
 
 | Name | Script / spelling | Used by | Source | Status |
 |---|---|---|---|---|
-| **Sitainge** | Latin, as spelled by the project owner | Speakers (stated by the project owner as the proper term) | Project owner, 2026-10-07 | Recorded as stated; to be confirmed by other speakers and localities |
+| **siṭaiṅga** | Roman letters with dots below (ṭ) and above (ṅ), as given by the project owner | Speakers: the native name of the language (project owner, 2026-10-08) | Project owner, 2026-10-08 | Recorded as stated; to be confirmed by other speakers. The Dadi app uses this form for the language |
+| **Sitainge** | Roman letters without marks | The project and repository name; widely used variant of siṭaiṅga | Project owner, 2026-10-07 and 2026-10-08 | Variant of the native name; kept as the project name |
 | Chittagonian | English | English-language sources; ISO 639-3 code `ctg` | S002 (code); English usage seen in all checked sources | Documented as the English name |
 | Chatgaiya / Chaṭgãia (চাটগাঁইয়া) | Bengali script and several romanizations | Seen in encyclopedia results | Unchecked pointers (see source register) | Needs native-speaker verification |
 | Chatgaiya buli (চাটগাঁইয়া বুলি) | Bengali script | Seen in a phrasebook result | Unchecked | Needs native-speaker verification |

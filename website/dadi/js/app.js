@@ -49,8 +49,8 @@
     closeSheet();
     const back = h('div', { class: 'backdrop' });
     const box = h('div', { class: 'sheet', role: 'dialog', 'aria-modal': 'true', 'aria-label': (opts && opts.label) || 'Details' }, h('div', { class: 'grab' }), content);
-    layer.append(back, box);
-    const close = () => { back.remove(); box.remove(); sheetClose = null; if (opts && opts.onClose) opts.onClose(); };
+    layer.append(back, box); document.body.classList.add('sheet-open');
+    const close = () => { back.remove(); box.remove(); sheetClose = null; document.body.classList.remove('sheet-open'); if (opts && opts.onClose) opts.onClose(); };
     back.addEventListener('click', close); sheetClose = close;
     const first = box.querySelector('button, input, select, textarea, a'); if (first) first.focus({ preventScroll: true });
     return { close, box };
@@ -113,7 +113,7 @@
 
   /* ---------- router ---------- */
   const ROUTES = [
-    [/^#\/learn$/, learnView], [/^#\/lesson\/(\d+)$/, lessonView], [/^#\/review$/, reviewView], [/^#\/words$/, wordsView],
+    [/^#\/learn$/, learnView], [/^#\/lesson\/(\d+)$/, lessonView], [/^#\/review$/, reviewView], [/^#\/words$/, wordsView], [/^#\/type$/, typeView],
     [/^#\/teach$/, teachView], [/^#\/teach\/new(?:\?(.*))?$/, teachNew], [/^#\/me$/, meView], [/^#\/about$/, aboutView]
   ];
   function nav(hash) { if (location.hash === hash) route(); else location.hash = hash; }
@@ -132,6 +132,75 @@
   function setTab(t) { document.querySelectorAll('.tabs a').forEach((a) => { if (a.dataset.tab === t) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); }); }
   window.addEventListener('hashchange', route);
 
+
+  /* ---------- look: theme and colour scheme (no account needed) ---------- */
+  const SCHEMES = [['indigo', 'Indigo', '#1f2a6b'], ['forest', 'Forest', '#1f5a3e'], ['ocean', 'Ocean', '#0f5d75'], ['plum', 'Plum', '#5b2a6e'], ['contrast', 'High contrast', '#000000']];
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  function applyLook() {
+    const s = S().settings, t = s.theme || 'system', eff = t === 'system' ? (mq && mq.matches ? 'dark' : 'light') : t;
+    const el = document.documentElement; el.setAttribute('data-theme', eff); el.setAttribute('data-scheme', s.scheme || 'indigo');
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', getComputedStyle(document.querySelector('.top')).backgroundColor);
+  }
+  if (mq && mq.addEventListener) mq.addEventListener('change', () => applyLook());
+  function lookSheet() {
+    const s = S().settings; let sh;
+    const set = (k, v) => { Store.update((st) => { st.settings[k] = v; }, 'settings', k + ' ' + v); applyLook(); redraw(); };
+    const box = h('div');
+    function redraw() {
+      const cur = S().settings;
+      put(box, h('h2', null, 'Look'),
+        h('p', { class: 'muted small' }, 'Saved on this device. No account needed.'),
+        h('h3', null, 'Brightness'),
+        h('div', { class: 'seg', role: 'group', 'aria-label': 'Brightness' }, [['system', 'Match my device'], ['light', 'Light'], ['dark', 'Dark']].map(([v, t]) => h('button', { type: 'button', class: 'chip', 'aria-pressed': String((cur.theme || 'system') === v), onclick: () => set('theme', v) }, t))),
+        h('h3', null, 'Colours'),
+        h('div', { class: 'swatches', role: 'group', 'aria-label': 'Colour scheme' }, SCHEMES.map(([v, t, c]) => h('button', { type: 'button', class: 'swatch', 'aria-pressed': String((cur.scheme || 'indigo') === v), onclick: () => set('scheme', v) }, h('i', { style: 'background:' + c }), t))),
+        h('div', { class: 'row', style: 'margin-top:14px' }, h('button', { class: 'btn', type: 'button', onclick: () => sh.close() }, 'Done')));
+    }
+    redraw(); sh = sheet(box, { label: 'Look' });
+  }
+
+  /* ---------- Type: the IPA keyboard on its own ---------- */
+  function typeView(root) {
+    const field = h('textarea', { class: 'input ipa typebox', rows: '2', placeholder: 'Tap here, then tap keys. Each key says its sound.', 'aria-label': 'Type with sounds', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
+    const out = h('p', { class: 'muted small', 'aria-live': 'polite' });
+    put(root, h('h1', null, 'Type with sounds'), field,
+      h('div', { class: 'row', style: 'margin:10px 0' },
+        h('button', { class: 'btn', type: 'button', onclick: async () => { if (!field.value.trim()) { out.textContent = 'Type something first.'; return; } const r = await audio.play(field.value.trim()); out.textContent = r.ok ? (r.device ? 'Played with your device\'s voice, which is an approximation.' : 'Played with Dadi\'s own sound. It is an approximation.') : (r.reason || 'Could not play.'); } }, 'Hear the word'),
+        h('button', { class: 'btn ghost', type: 'button', onclick: () => openKeyboard(field) }, 'Show keyboard'),
+        h('button', { class: 'btn ghost', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(field.value); toast('Copied.'); } catch (e) { toast('Could not copy. Select the text and copy it.'); } } }, 'Copy'),
+        h('a', { class: 'btn ghost', href: '#/teach/new', onclick: (e) => { e.preventDefault(); nav('#/teach/new?ipa=' + encodeURIComponent(field.value.trim())); } }, 'Add as a contribution')),
+      out,
+      h('p', { class: 'muted' }, 'An on-screen keyboard with the usual letters and every IPA symbol. Tap a key to hear it. Then press "Hear the word" to hear the whole thing, and swap symbols until it sounds like you.'),
+      h('p', { class: 'note' }, 'Not sure how to write a sound? Tap a key that is close to it. The row above the keys shows related sounds. Try them until one matches your voice. What you choose is saved as "chosen by ear", which reviewers treat as a lead, not a fact.'));
+    openKeyboard(field);
+  }
+
+  /* ---------- first-time tour ---------- */
+  const TOUR = [
+    ['Welcome to Dadi', 'Dadi helps you learn siṭaiṅga, the Chittagonian language, and lets speakers add what they know. This quick tour shows where things are. You can skip it any time.', ''],
+    ['Learn', 'Short lessons. You listen, repeat, then answer before you see the answer. Words you miss come back sooner.', 'learn'],
+    ['Words', 'The dictionary. It reads the project\'s public files on GitHub. Each entry shows how much it can be trusted.', 'words'],
+    ['Type', 'The on-screen keyboard with the usual letters and every IPA symbol. Every key says its sound, so you can write a word without knowing IPA.', 'type'],
+    ['Teach', 'Add a word, another way people say it, or a correction. Nothing leaves your device until you press Send.', 'teach'],
+    ['Me', 'Your progress, voice settings, backups, and sign-in with GitHub. Sign-in is optional.', 'me'],
+    ['Colours', 'The round button at the top changes brightness and colours. You do not need an account for that.', 'look']
+  ];
+  function tour(start) {
+    let i = start || 0; const box = h('div');
+    const hl = (t) => { document.querySelectorAll('.tour-hl').forEach((n) => n.classList.remove('tour-hl')); const n = t === 'look' ? document.getElementById('look') : document.querySelector('.tabs a[data-tab="' + t + '"]'); if (n) n.classList.add('tour-hl'); };
+    let sh;
+    const finish = () => { hl(''); Store.update((st) => { st.settings.tourDone = true; }, 'settings', 'tour done'); if (sh) sh.close(); };
+    function draw() {
+      const [title, text, target] = TOUR[i]; hl(target);
+      put(box, h('p', { class: 'small muted' }, 'Step ' + (i + 1) + ' of ' + TOUR.length), h('h2', null, title), h('p', null, text),
+        h('div', { class: 'row', style: 'margin-top:14px' },
+          i > 0 ? h('button', { class: 'btn ghost', type: 'button', onclick: () => { i--; draw(); } }, 'Back') : null,
+          i < TOUR.length - 1 ? h('button', { class: 'btn', type: 'button', onclick: () => { i++; draw(); } }, 'Next') : h('button', { class: 'btn', type: 'button', onclick: finish }, 'Start learning'),
+          i < TOUR.length - 1 ? h('button', { class: 'link', type: 'button', onclick: finish }, 'Skip the tour') : null));
+    }
+    draw(); sh = sheet(box, { label: 'Tour', onClose: () => { hl(''); Store.update((st) => { st.settings.tourDone = true; }, 'settings', 'tour closed'); } });
+  }
+
   /* ---------- keyboard dock ---------- */
   function openKeyboard(field, onChange) {
     dock.hidden = false; document.body.classList.add('kb-open');
@@ -147,7 +216,7 @@
     const learned = playable.filter((e) => st.cards[e.id]).length, due = dueIds().length;
     put(root, 
       h('section', { class: 'hero' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }),
-        h('div', null, h('h1', null, 'Learn Sitainge'), h('p', { class: 'muted' }, 'Words and sentences that people have shared with the project. Listen, answer before the reveal, and come back to what you forget.'))),
+        h('div', null, h('h1', null, 'Learn siṭaiṅga'), h('p', { class: 'muted' }, 'Words and sentences that people have shared with the project. Listen, answer before the reveal, and come back to what you forget.'))),
       h('div', { class: 'chips' }, h('span', { class: 'chip' }, 'Streak: ' + (st.stats.streak || 0) + ' day' + ((st.stats.streak || 0) === 1 ? '' : 's')),
         h('span', { class: 'chip' }, 'Practice points: ' + (st.stats.xp || 0)), h('span', { class: 'chip' }, learned + ' of ' + playable.length + ' started')),
       due ? h('a', { class: 'btn block', href: '#/review' }, 'Review ' + due + ' due word' + (due === 1 ? '' : 's')) : null,
@@ -280,7 +349,7 @@
   /* ---------- Words (dictionary) ---------- */
   let wordFilter = { q: '', kind: 'all', ipaOnly: false };
   function wordsView(root) {
-    const input = h('input', { class: 'search', type: 'search', placeholder: 'Search English or Sitainge spelling', 'aria-label': 'Search the dictionary', value: wordFilter.q, autocomplete: 'off' });
+    const input = h('input', { class: 'search', type: 'search', placeholder: 'Search English or siṭaiṅga spelling', 'aria-label': 'Search the dictionary', value: wordFilter.q, autocomplete: 'off' });
     const list = h('ul', { class: 'rows' }), count = h('p', { class: 'muted small', 'aria-live': 'polite' });
     const chip = (label, key, val, pressed) => h('button', { class: 'chip', type: 'button', 'aria-pressed': String(pressed), onclick: () => { if (key === 'ipaOnly') wordFilter.ipaOnly = !wordFilter.ipaOnly; else wordFilter.kind = val; paint(); chips.replaceWith((chips = makeChips())); } }, label);
     const makeChips = () => h('div', { class: 'chips' }, chip('Everything', 'kind', 'all', wordFilter.kind === 'all'), chip('Words', 'kind', 'word', wordFilter.kind === 'word'),
@@ -345,7 +414,7 @@
     const queued = S().queue.filter((q) => q.status === 'queued'), sent = S().queue.filter((q) => q.status === 'sent' || q.status === 'exported');
     const want = wantedWords();
     put(root, h('h1', null, 'Teach Dadi'),
-      h('p', null, 'If you speak Sitainge, add what you say. Write it any way you would write it to a friend: there is no wrong spelling here. Reviewers read everything before it is used, and nothing is accepted automatically.'),
+      h('p', null, 'If you speak siṭaiṅga, add what you say. Write it any way you would write it to a friend: there is no wrong spelling here. Reviewers read everything before it is used, and nothing is accepted automatically.'),
       h('a', { class: 'btn block', href: '#/teach/new' }, 'Add a word or sentence'),
       h('h2', { style: 'margin-top:22px' }, 'Waiting to send'));
     if (!queued.length) put(root, h('p', { class: 'muted' }, 'Nothing waiting. What you add is saved on this device first.'));
@@ -369,7 +438,7 @@
     const p = new URLSearchParams(qs || ''), action = ['add', 'variant', 'ipa', 'report'].includes(p.get('action')) ? p.get('action') : 'add';
     const rel = p.get('rel') ? index.byId.get(p.get('rel')) : null;
     const f = { kind: rel ? rel.kind : (p.get('kind') || 'word'), gloss: rel ? rel.gloss : (p.get('gloss') || ''), form: action === 'ipa' && rel ? (rel.spellings[0] || rel.form) : '', variants: [''],
-      ipa: action === 'ipa' && rel && rel.ipa ? rel.ipa : '', ipaStatus: 'speaker-chosen-by-ear', register: '', confidence: '', note: p.get('ctx') ? 'Context: ' + p.get('ctx') : '' };
+      ipa: p.get('ipa') || (action === 'ipa' && rel && rel.ipa ? rel.ipa : ''), ipaStatus: 'speaker-chosen-by-ear', register: '', confidence: '', note: p.get('ctx') ? 'Context: ' + p.get('ctx') : '' };
     const titles = { add: 'Add a word or sentence', variant: 'How do you say it?', ipa: 'Fix the pronunciation', report: 'Report a problem' };
     const err = h('p', { class: 'err', role: 'alert' });
     const inp = (id, o) => h('input', Object.assign({ id, class: 'input', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' }, o || {}));
@@ -416,7 +485,7 @@
     put(root, h('h1', null, titles[action]),
       rel ? h('p', { class: 'muted' }, action === 'report' ? 'About: ' : 'Existing entry: ', h('b', { class: 'ipa' }, (rel.spellings[0] || rel.form)), ' = ' + rel.gloss) : null,
       action === 'report' ? null : h('div', null, h('label', { class: 'f', for: 'f-gloss' }, 'What does it mean in English?'), gloss, !rel ? h('div', { style: 'margin-top:8px' }, kindSeg) : null),
-      action === 'report' || action === 'ipa' ? null : h('div', null, h('label', { class: 'f', for: 'f-form' }, 'How do you say it?', h('span', { class: 'f-hint' }, 'Any spelling is fine. Roman letters (Latin script) please, not Bangla script.')), form,
+      action === 'report' || action === 'ipa' ? null : h('div', null, h('label', { class: 'f', for: 'f-form' }, 'How do you say it?', h('span', { class: 'f-hint' }, 'Any spelling is fine. Use Roman letters (Latin script), not Bangla script.')), form,
         h('label', { class: 'f' }, 'Other ways people say it'), varBox, h('button', { class: 'link small', type: 'button', onclick: () => addVar().focus() }, 'Add another way')),
       action === 'ipa' ? h('div', null, h('label', { class: 'f', for: 'f-form' }, 'Spelling'), form) : null,
       ipaBox,
@@ -440,12 +509,12 @@
     const cname = h('input', { class: 'input', id: 'p-cname', value: p.creditName, placeholder: 'Name to show', autocomplete: 'off' });
     const err = h('p', { class: 'err', role: 'alert' });
     box.append(adult, cc0,
-      h('label', { class: 'f', for: 'p-loc' }, 'Where is your Sitainge from?', h('span', { class: 'f-hint' }, 'Optional. Helps show regional differences.')), loc,
+      h('label', { class: 'f', for: 'p-loc' }, 'Where is your siṭaiṅga from?', h('span', { class: 'f-hint' }, 'Optional. Helps show regional differences.')), loc,
       h('label', { class: 'f', for: 'p-age' }, 'Age group (optional)'), age,
       h('label', { class: 'f', for: 'p-other' }, 'Other languages you speak (optional)'), other,
       h('label', { class: 'f', for: 'p-credit' }, 'How should you be credited?'), credit, h('div', { id: 'p-cn' }, h('label', { class: 'f', for: 'p-cname' }, 'Name'), cname),
       err, h('button', { class: 'btn block', type: 'button', style: 'margin-top:16px', onclick: () => {
-        if (needConsent && (!adult.querySelector('input').checked || !cc0.querySelector('input').checked)) { err.textContent = 'Please tick both boxes to send contributions.'; return; }
+        if (needConsent && (!adult.querySelector('input').checked || !cc0.querySelector('input').checked)) { err.textContent = 'Select both boxes to send contributions.'; return; }
         if (credit.value === 'name' && !cname.value.trim()) { err.textContent = 'Type the name you want shown.'; return; }
         Store.update((st) => { Object.assign(st.profile, { adult: adult.querySelector('input').checked, cc0: cc0.querySelector('input').checked, locality: loc.value.trim(), age: age.value, otherLanguages: other.value.trim(), credit: credit.value, creditName: credit.value === 'name' ? cname.value.trim() : '', languageName: 'Sitainge' }); }, 'profile', 'details saved');
         toast('Saved.'); if (onSaved) onSaved();
@@ -502,7 +571,7 @@
       h('div', { class: 'row' },
         h('button', { class: 'btn small', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(text); toast('Copied.'); } catch (e) { ta.select(); toast('Select the text and copy it.'); } } }, 'Copy'),
         h('button', { class: 'btn small', type: 'button', onclick: download }, 'Save as file'),
-        CFG.contactEmail ? h('button', { class: 'btn small', type: 'button', onclick: () => { if (text.length > 1500) { download(); toast('File saved. Attach it to the email.'); } location.href = 'mailto:' + CFG.contactEmail + '?subject=' + encodeURIComponent('Dadi contribution') + '&body=' + encodeURIComponent(text.length > 1500 ? 'Please find my Dadi contribution attached (dadi-contribution-' + today() + '.txt).' : text); } }, 'Email it') : null,
+        CFG.contactEmail ? h('button', { class: 'btn small', type: 'button', onclick: () => { if (text.length > 1500) { download(); toast('File saved. Attach it to the email.'); } location.href = 'mailto:' + CFG.contactEmail + '?subject=' + encodeURIComponent('Dadi contribution') + '&body=' + encodeURIComponent(text.length > 1500 ? 'My Dadi contribution is attached (dadi-contribution-' + today() + '.txt).' : text); } }, 'Email it') : null,
         navigator.canShare && navigator.canShare({ files: [file()] }) ? h('button', { class: 'btn small', type: 'button', onclick: () => navigator.share({ files: [file()], title: 'Dadi contribution' }).catch(() => {}) }, 'Share') : null),
       ta, h('p', { class: 'small muted' }, 'Best place for it is GitHub: ', h('a', { href: CFG.repoUrl + '/issues/new?template=interview-submission.yml', target: '_blank', rel: 'noopener noreferrer' }, 'open a new issue'), ' and paste the text. If you cannot, send it to someone who can, or email it.'),
       h('button', { class: 'link', type: 'button', onclick: mark }, 'I have sent it')), { label: 'Send it another way' });
@@ -564,8 +633,10 @@
       h('label', { class: 'f', for: 's-pitch' }, 'Voice pitch'), sel('s-pitch', [['low', 'Lower'], ['mid', 'Middle'], ['high', 'Higher']], st.settings.pitch, (v) => Store.update((s2) => { s2.settings.pitch = v; }, 'settings', 'pitch ' + v)),
       h('label', { class: 'f', for: 's-speed' }, 'Speed'), sel('s-speed', [[0.8, 'Slower'], [1, 'Normal'], [1.2, 'Faster']], st.settings.speed, (v) => Store.update((s2) => { s2.settings.speed = Number(v); }, 'settings', 'speed ' + v)),
       h('label', { class: 'f', for: 's-ipa' }, 'Show IPA in lessons'), sel('s-ipa', [['1', 'Yes'], ['0', 'No']], st.settings.showIPA ? '1' : '0', (v) => Store.update((s2) => { s2.settings.showIPA = v === '1'; }, 'settings', 'showIPA ' + v)),
-      h('label', { class: 'f', for: 's-theme' }, 'Colours'), sel('s-theme', [['system', 'Follow my device'], ['light', 'Light'], ['dark', 'Dark']], st.settings.theme || 'system', (v) => { Store.update((s2) => { s2.settings.theme = v; }, 'settings', 'theme ' + v); applyTheme(); }),
-      h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { class: 'btn small ghost', type: 'button', onclick: () => audio.playSymbol('a') }, 'Test the sound')),
+      h('label', { class: 'f', for: 's-engine' }, 'Word voice'), sel('s-engine', [['auto', 'Automatic: your device voice if it has one, otherwise Dadi\'s own sound'], ['device', 'Your device voice only'], ['dadi', 'Dadi\'s own sound only']], st.settings.engine || 'auto', (v) => Store.update((s2) => { s2.settings.engine = v; }, 'settings', 'engine ' + v)),
+      h('p', { class: 'muted small' }, (() => { const e = audio.engineInfo(); return e.device ? 'Device voice found: ' + e.deviceName + '. It reads a sound-alike of the word, so it is an approximation.' : 'No Bangla or Hindi voice found on this device, so Dadi\'s own sound is used.'; })()),
+      h('div', { class: 'row', style: 'margin-top:8px' }, h('button', { class: 'btn small ghost', type: 'button', onclick: lookSheet }, 'Brightness and colours'), h('button', { class: 'btn small ghost', type: 'button', onclick: () => tour(0) }, 'Show the tour again')),
+      h('div', { class: 'row', style: 'margin-top:12px' }, h('button', { class: 'btn small ghost', type: 'button', onclick: async () => { const r = await audio.play('hana'); toast(r.ok ? (r.device ? 'Played with your device voice.' : 'Played with Dadi\'s own sound.') : (r.reason || 'Could not play.')); } }, 'Test the voice')),
       h('h2', { style: 'margin-top:26px' }, 'Your data'), h('p', { class: 'muted small' }, Store.persistent ? 'Everything is saved on this device only, with two automatic backups. Nothing is sent unless you press Send.' : 'This browser blocked storage, so changes will be lost when you close the page. Export a backup before you leave.'),
       h('div', { class: 'row' }, h('button', { class: 'btn small', type: 'button', onclick: () => { const blob = new Blob([Store.exportAll()], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'dadi-backup-' + today() + '.json'; document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500); } }, 'Download a backup'),
         h('button', { class: 'btn small ghost', type: 'button', onclick: () => file.click() }, 'Restore from a backup'), file,
@@ -574,11 +645,11 @@
       h('div', { style: 'margin-top:16px' }, h('button', { class: 'link err', type: 'button', onclick: async () => { if (await ask('Delete everything on this device?', h('p', null, 'This removes progress, drafts and sign-in from this device. Contributions you already sent stay on GitHub. A backup file is the only way back.'), 'Delete', 'Keep')) { Store.wipe(); toast('Deleted.'); route(); } } }, 'Delete everything on this device')),
       h('p', { style: 'margin-top:22px' }, h('a', { href: '#/about' }, 'About Dadi, credits and how the sounds are made')));
   }
-  function applyTheme() { const t = S().settings.theme; if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme'); }
+  const applyTheme = () => applyLook();
 
   function aboutView(root) {
     put(root, h('h1', null, 'About Dadi'),
-      h('div', { class: 'credit' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }), h('p', null, 'Dadi is the Sitainge (Chittagonian) learning and contribution tool of the Sitainge project. Created by ', h('b', null, CFG.creator), '.')),
+      h('div', { class: 'credit' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }), h('p', null, 'Dadi is the learning and contribution tool for siṭaiṅga, the Chittagonian language, made for the Sitainge project. Created by ', h('b', null, CFG.creator), '.')),
       h('p', null, 'The name is the word many Chittagonians use for grandmother, because most people of this generation learned the language from theirs.'),
       h('h2', null, 'How it works'),
       h('p', null, 'Words and sentences come from the project\'s public files on GitHub (', h('a', { href: CFG.repoUrl, target: '_blank', rel: 'noopener noreferrer' }, CFG.repo), '). Contributions go back as reviewable issues. Nothing is accepted automatically, and everything starts as unverified.'),
@@ -594,13 +665,15 @@
   /* ---------- start ---------- */
   async function boot() {
     document.getElementById('mark').innerHTML = Art.dadi();
-    applyTheme();
+    applyLook();
+    const lk = document.getElementById('look'); if (lk) lk.addEventListener('click', lookSheet);
     const net = document.getElementById('net'); const upd = () => { net.textContent = navigator.onLine ? '' : 'Offline'; }; upd(); window.addEventListener('online', upd); window.addEventListener('offline', upd);
     if (Store.restoredFrom) toast('Your saved data was repaired from ' + Store.restoredFrom + '.');
     const cached = Store.cachedRepo();
     if (cached && cached.entries && cached.entries.length) { setEntries(cached.entries); repoInfo = { from: 'cache', at: cached.fetchedAt, errors: [], err: null }; }
     else { const seed = await loadSeed(); if (seed && seed.entries) { setEntries(seed.entries); repoInfo = { from: 'seed', at: seed.builtAt, errors: [], err: null }; } }
     route();
+    if (!S().settings.tourDone) setTimeout(() => tour(0), 600);
     if (navigator.onLine) refreshRepo({ quiet: true });
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => { /* works without it */ });
   }

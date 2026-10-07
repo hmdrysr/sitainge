@@ -10,7 +10,9 @@ It does four jobs:
 1. **Learn.** Short lessons (6 items): listen, repeat, recall. Review is scheduled by FSRS.
 2. **Dictionary.** Words and sentences the app finds in the repository, with a trust label on each.
 3. **Teach (contribute).** Native speakers and learners add words, spellings, variants, IPA and reports. Nothing leaves the device until the person sends it.
-4. **IPA keyboard.** An optional on-screen keyboard (QWERTY plus IPA symbols grouped under the Roman letter they relate to). Every key sounds when tapped, and "Hear it" plays the whole word.
+4. **Type tab and IPA keyboard.** The Type tab is a free keyboard; the same keyboard opens in Teach. QWERTY plus IPA symbols grouped under the Roman letter they relate to. Every key sounds when tapped, and "Hear it" plays the whole word.
+
+Also: a first-time tour (`tour()` in `app.js`, repeatable from Me), a Look sheet for brightness and five colour schemes (no account needed), and a Word voice setting (automatic, device voice, or Dadi's own sound).
 
 ## Non-negotiable rules (from the project and the owner)
 - No invented Chittagonian. The app never writes a Chittagonian form or IPA that a person did not supply. Machine readings of a spelling are labelled "approximate" and are saved with `ai-drafted-unverified`.
@@ -32,6 +34,7 @@ website/dadi/
   js/
     ipa-data.js     vowels (F1-F3), consonants (manner/place/voice), approximations, key layout
     synth.js        formant synthesizer, WAV export (pure JS, runs in Node for tests)
+    native-tts.js   device voice: IPA to a sound-alike script (Bangla or Devanagari) that a device voice can read
     g2p.js          spelling to approximate IPA (rules table)
     audio.js        WebAudio playback, caching, pitch/speed
     keyboard.js     the IPA keyboard
@@ -43,6 +46,8 @@ website/dadi/
     art.js          original SVG icons and the Dadi mascot
     app.js          routes, screens, lesson engine, flows
 dadi-worker/relay.js           sign-in relay (no secrets)
+workflows-to-install/dadi-tools.yml   the one workflow (install once; see SETUP.md)
+scripts/dadi_ingest_issue.py   contribution issue to RAW records, automatic speaker id
 scripts/build_dadi_seed.js     seed builder
 scripts/ingest_interview.py    reviewer ingest (reads Dadi submissions, incl. IPA + status)
 scripts/tests/dadi_*.js        tests
@@ -97,9 +102,12 @@ Not verified: how the voice sounds to a Chittagonian ear; a real GitHub App and 
 3. A reviewed curriculum file (`datasets/dadi-curriculum.yaml`?) so lessons can be ordered by topic, not only trust. Needs steward sign-off.
 4. Reviewer view inside the app: show RAW items, record second-speaker agreement. Only after reviewers are appointed (see `GOVERNANCE.md`).
 5. Replace the optional manual ingest workflow with automatic PR creation once speaker-id assignment is solved.
-6. Accessibility pass; localisation of interface text; larger audio and image sets.
+6. Accessibility pass; localization of interface text; larger audio and image sets.
 7. Tune FSRS parameters once enough review data exists (request_retention is 0.9).
 8. A second relay host option (Deno Deploy / Netlify function) in case Cloudflare is unavailable.
+
+## Naming
+The language is written siṭaiṅga in the app and in new text about it (D-028). Sitainge is the project and repository name. Chittagonian is the English name. Keep the dot below ṭ and the dot above ṅ.
 
 ## Gotchas
 - Script order in `index.html` is the dependency order. There is no build step by design.

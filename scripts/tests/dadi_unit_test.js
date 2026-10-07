@@ -38,6 +38,18 @@ const mem = () => { const o = {}; return { getItem: (k) => (k in o ? o[k] : null
   const p = Data.parseJSONL('{"a":1}\nnot json\n{"b":2}\n'); ok(p.records.length === 2 && p.errors.length === 1, 'jsonl tolerant');
   const y = Data.parseSimpleYAML('- id: T-1\n  text: "[TEST] x"\n- id: T-2\n  text: y\n'); ok(y.records.length === 2 && y.records[0].id === 'T-1', 'yaml list');
 }
+// g2p handles siṭaiṅga-style letters and accent marks; device-voice mapping
+{
+  const r = G2P.g2p('siṭaiṅga'); ok(r.complete && /ʈ/.test(r.ipa) && /ŋ/.test(r.ipa), 'dot letters read');
+  ok(G2P.g2p('Äar namm Hamèd.').complete, 'accent marks tolerated');
+  const N = require('../../' + J + 'native-tts.js');
+  ok(N.toIndic('hana', 'dev') === 'हाना' && N.toIndic('hana', 'bn') === 'হানা', 'sound-alike script');
+  ok(!/[A-Za-z]/.test(N.toIndic('siʈajŋɡa', 'bn')), 'no Roman letters left in sound-alike');
+}
+// synth is smooth: no huge single-sample jumps relative to the signal level
+{
+  for (const w of ['hana', 'mamama', 'fani']) { const x = Synth.synthesize(w).samples; let mj = 0, e = 0; for (let i = 1; i < x.length; i++) { mj = Math.max(mj, Math.abs(x[i] - x[i - 1])); e += x[i] * x[i]; } const rms = Math.sqrt(e / x.length); assert.ok(rms > 0.1 && mj < 4 * rms + 0.3, 'smooth ' + w); n++; }
+}
 // seed file loads and respects consent
 {
   const seed = JSON.parse(fs.readFileSync('website/dadi/data/seed.json', 'utf8')); ok(Array.isArray(seed.entries) && seed.entries.length > 0, 'seed present');

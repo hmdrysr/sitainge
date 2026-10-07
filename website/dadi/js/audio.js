@@ -3,6 +3,7 @@
 (function (root) {
   'use strict';
   const Synth = (typeof require !== 'undefined' && typeof module !== 'undefined') ? require('./synth.js') : root.DadiSynth;
+  const Native = (typeof require !== 'undefined' && typeof module !== 'undefined') ? require('./native-tts.js') : root.DadiNativeTTS;
   const PITCH = { low: 112, mid: 150, high: 205 };
 
   function create(opts) {
@@ -26,10 +27,22 @@
       cache.set(key, r); if (cache.size > 300) cache.delete(cache.keys().next().value);
       return r;
     }
-    function stop() { try { if (src) { src.onended = null; src.stop(); } } catch (e) { /* already stopped */ } src = null; }
+    function stop() { try { if (Native) Native.stop(); } catch (e) { /* none */ } try { if (src) { src.onended = null; src.stop(); } } catch (e) { /* already stopped */ } src = null; }
 
     /* Plays and resolves when finished. Resolves { ok:false, reason } instead of throwing. */
     function play(ipa, o) {
+      const eng = (settings().engine || 'auto');
+      const whole = !(o && o.symbol);
+      if (whole && eng !== 'dadi' && Native && Native.available()) {
+        stop();
+        return Native.speak(ipa, { speed: (o && o.speed) || settings().speed, pitch: (o && o.pitch) || settings().pitch }).then((r) => {
+          if (r.ok || eng === 'device') return r.ok ? { ok: true, device: true, approximated: true } : r;
+          return playOwn(ipa, o);
+        });
+      }
+      return playOwn(ipa, o);
+    }
+    function playOwn(ipa, o) {
       return new Promise((resolve) => {
         if (!supported) { resolve({ ok: false, reason: 'This browser cannot play sound from the app.' }); return; }
         const r = render(ipa, o);
@@ -42,7 +55,7 @@
       });
     }
     const playSymbol = (sym, o) => play(sym, Object.assign({ symbol: true }, o || {}));
-    return { play, playSymbol, stop, supported, render };
+    return { play, playSymbol, stop, supported, render, engineInfo: () => ({ device: !!(Native && Native.available()), deviceName: Native && Native.describe() }) };
   }
 
   const api = { create, PITCH };

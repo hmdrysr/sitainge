@@ -17,6 +17,7 @@
     q: 'k', r: 'ɾ', s: 's', t: 't', u: 'u', v: 'v', w: 'w', x: 'ks', y: 'j', z: 'z' };
   const VOWEL_LETTERS = 'aeiou';
   const IPA_ONLY = /[ɑɐæɒɶəɛɜɞɔɪʊɨʉɯɤɘɵøœʌʏɚɝɡɣɢɓɗʄɠʛɾɽɹɻʁʀɺʈɖʂʐɕʑçʝʃʒθðχħʕɸβɱɳɲŋɴʙⱱɬɮʋɥʍɰɭʎʟɫʔʰʱ]/;
+  const SPECIAL = { 'ṭ': 'ʈ', 'ḍ': 'ɖ', 'ṇ': 'ɳ', 'ṅ': 'ŋ', 'ñ': 'ɲ', 'ś': 'ʃ', 'ṣ': 'ʃ', 'ṛ': 'ɽ', 'ṝ': 'ɽ', 'ā': 'aː', 'ī': 'iː', 'ū': 'uː', 'ē': 'eː', 'ō': 'oː', 'ṁ': '̃', 'ṃ': '̃', 'ḥ': 'h', 'ɛ': 'ɛ', 'ɔ': 'ɔ' };
   const DROP = /[.,;:!?"'’‘“”()\[\]\-–—_*]/g;
 
   function g2p(spelling) {
@@ -25,33 +26,46 @@
     /* "ite / iti": read the first alternative only. */
     const first = raw.split(/\s*[\/|]\s*/)[0];
     if (IPA_ONLY.test(first)) return { ipa: first, complete: true, unknown: [], note: 'already IPA' };
-    const words = first.toLowerCase().normalize('NFD').replace(DROP, ' ').split(/\s+/).filter(Boolean);
-    const unknown = []; const outWords = [];
+    const words = first.toLowerCase().replace(DROP, ' ').split(/\s+/).filter(Boolean);
+    const unknown = []; const outWords = []; let marks = false;
     for (const w of words) {
-      const chars = Array.from(w);
+      /* Units: plain letters, letters with a dot-below or macron (siṭaiṅga style) and letters with marks the spelling does not explain (ä, é, ô). */
+      const units = [];
+      for (const c of Array.from(w.normalize('NFC'))) {
+        if (SPECIAL[c]) { units.push({ sp: SPECIAL[c] }); continue; }
+        const d = c.normalize('NFD');
+        if (d.length > 1) {
+          units.push(d.slice(1).replace(/̃/g, '') ? { b: d[0] } : d[0]);
+          if (d.slice(1).indexOf('̃') >= 0) units.push('̃');
+          if (d.slice(1).replace(/̃/g, '')) marks = true;
+        } else units.push(c);
+      }
       let out = '';
-      for (let i = 0; i < chars.length;) {
-        const ch = chars[i];
-        if (ch === '̃') { out += '̃'; i++; continue; }
-        const two = ch + (chars[i + 1] || '');
+      for (let i = 0; i < units.length;) {
+        let u = units[i], marked = false;
+        if (u && u.b) { u = u.b; marked = true; }
+        if (u && u.sp) { out += u.sp; i++; if (/[ʈɖ]$/.test(u.sp) && units[i] === 'h') { out += 'ʰ'; i++; } continue; }
+        if (u === '̃') { out += '̃'; i++; continue; }
+        if (/[0-9]/.test(u)) { i++; continue; }
+        const two = marked ? '' : u + (typeof units[i + 1] === 'string' ? units[i + 1] : '');
         const dg = DIGRAPHS.find((d) => d[0] === two);
         if (dg) {
           out += dg[1]; i += 2;
-          if (/j$/.test(dg[1]) && chars[i] === 'y') i++;
+          if (/j$/.test(dg[1]) && units[i] === 'y') i++;
           continue;
         }
-        if (SINGLE[ch]) {
-          let sym = SINGLE[ch];
-          if (ch === 'y' && /[aeiou]/.test(out.slice(-1)) === false && out && VOWEL_LETTERS.indexOf(chars[i + 1]) < 0) sym = 'j';
-          /* doubled consonant = long consonant */
-          if (chars[i + 1] === ch && VOWEL_LETTERS.indexOf(ch) < 0 && ch !== 'x') { out += sym + 'ː'; i += 2; continue; }
+        if (SINGLE[u]) {
+          let sym = SINGLE[u];
+          if (u === 'y' && /[aeiou]/.test(out.slice(-1)) === false && out && VOWEL_LETTERS.indexOf(units[i + 1]) < 0) sym = 'j';
+          if (units[i + 1] === u && VOWEL_LETTERS.indexOf(u) < 0 && u !== 'x') { out += sym + 'ː'; i += 2; continue; }
           out += sym; i++; continue;
         }
-        unknown.push(ch); i++;
+        if (IPA_ONLY.test(u)) { out += u; i++; continue; }
+        unknown.push(u); i++;
       }
       outWords.push(out);
     }
-    return { ipa: outWords.join(' '), complete: unknown.length === 0, unknown: Array.from(new Set(unknown)), note: 'machine reading of the spelling; approximate' };
+    return { ipa: outWords.join(' '), complete: unknown.length === 0, unknown: Array.from(new Set(unknown)), note: marks ? 'machine reading; accent marks and dots on some letters were ignored; approximate' : 'machine reading of the spelling; approximate' };
   }
 
   const api = { g2p, DIGRAPHS, SINGLE };

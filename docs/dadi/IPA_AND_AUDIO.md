@@ -5,6 +5,11 @@
 
 Why not eSpeak-NG: it is GPL (the repository is CC0), it is large to ship, and it cannot be tapped per symbol with predictable results. The choice is recorded as D-021. It can be revisited if licensing and size allow.
 
+## Which voice plays a word
+Setting "Word voice": automatic (default), device voice only, or Dadi's own sound only. Automatic uses the device's text-to-speech when it has a Bangla or Hindi voice, and Dadi's synthesizer otherwise. Device voices read spelling, not IPA, so `native-tts.js` first writes the IPA as a sound-alike in Bangla script or Devanagari. That text is used only to drive the voice; it is never shown or stored. It is an approximation, and no device voice knows Chittagonian. Keyboard keys always use Dadi's synthesizer, because a single symbol cannot be spoken reliably by a device voice and the delay would make typing feel slow.
+
+The synthesizer was changed on 2026-10-08 to remove a hiss (random pitch wobble) and a click on nasal sounds (a filter that kept stale state), and a gentle low-pass was added. Spectra and level checks are in `scripts/tests/dadi_unit_test.js` terms only: finite, in range. How it sounds still needs a listener.
+
 ## Honest limits
 - It is a teaching aid, not a native voice. It sounds synthetic.
 - Vowels are modelled from published average formant values, not from Chittagonian speakers.

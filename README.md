@@ -1,6 +1,6 @@
 # Sitainge: The Chittagonian Language Project
 
-*Sitainge* is the name of the language as given by the project owner; *Chittagonian* is the English name. See `docs/language/names.md`.
+*siṭaiṅga* is the native name of the language, as given by the project owner. *Sitainge* is the name of this project and repository, a widely used variant of it. *Chittagonian* is the English name. See `docs/language/names.md`.
 
 An open, evidence-governed project to document, preserve, teach and strengthen Chittagonian as a language belonging to its speakers.
 

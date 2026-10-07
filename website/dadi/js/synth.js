@@ -242,12 +242,13 @@
       }
       return v;
     };
-    let phase = 0, g1 = 0;
-    const st = { y: [[0, 0], [0, 0], [0, 0], [0, 0]], fr: [0, 0], nas: [0, 0], x: [0, 0], zx: [0, 0] };
+    let phase = 0, g1 = 0, nzl = 0, lp1 = 0, lp2 = 0;
+    const lpa = 1 - Math.exp(-2 * Math.PI * 5200 / SR); /* gentle 2-pole low-pass keeps the top end smooth */
+    const st = { y: [[0, 0], [0, 0], [0, 0], [0, 0]], fr: [0, 0], nas: [0, 0], x: [0, 0], zx: [0, 0], zy: [0, 0] };
     let coef = null, p = null;
     for (let s = 0; s < N; s++) {
       const t = s - lead;
-      if (s % 48 === 0 || !p) {
+      if (s % 24 === 0 || !p) {
         const tt = Math.max(0, Math.min(t, total - 1));
         p = {}; for (const k of keys) p[k] = val(k, tt);
         const prog = total > 0 ? Math.min(1, Math.max(0, t / total)) : 0;
@@ -255,19 +256,19 @@
         coef = [res(p.F1, p.B1), res(p.F2, p.B2), res(p.F3, p.B3), res(3500, 220)];
         coef.fr = res(p.ffc, p.fbw);
         coef.nas = res(270, 110);
-        const w0 = 2 * Math.PI * Math.max(200, p.nz || 1000) / SR, r = Math.exp(-Math.PI * 160 / SR);
-        const bb = 2 * r * Math.cos(w0), cc = -r * r, aa = 1 - bb - cc;
-        coef.zero = p.nz > 0 ? { a: 1 / aa, b: -bb / aa, c: -cc / aa } : null;
+        /* nasal anti-resonance as a notch: zeros on the unit circle at nz, poles just inside (stable, no big gain) */
+        if (p.nz > 0) { const w0 = 2 * Math.PI * Math.max(200, p.nz) / SR, r = Math.exp(-Math.PI * 180 / SR), c0 = Math.cos(w0);
+          const norm = (1 - 2 * r * c0 + r * r) / (2 - 2 * c0); coef.zero = { n0: norm, n1: -2 * c0 * norm, n2: norm, d1: 2 * r * c0, d2: -r * r }; } else coef.zero = null;
       }
       const inside = t >= 0 && t < total;
       /* source */
-      phase += p.f0 / SR * (1 + 0.004 * noise());
+      phase += p.f0 / SR; /* no random pitch wobble: it made a hiss */
       if (phase >= 1) phase -= 1;
       const oq = 0.62; let gl;
       if (phase < oq) gl = 0.5 * (1 - Math.cos(Math.PI * phase / oq)); else gl = Math.cos(Math.PI / 2 * (phase - oq) / (1 - oq));
       const dg = gl - g1; g1 = gl;
       let av = p.av; if (p.am > 0) av *= 1 - p.am * (0.5 + 0.5 * Math.sin(2 * Math.PI * 26 * Math.max(0, t) / SR));
-      const nz = noise();
+      const nzr = noise(); nzl += 0.35 * (nzr - nzl); const nz = nzl * 1.6; /* aspiration noise, softened */
       let src = (inside ? av : 0) * dg * 14 + (inside ? p.ah : 0) * nz * 0.45;
       /* vocal tract */
       let y = src;
@@ -275,14 +276,17 @@
         const c = coef[k], q = st.y[k];
         const o = c.a * y + c.b * q[0] + c.c * q[1]; q[1] = q[0]; q[0] = o; y = o;
       }
-      if (coef.zero) { const z = coef.zero; const o = z.a * y + z.b * st.zx[0] + z.c * st.zx[1]; st.zx[1] = st.zx[0]; st.zx[0] = y; y = o; }
+      { const yin = y, z = coef.zero;
+        if (z) { y = z.n0 * yin + z.n1 * st.zx[0] + z.n2 * st.zx[1] + z.d1 * st.zy[0] + z.d2 * st.zy[1]; } else y = yin;
+        st.zx[1] = st.zx[0]; st.zx[0] = yin; st.zy[1] = st.zy[0]; st.zy[0] = y; /* history always updated, so switching on never clicks */ }
       /* nasal murmur, parallel */
       let nasal = 0;
       if (p.an > 0.01) { const c = coef.nas, q = st.nas; const o = c.a * src + c.b * q[0] + c.c * q[1]; q[1] = q[0]; q[0] = o; nasal = o * p.an * 1.4; }
       /* frication */
       let fric = 0;
       if (inside && p.af > 0.001) { const c = coef.fr, q = st.fr; const o = c.a * noise() * 0.8 + c.b * q[0] + c.c * q[1]; q[1] = q[0]; q[0] = o; fric = o * p.af * FRG; }
-      out[s] = (y * 0.22 + nasal * 0.12) * p.lv + fric;
+      const mix = (y * 0.22 + nasal * 0.12) * p.lv + fric;
+      lp1 += lpa * (mix - lp1); lp2 += lpa * (lp1 - lp2); out[s] = lp2;
     }
     /* normalize, fade */
     let pk = 0; for (let s = 0; s < N; s++) pk = Math.max(pk, Math.abs(out[s]));

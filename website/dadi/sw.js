@@ -1,8 +1,8 @@
 /* Dadi offline cache: the app's own files only. It never stores or sends contributions or sign-in tokens.
    Network first (so updates arrive), cache as the fallback (so it works offline). */
-const CACHE = 'dadi-v1';
+const CACHE = 'dadi-v2';
 const FILES = ['./', './index.html', './style.css', './config.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './data/seed.json',
-  './js/ipa-data.js', './js/synth.js', './js/g2p.js', './js/audio.js', './js/keyboard.js', './js/fsrs.umd.js', './js/srs.js', './js/store.js', './js/data.js',
+  './js/ipa-data.js', './js/synth.js', './js/native-tts.js', './js/g2p.js', './js/audio.js', './js/keyboard.js', './js/fsrs.umd.js', './js/srs.js', './js/store.js', './js/data.js',
   './js/github.js', './js/submit.js', './js/art.js', './js/app.js', '../core.js', '../items.js'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => Promise.all(FILES.map((f) => c.add(f).catch(() => null)))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', (e) => {

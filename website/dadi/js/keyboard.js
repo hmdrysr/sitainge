@@ -20,16 +20,17 @@
 
   /* api: { audio, getSpelling(): string, onChange() } ; mount(container, field) shows the keyboard for one text field. */
   function create(api) {
-    let field = null, root_ = null, familyBox, info, nearBox, lastTap = '';
+    let field = null, root_ = null, familyBox, info, nearBox, lastTap = '', caret = null;
+    /* Our own caret: the browser may reset the selection of an unfocused field when a key is pressed. */
+    const pos_ = () => Math.max(0, Math.min(caret == null ? field.value.length : caret, field.value.length));
     const insertAt = (text) => {
-      const s = field.selectionStart == null ? field.value.length : field.selectionStart, e = field.selectionEnd == null ? s : field.selectionEnd;
-      field.value = field.value.slice(0, s) + text + field.value.slice(e);
-      const p = s + text.length; field.setSelectionRange(p, p); changed();
+      const s = pos_();
+      field.value = field.value.slice(0, s) + text + field.value.slice(s);
+      caret = s + text.length; try { field.setSelectionRange(caret, caret); } catch (e) { /* ignore */ } changed();
     };
     const back = () => {
-      const s = field.selectionStart == null ? field.value.length : field.selectionStart, e = field.selectionEnd == null ? s : field.selectionEnd;
-      if (e > s) { field.value = field.value.slice(0, s) + field.value.slice(e); field.setSelectionRange(s, s); }
-      else if (s > 0) { const g = Array.from(field.value.slice(0, s)); g.pop(); const keep = g.join(''); field.value = keep + field.value.slice(s); field.setSelectionRange(keep.length, keep.length); }
+      const s = pos_();
+      if (s > 0) { const g = Array.from(field.value.slice(0, s)); g.pop(); const keep = g.join(''); field.value = keep + field.value.slice(s); caret = keep.length; try { field.setSelectionRange(caret, caret); } catch (e) { /* ignore */ } }
       changed(); refreshNear();
     };
     function changed() { field.dispatchEvent(new Event('input', { bubbles: true })); if (api.onChange) api.onChange(field.value); }
@@ -55,8 +56,9 @@
     /* "Try nearby sounds": replace the sound just before the cursor with a neighbour and hear the whole word. */
     function refreshNear() {
       nearBox.textContent = '';
-      const pos = field.selectionStart == null ? field.value.length : field.selectionStart;
+      const pos = pos_();
       const g = lastGrapheme(field.value, pos);
+      if (!g.text) { nearBox.hidden = true; return; }
       const base = g.text.normalize('NFD')[0];
       const fam = IPA.nearby(base).filter((s) => s !== base);
       if (!g.text || !fam.length) { nearBox.hidden = true; return; }
@@ -98,13 +100,15 @@
       MODS.forEach(([s, n]) => { const b = el('button', 'kk km', shown(s)); b.type = 'button'; b.title = n; b.setAttribute('aria-label', n); b.addEventListener('click', () => { tapSymbol(s, { family: false }); info.textContent = shown(s) + '  ' + n; }); mods.appendChild(b); });
       const sp = el('button', 'kk km kk-space', 'space'); sp.type = 'button'; sp.addEventListener('click', () => { insertAt(' '); refreshNear(); });
       mods.appendChild(sp);
-      const clr = el('button', 'kk km', 'clear'); clr.type = 'button'; clr.addEventListener('click', () => { field.value = ''; changed(); familyBox.hidden = true; nearBox.hidden = true; info.textContent = 'Cleared.'; });
+      const clr = el('button', 'kk km kk-clear', 'clear'); clr.type = 'button'; clr.addEventListener('click', () => { field.value = ''; caret = 0; changed(); familyBox.hidden = true; nearBox.hidden = true; info.textContent = 'Cleared.'; });
       mods.appendChild(clr);
       root_.appendChild(mods);
       return root_;
     }
     function mount(container, f) {
-      field = f; container.textContent = ''; container.appendChild(build());
+      field = f; caret = f.value.length; container.textContent = ''; container.appendChild(build());
+      const sync = () => { if (document.activeElement === field) caret = field.selectionStart; };
+      ['keyup', 'click', 'input', 'select', 'focus'].forEach((ev) => field.addEventListener(ev, sync));
       field.setAttribute('inputmode', 'none'); field.addEventListener('click', refreshNear); field.addEventListener('keyup', refreshNear);
       refreshNear();
     }

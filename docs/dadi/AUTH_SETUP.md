@@ -5,7 +5,7 @@ Dadi works without this. Do it when you want contributions to go straight to the
 ## 1. Create the GitHub App
 1. GitHub > Settings > Developer settings > GitHub Apps > New GitHub App.
 2. Name: `Dadi`. Homepage URL: your Pages address (`https://<owner>.github.io/sitainge/dadi/`).
-3. Tick **Enable Device Flow**. Untick Webhook (Active). Leave "Request user authorization during installation" off.
+3. Check **Enable Device Flow**. Uncheck Webhook (Active). Leave "Request user authorization during installation" off.
 4. Permissions > Repository permissions > **Issues: Read and write**. Nothing else. (Metadata: read-only is added automatically.)
 5. Where can this app be installed: **Only on this account**.
 6. Create. Copy the **Client ID** (starts `Iv1.` or `Iv23`). Do not generate a client secret; nothing here needs one.
