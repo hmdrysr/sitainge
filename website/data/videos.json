@@ -6,9 +6,10 @@
   "channel_url": "https://www.youtube.com/@FahadLokman",
   "topic": "phrases",
   "about": "A first language-learning class for Chittagonian, per its title.",
-  "embeddable_checked": "2026-10-08",
+  "embeddable_checked": "2026-10-07",
   "status": "unvetted",
-  "label": "Beginner class: first words and phrases"
+  "label": "Beginner class: first words and phrases",
+  "open_reports": 0
  },
  {
   "id": "TIh_y-OBsYU",
@@ -17,9 +18,10 @@
   "channel_url": "https://www.youtube.com/@Daekho",
   "topic": "explainer",
   "about": "A short video about the Chatgaiya language, per its title.",
-  "embeddable_checked": "2026-10-08",
+  "embeddable_checked": "2026-10-07",
   "status": "unvetted",
-  "label": "A short introduction to the language"
+  "label": "A short introduction to the language",
+  "open_reports": 0
  },
  {
   "id": "jgO2UgkFjk8",
@@ -28,20 +30,22 @@
   "channel_url": "https://www.youtube.com/@ilovelanguages0124",
   "topic": "explainer",
   "about": "An explainer on the Chittagonian language, identity and culture, per its title.",
-  "embeddable_checked": "2026-10-08",
+  "embeddable_checked": "2026-10-07",
   "status": "unvetted",
-  "label": "Language, identity and the spirit of Chittagong"
+  "label": "Language, identity and the spirit of Chittagong",
+  "open_reports": 0
  },
  {
   "id": "mqQ2_vyW6yw",
-  "title": "চট্টগ্রামের ভাষা শিখুন শুদ্ধ বাংলা দিয়ে - চিটিগনিয়ান ভাষা - Chittagong Language - Chatgaya Bhasha",
+  "title": "চট্রগ্রামের ভাষা শিখুন শুদ্ধ বাংলা দিয়ে - চিটিগনিয়ান ভাষা - Chittagong Language - Chatgaya Bhasha",
   "channel": "Alamin707",
   "channel_url": "https://www.youtube.com/@Alamin7070",
   "topic": "phrases",
   "about": "A lesson on Chittagong-language words and phrases, per its title.",
-  "embeddable_checked": "2026-10-08",
+  "embeddable_checked": "2026-10-07",
   "status": "unvetted",
-  "label": "Everyday phrases, step by step"
+  "label": "Everyday phrases, step by step",
+  "open_reports": 0
  },
  {
   "id": "33lGbsSfE5Y",
@@ -50,8 +54,9 @@
   "channel_url": "https://www.youtube.com/@SayedNuruzzaman",
   "topic": "phrases",
   "about": "A Chittagong-language learning video by Sayed Nuruzzaman, per its title.",
-  "embeddable_checked": "2026-10-08",
+  "embeddable_checked": "2026-10-07",
   "status": "unvetted",
-  "label": "Learning phrases with a native speaker"
+  "label": "Learning phrases with a native speaker",
+  "open_reports": 0
  }
 ]
