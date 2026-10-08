@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https:; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff">
 <meta name="description" content="A searchable dictionary of siṭaiṅga (Chittagonian), built from the project's open records. Each entry shows its level of support.">
 <title>Dictionary · siṭaiṅge</title>
 <link rel="icon" href="../icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../site.css">
+<script src="../shell.js"></script>
 <link rel="stylesheet" href="dictionary.css">
 </head>
 <body>
@@ -16,9 +18,8 @@
 <header class="bar">
   <div class="bar-in">
     <a class="brand" href="../">siṭaiṅge</a>
-    <nav class="nav" aria-label="Site">
-      <a href="./" aria-current="page">Dictionary</a><a href="../translate/">Translator</a><a href="../contribute.html">Contribute</a><a href="../dadi/">Dadi</a>
-    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-ic" aria-hidden="true"></span>Menu</button>
+    <nav class="nav" id="site-nav" aria-label="Site"><a href="../dictionary/" aria-current="page">Dictionary</a><a href="../translate/">Translator</a><a href="../contribute.html">Contribute</a><a class="cta" href="../dadi/">Dadi</a></nav>
   </div>
 </header>
 <main id="main" tabindex="-1" class="wrap page">
@@ -28,6 +29,7 @@
 <footer class="foot"><div class="wrap">
   <p id="status" class="small" role="status" aria-live="polite">Loading…</p>
   <p class="small">Entries are contributor records, not a finished dictionary. "Unassessed" means the entry has not yet been checked. Machine output is not counted as evidence. The data is in the public domain (CC0 1.0).</p>
+  <div class="theme" data-theme-control></div>
 </div></footer>
 <script src="../dadi/js/ipa-data.js"></script>
 <script src="../dadi/js/g2p.js"></script>

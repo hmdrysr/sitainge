@@ -29,7 +29,7 @@
 
   /* ---------- numbers and evidence ---------- */
   const LEVELS = [['A', 'Directly documented', '--ea'], ['B', 'Independently confirmed', '--eb'], ['C', 'Strongly supported', '--ec'], ['D', 'Proposed', '--ed'], ['E', 'Unknown', '--ee'], ['unassessed', 'Not yet assessed', '--ef']];
-  const SHADES = { A: '#0a6c74', B: '#2f8790', C: '#6fb0b7', D: '#c9a227', E: '#b5654a', unassessed: '#8a96a3' };
+  /* Level colours come from the stylesheet (classes lv-A to lv-unassessed) so they follow the colour theme. */
   function stats(seed) {
     const es = (seed.entries || []).filter((e) => e.state !== 'ARCHIVED');
     const by = {}; es.forEach((e) => { const l = e.level || 'unassessed'; by[l] = (by[l] || 0) + 1; });
@@ -41,8 +41,8 @@
     const bar = $('ev'), key = $('ev-key'); bar.textContent = ''; key.textContent = '';
     LEVELS.forEach(([k, name]) => {
       const n = by[k] || 0; if (!n) return;
-      const seg = h('i', { title: name + ': ' + n }); seg.style.width = (100 * n / es.length) + '%'; seg.style.background = SHADES[k]; bar.append(seg);
-      const sw = h('i', { class: 'sw' }); sw.style.background = SHADES[k];
+      const seg = h('i', { class: 'lv-' + k, title: name + ': ' + n }); seg.style.width = (100 * n / es.length) + '%'; bar.append(seg);
+      const sw = h('i', { class: 'sw lv-' + k });
       key.append(h('li', null, sw, h('b', null, num(n)), (k === 'unassessed' ? '' : 'Level ' + k + ': ') + name.toLowerCase()));
     });
     bar.setAttribute('aria-label', 'Entries by evidence level: ' + LEVELS.filter(([k]) => by[k]).map(([k, n]) => by[k] + ' ' + n.toLowerCase()).join(', '));

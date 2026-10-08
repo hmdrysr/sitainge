@@ -6,12 +6,13 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#0a6c74">
+<meta name="theme-color" content="#ffffff">
 <title>Contribute · siṭaiṅge</title>
 <meta name="description" content="Contribute words and sentences in siṭaiṅga (Chittagonian) on a form that works offline. Nothing is sent until you choose to share it.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="site.css">
+<script src="shell.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,9 +20,8 @@
 <header class="bar">
   <div class="bar-in">
     <a class="brand" href="./">siṭaiṅge</a>
-    <nav class="nav" aria-label="Site">
-      <a href="dictionary/">Dictionary</a><a href="translate/">Translator</a><a href="contribute.html" aria-current="page">Contribute</a><a href="dadi/">Dadi</a>
-    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-ic" aria-hidden="true"></span>Menu</button>
+    <nav class="nav" id="site-nav" aria-label="Site"><a href="dictionary/">Dictionary</a><a href="translate/">Translator</a><a href="contribute.html" aria-current="page">Contribute</a><a class="cta" href="dadi/">Dadi</a></nav>
   </div>
 </header>
 <div class="wrap page form">
@@ -31,6 +31,7 @@
 <footer class="foot"><div class="wrap">
   <p>Nothing leaves your device until you choose to share it. The page uses no sign-up, no tracking and no cookies. People review everything contributed before it is used, and nothing is accepted automatically.</p>
   <p><a href="https://github.com/hmdrysr/sitainge" rel="noopener noreferrer">Project on GitHub</a> · Public domain (CC0 1.0) if published</p>
+  <div class="theme" data-theme-control></div>
 </div></footer>
 <script src="config.js"></script>
 <script src="items.js"></script>

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Project site reorganized: region and map first, one aligned header with a Menu sheet on narrow screens, brighter blue palette, Auto/Light/Dark control (D-049).
 - Copy rewritten in Canadian academic and professional English across the site, Dadi, extension and documentation (D-045). Project header reads siṭaiṅge.
 - One icon family, Tabler Icons; decorative illustration and `art.js` removed (D-046).
 - Dadi learning path redesigned from teaching research: theme units, retrieval-first lesson flow, honest progress (D-047).

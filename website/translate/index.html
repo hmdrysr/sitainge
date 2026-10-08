@@ -6,10 +6,12 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https: 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff">
 <title>Translator · siṭaiṅge</title>
 <meta name="description" content="A draft English to siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. The output is unverified. It runs in the browser.">
 <link rel="icon" href="../icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../site.css">
+<script src="../shell.js"></script>
 <link rel="stylesheet" href="translate.css">
 </head>
 <body>
@@ -17,9 +19,8 @@
 <header class="bar">
   <div class="bar-in">
     <a class="brand" href="../">siṭaiṅge</a>
-    <nav class="nav" aria-label="Site">
-      <a href="../dictionary/">Dictionary</a><a href="./" aria-current="page">Translator</a><a href="../contribute.html">Contribute</a><a href="../dadi/">Dadi</a>
-    </nav>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-ic" aria-hidden="true"></span>Menu</button>
+    <nav class="nav" id="site-nav" aria-label="Site"><a href="../dictionary/">Dictionary</a><a href="../translate/" aria-current="page">Translator</a><a href="../contribute.html">Contribute</a><a class="cta" href="../dadi/">Dadi</a></nav>
   </div>
 </header>
 <main id="main" tabindex="-1" class="wrap page tr">
@@ -49,7 +50,9 @@
 </ul>
 <p id="src" class="small"></p>
 </main>
-<footer class="foot"><div class="wrap"><p class="small">The data is in the public domain (CC0 1.0). The page uses no tracking and no accounts. Typed text stays in the browser; only the project's public dictionary files are downloaded.</p></div></footer>
+<footer class="foot"><div class="wrap"><p class="small">The data is in the public domain (CC0 1.0). The page uses no tracking and no accounts. Typed text stays in the browser; only the project's public dictionary files are downloaded.</p>
+  <div class="theme" data-theme-control></div>
+</div></footer>
 <script src="../dadi/js/ipa-data.js"></script>
 <script src="../dadi/js/g2p.js"></script>
 <script src="../dadi/js/native-tts.js"></script>
