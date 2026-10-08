@@ -39,5 +39,6 @@ By submitting a contribution through the public forms, the contributor confirms 
 | nuhil/bangladesh-geocode, aiFdn/Postcodes-of-Bangladesh | `website/data/admin.json` | MIT |
 | Facts from Wikipedia | `website/data/*.json` | CC BY-SA 4.0 (facts only, each source linked) |
 | eSpeak NG (optional) | `website/dadi/vendor/espeak-ng/` | GPL-3.0-or-later, separate from the CC0 dedication |
+| ChatgaiyyaBench and ChatgaiyyaAlap word forms | `rosetta/2026-10-08-chatgaiyya-bangla-script-forms.jsonl` | CC BY 4.0 per the owner's scrape (attribution required; compatibility with the CC0 dedication not confirmed, so records are research-only) |
 
 The Fluent Emoji and Lucide icon sets named in the first version of this table were replaced by Tabler Icons on October 8, 2026 (decision D-046).
