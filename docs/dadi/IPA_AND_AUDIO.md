@@ -1,6 +1,6 @@
 # IPA and audio in Dadi
 
-Dadi makes no sound of its own. There is no text-to-speech, no computer voice and no synthesizer (D-050). No machine voice can say siṭaiṅga correctly, and an approximation can teach a wrong pronunciation.
+Lessons make no sound of their own (D-050). A lesson shows a listen button only when a public recording exists. Outside lessons (IPA keyboard and chart, translator, word sheets, dictionary) Dadi offers sound-alike text-to-speech (D-057), which is an approximation and not a pronunciation guide. No machine voice can say siṭaiṅga correctly.
 
 ## IPA
 
@@ -20,4 +20,3 @@ Audio files stay out of Git by default (`schemas/recording.schema.json`), so a r
 ## Not yet done
 
 - No recording exists, so the Listen button has not been tested against a real file.
-- The unused files `website/dadi/js/synth.js`, `native-tts.js`, `espeak.js` and the folder `website/dadi/vendor/espeak-ng/` (about 18 MB) can be deleted. Nothing loads them.

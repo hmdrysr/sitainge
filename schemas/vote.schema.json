@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Community vote on a lexical entry (one line of votes/votes.jsonl)",
+  "description": "A vote is a signal, not evidence. The effective vote is the latest vote per voter, entry and kind; an agree and a disagree from one voter count once, on the later of the two. Rows without a voter identity are ignored. scripts/votes_check.py enforces this schema.",
+  "type": "object",
+  "required": ["id", "entry_id", "kind", "spelling", "region", "voter", "date", "origin", "note"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^CTG-VOTE-[0-9]{5,}$"},
+    "entry_id": {"type": "string", "pattern": "^CTG-LEX-((RAW|REV|ACC|ARC)-)?[0-9]{5}$"},
+    "kind": {"enum": ["agree", "disagree", "spelling"]},
+    "spelling": {"type": ["string", "null"], "maxLength": 80, "description": "Required for kind spelling; must be null otherwise. No control characters."},
+    "region": {"type": ["string", "null"], "maxLength": 80, "description": "Free text such as north, south, city, rural."},
+    "voter": {"type": ["string", "null"], "pattern": "^github:[a-z0-9][a-z0-9-]{0,38}$", "description": "Lower-case GitHub login. Null or missing means the vote is ignored."},
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "origin": {"type": "string", "pattern": "^(manual|issue#[0-9]+)$"},
+    "note": {"type": "string", "maxLength": 500}
+  },
+  "additionalProperties": false
+}

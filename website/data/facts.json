@@ -71,123 +71,6 @@
  },
  "districts": [
   {
-   "name": "Brahmanbaria",
-   "hq": "Brahmanbaria",
-   "area_km2": 1881.2,
-   "population": 3306563,
-   "census": 2022,
-   "upazilas": 9,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Brahmanbaria_District"
-   ]
-  },
-  {
-   "name": "Cumilla",
-   "hq": "Cumilla",
-   "area_km2": 3146.3,
-   "population": 6212216,
-   "census": 2022,
-   "upazilas": 18,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Comilla_District"
-   ]
-  },
-  {
-   "name": "Chandpur",
-   "hq": "Chandpur",
-   "area_km2": 1645.32,
-   "population": 2635748,
-   "census": 2022,
-   "upazilas": null,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Chandpur_District"
-   ]
-  },
-  {
-   "name": "Lakshmipur",
-   "hq": "Lakshmipur",
-   "area_km2": 1440.39,
-   "population": 1938111,
-   "census": 2022,
-   "upazilas": null,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Lakshmipur_District"
-   ]
-  },
-  {
-   "name": "Noakhali",
-   "hq": "Maijdee (Noakhali Sadar)",
-   "area_km2": 3685.87,
-   "population": 3625252,
-   "census": 2022,
-   "upazilas": 9,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Noakhali_District"
-   ]
-  },
-  {
-   "name": "Feni",
-   "hq": "Feni",
-   "area_km2": 990.36,
-   "population": 1648896,
-   "census": 2022,
-   "upazilas": 6,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Feni_District"
-   ]
-  },
-  {
-   "name": "Khagrachhari",
-   "hq": "Khagrachhari",
-   "area_km2": 2749.16,
-   "population": 714119,
-   "census": 2022,
-   "upazilas": 9,
-   "note": null,
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Khagrachhari_District"
-   ]
-  },
-  {
-   "name": "Rangamati",
-   "hq": "Rangamati",
-   "area_km2": 6116.11,
-   "population": 647587,
-   "census": 2022,
-   "upazilas": 10,
-   "note": "Chittagonian is also used here for trade, alongside local languages.",
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Rangamati_Hill_District"
-   ]
-  },
-  {
-   "name": "Bandarban",
-   "hq": "Bandarban",
-   "area_km2": 4479.01,
-   "population": 481109,
-   "census": 2022,
-   "upazilas": 7,
-   "note": "Chittagonian is also used here for trade, alongside local languages.",
-   "sources": [
-    "https://en.wikipedia.org/wiki/Chittagong_Division",
-    "https://en.wikipedia.org/wiki/Bandarban_District"
-   ]
-  },
-  {
    "name": "Chittagong",
    "hq": "Chittagong",
    "area_km2": 5282.92,
@@ -237,7 +120,6 @@
     "13 city corporations (including Chittagong) and 330 municipalities."
    ]
   ],
-  "hill": "Rangamati, Bandarban and Khagrachhari have their own district councils. A Regional Council made up of those councils was set up under the peace accord of December 2, 1997.",
   "national": "Bangladesh is a unitary parliamentary republic with a single parliament, the Jatiya Sangsad, of 350 members.",
   "sources": [
    "https://en.wikipedia.org/wiki/Administrative_geography_of_Bangladesh",
@@ -259,13 +141,6 @@
    "source": "https://en.wikipedia.org/wiki/Karnaphuli_River"
   },
   {
-   "text": "Kaptai Dam (1962) created Kaptai Lake, described as the largest artificial lake in Bangladesh. Its hydroelectric station has an output of 230 MW.",
-   "source": [
-    "https://en.wikipedia.org/wiki/Karnaphuli_River",
-    "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
-   ]
-  },
-  {
    "text": "University of Chittagong was established on November 18, 1966. Its campus at Hathazari covers about 936 hectares (2,312 acres).",
    "source": "https://en.wikipedia.org/wiki/University_of_Chittagong"
   },
@@ -278,16 +153,8 @@
    "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
   },
   {
-   "text": "Keokradong, in Bandarban District, is 986 m high and is described as one of the highest peaks in Bangladesh. The source names other claimants for the highest point.",
-   "source": "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
-  },
-  {
    "text": "Saint Martin's Island, the southernmost part of the country, is known locally as Narkel Dweep (Coconut Island). It is described as Bangladesh's only coral island.",
    "source": "https://en.wikipedia.org/wiki/Saint_Martin%27s_Island"
-  },
-  {
-   "text": "The 2022 census lists 11 ethnic groups in the Chittagong Hill Tracts, including Chakma, Marma, Tripura, Mro and Tanchangya. The source cites at least 11 distinct Indigenous languages.",
-   "source": "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
   }
  ],
  "map_credit": "Boundaries: Bangladesh Bureau of Statistics via OCHA ROAP and geoBoundaries (CC BY 3.0 IGO), simplified.",

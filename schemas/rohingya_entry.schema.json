@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Rohingya romanized entry (separate from the Chittagonian layer)",
+  "description": "Rohingya (ISO 639-3 rhg) is a different language from Chittagonian. Records here are unverified published text and must never be presented or searched as Chittagonian.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "language",
+    "language_name",
+    "state",
+    "unit",
+    "form_as_submitted",
+    "english_gloss",
+    "source",
+    "evidence_level",
+    "confidence",
+    "ai_assisted",
+    "provenance",
+    "consent",
+    "licence_note"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^RHG-(WRD|SEN)-RAW-[0-9]{5}$"
+    },
+    "language": {
+      "enum": [
+        "rhg"
+      ]
+    },
+    "language_name": {
+      "enum": [
+        "Rohingya"
+      ]
+    },
+    "state": {
+      "enum": [
+        "RAW"
+      ]
+    },
+    "unit": {
+      "enum": [
+        "word",
+        "phrase",
+        "sentence"
+      ]
+    },
+    "form_as_submitted": {
+      "type": "string"
+    },
+    "spellings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ipa": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ipa_status": {
+      "enum": [
+        "none",
+        "speaker-described",
+        "speaker-chosen-by-ear",
+        "audio-transcribed",
+        "phonetician-verified",
+        "ai-drafted-unverified",
+        null
+      ],
+      "description": "How the ipa field was obtained. Required whenever ipa is not null."
+    },
+    "ipa_source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "english_gloss": {
+      "type": "string",
+      "description": "The source's own English gloss, or 'unglossed in source'."
+    },
+    "part_of_speech": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "example_sentence": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "region": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "form_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^SRC-RHG-[A-Z0-9-]+$"
+    },
+    "evidence_level": {
+      "enum": [
+        "unassessed"
+      ]
+    },
+    "confidence": {
+      "type": "string"
+    },
+    "ai_assisted": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "submitted_by",
+        "date_submitted",
+        "origin",
+        "decision_history"
+      ]
+    },
+    "consent": {
+      "enum": [
+        "research-only"
+      ]
+    },
+    "licence_note": {
+      "type": "string"
+    }
+  }
+}

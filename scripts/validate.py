@@ -58,6 +58,23 @@ try:
     for _k, _n in _counts.items(): print(f"{_n} {_k} records checked")
 except FileNotFoundError as _x:
     errors.append(f"schema file missing for a new record type: {_x}")
+# BEGIN votes and consensus rules (stage22): structural checks only; delete this block to remove them
+try:
+    import votes_check
+    _e, _w, _n = votes_check.check_votes(".", ids)
+    errors += _e; warnings += _w
+    print(f"{_n} vote records checked")
+except ImportError:
+    pass
+# END votes and consensus rules (stage22)
+# Rohingya romanized corpus (stage21): separate language layer, checked on its own.
+try:
+    import rohingya_check
+    _e, _w, _n = rohingya_check.check_rohingya(".")
+    errors += _e; warnings += _w
+    if _n: print(f"{_n} Rohingya (rhg) records checked")
+except ImportError:
+    pass
 print(f"{len(aud_ids)} audio catalogue entries")
 print(f"{len(ids)} records checked; {len(errors)} errors; {len(warnings)} warnings")
 for m in errors: print("ERROR  ", m)

@@ -22,3 +22,9 @@ Status: empty. The Bangla column may only be filled by a Chittagonian speaker wh
 - Records already present from the earlier file were skipped. Records with a Latin form went to the lexicon instead.
 - Every record is RAW and unassessed. The English glosses come from the dataset compilers and some look loose; a speaker needs to check them.
 - The source licence is CC BY 4.0 as stated in the ChatgaiyyaBench README. Compatibility with the CC0 dedication is not confirmed.
+
+## Additions, October 8, 2026 (sentence pairs)
+
+- `2026-10-08-chatgaiya-sentence-pairs.jsonl`: 6,490 Chittagonian sentences in Bangla script from the Vashantor and ChatgaiyyaAlap data, each with the compilers' Standard Bangla sentence in `standard_bangla`, an English translation where the source gives one, and, for Vashantor, the Latin spelling in `latin_form` and a `lexicon_ref` to the matching lexicon record. CC BY 4.0 per the ChatgaiyyaBench README.
+- `2026-10-08-sihabsafin-thesis-pairs.jsonl` (3,547) and `2026-10-08-shobuz-nsu-dialect-pairs.jsonl` (784): Bangla-script Chittagonian and Standard Bangla sentence pairs from two public GitHub projects. The Shobuz project states only "academic and research purposes", so check its terms before any reuse and drop it if they do not fit. See `docs/research-gaps/ctg-sentences-2026-10-08.md`.
+- `standard_bangla` is a Standard Bangla sentence, not Chittagonian. It sits in its own field so it cannot be mistaken for a Chittagonian form.

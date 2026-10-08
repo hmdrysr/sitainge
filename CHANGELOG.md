@@ -1,7 +1,10 @@
 # Changelog
 
 ## Unreleased
-- Dadi no longer produces any computer voice (D-050). Device text-to-speech, the eSpeak NG voice and the built-in synthesizer are removed from lessons, the word sheet, the translator page, the IPA keyboard and chart, and settings. A Listen button appears only on an entry that has a public recording; otherwise no sound button is shown.
+- Rohingya romanized corpus (4,708 unverified records) in its own layer with a dictionary switch (D-060); Bandarban and other districts removed from map and facts (D-058); sentences classified correctly in Dadi (D-059); Rosetta sentence pairs added (about 10,800), with licence cautions in `docs/research-gaps/`.
+- Voting and consensus (D-055, D-056): Dadi votes arrive as `[Vote]` GitHub issues and are recorded in `votes/votes.jsonl` by `scripts/ingest_votes.py`. `scripts/consensus.py` computes two separate labels into `website/data/consensus.json`: auto-confirmed by consensus (two independent source groups agree) and community consensus (5 voters, 80% agreement). Neither is verification or endorsement, and neither changes an evidence level. Rules and source independence groups are in `schemas/consensus_rules.json`; policy in `docs/protocols/voting-and-consensus.md`.
+- Dadi tools workflow gains `ingest-votes` and `consensus` tasks; `consensus` also runs after `unpack-zip` and `ingest-votes`. `validate.py` checks vote rows and the rules file.
+- Lessons in Dadi play no computer voice (D-050, amended by D-057). Sound-alike text-to-speech is restored for the IPA keyboard and chart, translator, word sheets and dictionary. A listen button appears in lessons only when a public recording exists.
 - Dictionary rebuilt with typo-tolerant search, a detail sheet, filters and a browse mode (D-051).
 - Teach tab gains a discovery card with random words and sentences to check or add (D-052). Answers are local family notes, not verification.
 - The site's colour theme is now a day and night button in the header instead of a footer control (D-053). Videos show YouTube thumbnails, with a plain tile when the image cannot load (D-054).

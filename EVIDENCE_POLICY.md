@@ -42,3 +42,6 @@ AI may suggest transcriptions, duplicates, similarities, formatting and search r
 
 ## No popularity voting
 Stars, likes and majority clicks are not evidence. The project records confirmation speaker by speaker instead (A confirmed, B confirmed, C not recognized).
+
+## Consensus labels
+Two labels describe agreement and are computed by `scripts/consensus.py`: **auto-confirmed by consensus** (records from at least two independent source groups give the same meaning and a similar form) and **community consensus** (enough distinct GitHub accounts voted and most agreed). They are orthogonal to the evidence levels A to E. They never raise or lower a level, never change a state, never change `ipa_status`, and are not verification and not endorsement. An entry can be auto-confirmed and still be `unassessed`. Only a speaker or phonetician can verify, and only a reviewer can endorse or accept. Independence between sources is a judgement from metadata and can be wrong. Votes are signals recorded by account, not evidence, which is consistent with the rule above that popularity is not evidence. See `docs/protocols/voting-and-consensus.md`.

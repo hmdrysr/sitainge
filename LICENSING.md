@@ -21,7 +21,7 @@ Because CC0 is permanent, only material that its owner and speaker are content t
 - A contributor who is unsure should choose "discuss first" on the submission form, and nothing will be published.
 
 ## Third-party software shipped with the site
-`website/dadi/vendor/espeak-ng/` contains eSpeak NG (GPL-3.0-or-later), compiled to WebAssembly, with its licence and notice beside it. It is no longer loaded by Dadi (D-050) and can be deleted. It was an optional voice, separate from the CC0 material. It can be removed by deleting that folder and `website/dadi/js/espeak.js` (D-033). `website/dadi/js/fsrs.umd.js` is ts-fsrs (MIT). Map outlines come from geoBoundaries and OCHA ROAP (CC BY 3.0 IGO), and the landing page credits them. Photos are Wikimedia Commons files under their own licences. They are hotlinked and credited, not copied into the repository.
+`website/dadi/vendor/espeak-ng/` contains eSpeak NG (GPL-3.0-or-later), compiled to WebAssembly, with its licence and notice beside it. It is loaded by Dadi outside lessons (D-057). It was an optional voice, separate from the CC0 material. It can be removed by deleting that folder and `website/dadi/js/espeak.js` (D-033). `website/dadi/js/fsrs.umd.js` is ts-fsrs (MIT). Map outlines come from geoBoundaries and OCHA ROAP (CC BY 3.0 IGO), and the landing page credits them. Photos are Wikimedia Commons files under their own licences. They are hotlinked and credited, not copied into the repository.
 
 ## Contributor dedication
 By submitting a contribution through the public forms, the contributor confirms that they wrote or recorded it (or have the right to share it) and dedicates it to the public domain under CC0 1.0. This replaces the earlier plan for per-material licences. A plain-language contributor agreement must still be drafted. It will cover what is submitted, how it may be used, the limits on withdrawal, archival preservation and AI use.
@@ -38,7 +38,7 @@ By submitting a contribution through the public forms, the contributor confirms 
 | geoBoundaries gbOpen Bangladesh ADM2-4 | `website/data/map-admin.json` | CC BY 3.0 IGO (credit shown on the map) |
 | nuhil/bangladesh-geocode, aiFdn/Postcodes-of-Bangladesh | `website/data/admin.json` | MIT |
 | Facts from Wikipedia | `website/data/*.json` | CC BY-SA 4.0 (facts only, each source linked) |
-| eSpeak NG (unused; can be deleted) | `website/dadi/vendor/espeak-ng/` | GPL-3.0-or-later, separate from the CC0 dedication |
+| eSpeak NG | `website/dadi/vendor/espeak-ng/` | GPL-3.0-or-later, separate from the CC0 dedication |
 | ChatgaiyyaBench and ChatgaiyyaAlap word forms | `rosetta/2026-10-08-chatgaiyya-bangla-script-forms.jsonl` | CC BY 4.0 per the owner's scrape (attribution required; compatibility with the CC0 dedication not confirmed, so records are research-only) |
 
 The Fluent Emoji and Lucide icon sets named in the first version of this table were replaced by Tabler Icons on October 8, 2026 (decision D-046).

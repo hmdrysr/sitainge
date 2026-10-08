@@ -36,7 +36,7 @@ website/dadi/
   js/
     ipa-data.js     vowels (F1-F3), consonants (manner/place/voice), approximations, key layout
     synth.js        formant synthesizer, WAV export (pure JS, runs in Node for tests)
-    espeak.js       UNUSED since D-050 (delete); was an optional clear offline voice (eSpeak NG, GPL, vendor/espeak-ng/, removable)
+    espeak.js       optional clear offline voice outside lessons (D-057) (eSpeak NG, GPL, vendor/espeak-ng/, removable)
     translate.js    English to siṭaiṅga lookup from the project's words; page bookmarklet
     ai.js           connect your own AI (key stays in the browser, never exported)
     native-tts.js   device voice: IPA to a sound-alike script (Bangla or Devanagari) that a device voice can read
@@ -110,7 +110,7 @@ Verified: the code runs in a headless browser with mocked GitHub (scrape, lesson
 Not verified: how the voice sounds to a Chittagonian ear; a real GitHub App and relay; real phones and browsers other than headless Chromium; an accessibility audit with a screen reader.
 
 ## Roadmap, in order
-1. Replace the synthetic voice with real speaker recordings (separate audio consent, already modelled in `audio/`). Play the recording when one exists, and keep the synthesizer for the keyboard.
+1. Add real speaker recordings (separate audio consent, already modelled in `audio/`). Lessons play only recordings; the synthesizer serves the keyboard, chart, translator and dictionary.
 2. Tune the synthesizer with a phonetician. Chittagonian-specific sounds (aspiration, implosives, nasal vowels, tones) need expert review. Do not "fix" them by guessing.
 3. Have a steward review `website/data/themes.json` (units and frequency ranks are hand-set and unreviewed), then add listening and ear-training exercises once recordings from several speakers exist.
 4. Add a reviewer view inside the app that shows RAW items and records second-speaker agreement. This should follow only after reviewers are appointed (see `GOVERNANCE.md`).

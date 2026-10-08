@@ -36,8 +36,10 @@
 <div id="detail" class="detail" hidden></div>
 <div class="row">
   <button id="copy" class="btn primary" type="button">Copy</button>
+  <button id="listen" class="btn" type="button">Play approximate sound</button>
   <a id="suggest" class="btn" href="https://github.com/hmdrysr/sitainge/issues/new" target="_blank" rel="noopener noreferrer">Suggest a missing word</a>
 </div>
+<p id="tts" class="note" hidden></p>
 <p class="note">Words with a dotted underline were found in the dictionary. Select one to see the English original, its source entry and its evidence level. Words with a red wavy underline were not found. Every level shown is unverified unless the project has assessed it. AI output is not counted as evidence.</p>
 
 <h2 id="extension">Translate a web page</h2>
@@ -52,6 +54,7 @@
 </div></footer>
 <script src="../dadi/js/ipa-data.js"></script>
 <script src="../dadi/js/g2p.js"></script>
+<script src="../dadi/js/native-tts.js"></script>
 <script src="../dadi/js/data.js"></script>
 <script src="../dadi/js/translate.js"></script>
 <script src="translate.js"></script>

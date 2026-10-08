@@ -7,8 +7,11 @@
 #   ingest-issue turn one Dadi contribution issue into RAW records and open a pull request
 #   check-videos check every listed video still plays, count open reports, hide flagged or missing ones (runs weekly too)
 #   update-media find new freely licensed photos on Wikimedia Commons and credit them (runs weekly too)
+#   ingest-votes add open "[Vote]" issues (label: vote) to votes/votes.jsonl, comment on and close each one, then run consensus
+#   consensus    recompute website/data/consensus.json and reports/consensus-report.md (runs after unpack-zip and ingest-votes too)
 # Contribution issues titled "[Dadi] ..." are ingested automatically when they are opened.
 # Nothing is ever accepted automatically: records enter as RAW, unverified. A steward reviews the pull request.
+# Votes and consensus labels are signals only. They never change an evidence level or a state (docs/protocols/voting-and-consensus.md).
 # Optional: repository variable DADI_AUTOMERGE = true merges those pull requests on their own (RAW only).
 # Optional: repository secret WORKFLOW_PAT (fine-grained token, Contents and Workflows: write) lets unpack-zip also
 # install changed workflow files. Without it, GitHub refuses any automated change to .github/workflows.
@@ -20,7 +23,7 @@ on:
         description: What to do
         type: choice
         required: true
-        options: [unpack-zip, check-data, rebuild-seed, deploy-site, ingest-issue, check-videos, update-media, rebuild-icons]
+        options: [unpack-zip, check-data, rebuild-seed, deploy-site, ingest-issue, check-videos, update-media, rebuild-icons, ingest-votes, consensus]
       issue:
         description: Issue number (ingest-issue only)
         required: false
@@ -64,6 +67,79 @@ jobs:
           git commit -m "Unpack update zip (Dadi tools)"
           git push
           gh workflow run "Deploy site"
+  votes:
+    if: github.event_name == 'workflow_dispatch' && inputs.task == 'ingest-votes'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    concurrency:
+      group: dadi-votes
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: List open vote issues
+        run: |
+          # Issues labelled "vote", plus open issues titled "[Vote] ...": GitHub drops labels set by people without triage access.
+          # Pull requests are left out. Titles and bodies are only ever read as data by scripts/ingest_votes.py.
+          gh api --paginate "repos/$GITHUB_REPOSITORY/issues?state=open&per_page=100" | jq -s 'add // [] | map(select((.pull_request | not) and ((.title | startswith("[Vote]")) or any(.labels[]?; .name == "vote"))))' > issues.json
+          echo "Open vote issues: $(jq length issues.json)"
+      - name: Add the votes
+        run: |
+          python3 scripts/ingest_votes.py issues.json --result ingest-result.json
+          python3 scripts/validate.py
+      - name: Commit the votes
+        run: |
+          git config user.name "dadi-votes"; git config user.email "actions@users.noreply.github.com"
+          git add votes/votes.jsonl
+          git diff --cached --quiet && { echo "No new votes."; exit 0; }
+          git commit -m "Add votes from GitHub issues (Dadi tools)"
+          git pull --rebase
+          git push
+      - name: Comment on and close the issues
+        run: |
+          # The comment text comes from scripts/ingest_votes.py, never from the issue itself.
+          jq -c '.[] | select(.number != null)' ingest-result.json | while read -r row; do
+            n=$(echo "$row" | jq -r '.number'); msg=$(echo "$row" | jq -r '.message'); out=$(echo "$row" | jq -r '.outcome')
+            case "$n" in ''|*[!0-9]*) continue;; esac
+            gh issue comment "$n" --body "$msg" || true
+            if [ "$out" = "added" ] || [ "$out" = "already" ]; then gh issue close "$n" --reason completed || true; else gh issue close "$n" --reason "not planned" || true; fi
+          done
+  consensus:
+    needs: [unpack, votes]
+    if: ${{ !cancelled() && ((github.event_name == 'workflow_dispatch' && inputs.task == 'consensus') || needs.unpack.result == 'success' || needs.votes.result == 'success') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    concurrency:
+      group: dadi-consensus
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Recompute consensus
+        run: |
+          if python3 scripts/consensus.py --check; then echo "Consensus already up to date."; exit 0; fi
+          python3 scripts/consensus.py
+      - name: Commit and publish
+        run: |
+          git config user.name "github-actions"; git config user.email "github-actions@users.noreply.github.com"
+          git add website/data/consensus.json reports/consensus-report.md
+          git diff --cached --quiet && { echo "Nothing changed."; exit 0; }
+          git commit -m "Recompute consensus labels (Dadi tools)"
+          git pull --rebase
+          git push
+          gh workflow run "Deploy site"
   check:
     if: github.event_name == 'workflow_dispatch' && inputs.task == 'check-data'
     runs-on: ubuntu-latest
@@ -79,6 +155,8 @@ jobs:
       - run: node scripts/tests/dadi_translate_test.js
       - run: node scripts/tests/dadi_learn_test.js
       - run: python3 scripts/tests/test_new_records.py
+      - run: python3 scripts/tests/test_consensus.py
+      - run: python3 scripts/consensus.py --check
       - run: python3 scripts/update_media.py --selftest
   seed:
     if: github.event_name == 'workflow_dispatch' && inputs.task == 'rebuild-seed'

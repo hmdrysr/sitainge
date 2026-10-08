@@ -1,7 +1,7 @@
 /* Translator page logic (CC0). No inline script, no tracking. Typed text never leaves the browser. */
 (function () {
   'use strict';
-  const D = window.DadiData, T = window.DadiTranslate, $ = (id) => document.getElementById(id);
+  const D = window.DadiData, T = window.DadiTranslate, N = window.DadiNativeTTS, $ = (id) => document.getElementById(id);
   const REPO = 'hmdrysr/sitainge', BRANCH = 'main', KEY = 'sitainga.translator.glossary', HOUR = 36e5, DAY = 24 * HOUR;
   const LOCAL = '../dadi/data/glossary.json';
   let G = null, last = null;
@@ -56,6 +56,12 @@
     if (!last) return; const t = T.plain(last);
     try { await navigator.clipboard.writeText(t); $('copy').textContent = 'Copied'; } catch (e) { const r = document.createRange(); r.selectNodeContents($('out')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $('copy').textContent = 'Text selected; copy it manually'; }
     setTimeout(() => { $('copy').textContent = 'Copy'; }, 1800);
+  };
+  $('listen').onclick = async () => {
+    const t = $('tts'); if (!last) return;
+    if (!N.supported() || !(await N.ready(1500))) { t.hidden = false; t.textContent = 'No voice is available on this device. Nothing was played.'; return; }
+    t.hidden = false; t.textContent = 'Playing with the device voice. As far as the project knows, no device voice supports siṭaiṅga, so the sound is an approximation and not a speaker\'s pronunciation.';
+    for (const p of last.parts) { if (p.t !== 'hit') continue; const pr = D.pronunciation({ spellings: [p.out], form: p.out }); if (pr.complete && pr.ipa) { const r = await N.speak(pr.ipa, {}); if (!r.ok) { t.textContent = r.reason || 'Playback stopped.'; return; } } }
   };
 
   /* bookmarklet: loads the project's translate.js and dictionary from this site, replaces words, keeps an Undo button */
