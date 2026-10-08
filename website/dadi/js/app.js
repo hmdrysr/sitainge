@@ -7,10 +7,12 @@
   const S = () => Store.state;
   const audio = DadiAudio.create({ settings: () => S().settings });
   const gh = DadiGitHub.create({ clientId: CFG.githubClientId, relayUrl: CFG.relayUrl, repo: CFG.repo });
-  const Data = DadiData, Srs = DadiSrs, Art = DadiArt;
+  const Data = DadiData, Srs = DadiSrs, Art = DadiArt, Icons = DadiIcons;
+  const pic = (g) => Icons.find(g) || Art.art(g);
+  const mascot = () => Icons.get('sparkles') || Art.dadi();
   let index = Data.buildIndex([]), lessonList = [], repoInfo = { from: 'none', at: null, errors: [], err: null };
   const main = document.getElementById('app'), layer = document.getElementById('layer'), dock = document.getElementById('kbdock');
-  const kb = DadiKeyboard.create({ audio: { play: (t) => audio.play(t), playSymbol: (t) => audio.playSymbol(t) }, close: () => closeKeyboard() });
+  const kb = DadiKeyboard.create({ audio: { play: (t) => audio.play(t), playSymbol: (t) => audio.playSymbol(t) }, close: () => closeKeyboard(), suggest: (w) => wordSuggestions(w) });
 
   /* ---------- small helpers ---------- */
   function h(tag, props) {
@@ -80,6 +82,37 @@
   function setEntries(entries) {
     index = Data.buildIndex(entries.map((e) => { const c = Object.assign({}, e); delete c._fold; delete c._pron; delete c._trust; return c; }));
     lessonList = Data.lessons(index);
+  }
+  /* ---------- whole-word suggestions for the keyboard ---------- */
+  const foldW = (t) => String(t || '').normalize('NFD').toLowerCase().replace(/[̀-ͯ]/g, '').replace(/ɡ/g, 'g').replace(/[ːˑʰʱʲʷˈˌ.'’\-]/g, '').replace(/[^\p{L}]/gu, '');
+  function lev(a, b, max) {
+    if (Math.abs(a.length - b.length) > max) return max + 1;
+    let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) { const cur = [i]; let best = i; for (let j = 1; j <= b.length; j++) { const v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); cur.push(v); if (v < best) best = v; } if (best > max) return max + 1; prev = cur; }
+    return prev[b.length];
+  }
+  let sugCache = { key: -1, list: [] };
+  function wordSuggestions(word) {
+    const w = foldW(word); if (w.length < 2) return [];
+    if (sugCache.key !== index.all.length) {
+      sugCache = { key: index.all.length, list: index.playable().filter((e) => e.kind === 'word' && e._pron && e._pron.complete && e._pron.ipa).map((e) => ({ id: e.id, ipa: e._pron.ipa, keys: [foldW(e._pron.ipa), foldW(e.spellings[0] || e.form)].filter(Boolean), gloss: e.gloss, rank: e._trust || 0 })) };
+    }
+    const max = w.length > 4 ? 2 : 1, out = [];
+    for (const c of sugCache.list) {
+      let best = 99;
+      for (const k of c.keys) { const d = k.startsWith(w) ? (k.length - w.length) * 0.4 : lev(w, k, max); if (d < best) best = d; }
+      if (best <= max + (w.length > 3 ? 1.2 : 0.2)) out.push({ c, d: best });
+    }
+    out.sort((a, b) => a.d - b.d || b.c.rank - a.c.rank);
+    const seen = new Set(); return out.filter((x) => { if (seen.has(x.c.ipa)) return false; seen.add(x.c.ipa); return true; }).slice(0, 6).map((x) => ({ ipa: x.c.ipa, gloss: x.c.gloss }));
+  }
+  /* Live data: the project's own files on GitHub first, so a correction in the repository shows up without a new release.
+     The last good copy is kept on this device and the bundled copy is the fallback. */
+  async function repoJSON(path, local) {
+    const key = 'dadi.cache.' + path, one = async (u, ms) => { const ac = new AbortController(), t = setTimeout(() => ac.abort(), ms); try { const r = await fetch(u, { signal: ac.signal }); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); } finally { clearTimeout(t); } };
+    if (navigator.onLine) { try { const j = await one('https://raw.githubusercontent.com/' + CFG.repo + '/' + CFG.branch + '/' + path, 5000); try { localStorage.setItem(key, JSON.stringify(j)); } catch (e) { /* full */ } return j; } catch (e) { /* use the saved copy */ } }
+    try { const c = localStorage.getItem(key); if (c) return JSON.parse(c); } catch (e) { /* none */ }
+    return one(local, 8000);
   }
   async function loadSeed() {
     try { const r = await fetch('data/seed.json'); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { return null; }
@@ -163,10 +196,10 @@
   let writeMode = 'keys', trText = '';
   function writeView(root) {
     put(root, h('h1', { class: 'title' }, 'Write'),
-      h('p', { class: 'lede' }, writeMode === 'keys' ? 'Type a word by sound. Every key says its sound.' : 'Turn English into siṭaiṅga, using only words the project holds.'),
-      h('div', { class: 'segc', role: 'group', 'aria-label': 'Mode' }, [['keys', 'Keyboard'], ['translate', 'Translate']].map(([v, t]) => h('button', { type: 'button', 'aria-pressed': String(writeMode === v), onclick: () => { writeMode = v; route(); } }, t))));
+      h('p', { class: 'lede' }, writeMode === 'keys' ? 'Type a word by sound. Every key says its sound.' : writeMode === 'chart' ? 'The IPA alphabet. Tap any symbol to hear it.' : 'Turn English into siṭaiṅga, using only words the project holds.'),
+      h('div', { class: 'segc', role: 'group', 'aria-label': 'Mode' }, [['keys', 'Keyboard'], ['chart', 'Chart'], ['translate', 'Translate']].map(([v, t]) => h('button', { type: 'button', 'aria-pressed': String(writeMode === v), onclick: () => { writeMode = v; route(); } }, t))));
     const body = h('div', { class: 'sec' }); root.append(body);
-    if (writeMode === 'keys') keysPane(body); else translatePane(body);
+    if (writeMode === 'keys') keysPane(body); else if (writeMode === 'chart') body.append(DadiChart.build({ play: (t) => audio.playSymbol(t) })); else translatePane(body);
   }
   function keysPane(body) {
     const field = h('textarea', { class: 'input ipa typebox', rows: '3', placeholder: 'Tap here, then tap keys', 'aria-label': 'Type with sounds', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
@@ -225,9 +258,9 @@
   /* ---------- first-time tour ---------- */
   const TOUR = [
     ['Welcome to Dadi', 'Dadi helps you learn siṭaiṅga, the Chittagonian language, and lets speakers add what they know. This quick tour shows where things are. You can skip it any time.', ''],
-    ['Learn', 'Short lessons. You listen, repeat, then answer before you see the answer. Words you miss come back sooner.', 'learn'],
+    ['Learn', 'Start with videos by people who speak and teach the language. Below them are short lessons: you listen, repeat, then answer before the reveal.', 'learn'],
     ['Words', 'The dictionary. Each entry shows how far it can be trusted.', 'words'],
-    ['Write', 'A sound keyboard with every IPA symbol, where each key says its sound, and a translator that works from the project\'s own words.', 'write'],
+    ['Write', 'A sound keyboard where each key says its sound and suggests whole words, the full IPA chart, and a translator that works from the project\'s own words.', 'write'],
     ['Teach', 'Add a word, another way people say it, or a correction. Nothing leaves your device until you press Send.', 'teach'],
     ['Me', 'Voice, appearance, your own AI, backups and sign-in with GitHub. Sign-in is optional.', 'me']
   ];
@@ -259,16 +292,26 @@
   let videosCache = null;
   async function loadVideos() {
     if (videosCache) return videosCache;
-    try { const r = await fetch('../data/videos.json'); if (!r.ok) throw new Error('HTTP ' + r.status); videosCache = (await r.json()).filter((v) => !['rejected', 'flagged', 'unavailable'].includes(v.status)); } catch (e) { videosCache = []; }
+    try { videosCache = (await repoJSON('website/data/videos.json', '../data/videos.json')).filter((v) => !['rejected', 'flagged', 'unavailable'].includes(v.status)); } catch (e) { videosCache = []; }
+    const lvl = { beginner: 0, general: 1, intermediate: 1 };
+    videosCache.sort((a, b) => (a.featured_rank || 99) - (b.featured_rank || 99) || (lvl[a.level] == null ? 1 : lvl[a.level]) - (lvl[b.level] == null ? 1 : lvl[b.level]) || (a.status === 'approved' ? 0 : 1) - (b.status === 'approved' ? 0 : 1));
     return videosCache;
   }
   function learnView(root) {
     const st = S(), playable = index.playable(), due = dueIds().length;
     const nextIdx = lessonList.findIndex((_, i) => !st.stats.lessonsDone[i]), learned = playable.filter((e) => st.cards[e.id]).length;
-    put(root, h('h1', { class: 'title' }, 'Learn'), h('p', { class: 'lede' }, 'siṭaiṅga, one small lesson at a time.'));
+    put(root, h('h1', { class: 'title' }, 'Learn'), h('p', { class: 'lede' }, 'Start by hearing the language, then practise.'));
+    const vsec = h('section', { class: 'sec', style: 'margin-top:0' }, h('div', { class: 'vhero skel', 'aria-hidden': 'true' })); root.append(vsec);
+    loadVideos().then((vs) => {
+      if (!vsec.isConnected) return; vsec.textContent = '';
+      if (!vs.length) { vsec.hidden = true; return; }
+      const [first, ...rest] = vs;
+      put(vsec, h('button', { class: 'vhero', type: 'button', onclick: () => videoSheet(first), 'aria-label': 'Play: ' + (first.label || first.title) }, h('span', { class: 'vplay', html: PLAY }), h('span', { class: 'vcap' }, h('span', { class: 'vk' }, first.level === 'beginner' ? 'Start here' : 'Featured'), h('span', { class: 'vt' }, first.label || first.title), h('span', { class: 'vs' }, first.channel + (first.status === 'approved' ? '' : ' · awaiting review')))));
+      if (rest.length) { const shelf = h('div', { class: 'hscroll' }); rest.forEach((v) => shelf.append(videoTile(v))); put(vsec, h('div', { class: 'sh', style: 'margin-top:24px' }, h('h2', null, 'More to watch'), h('a', { href: '#/watch' }, 'See all')), shelf); }
+    });
     if (due) put(root, h('a', { class: 'cont', href: '#/review' }, h('div', null, h('div', { class: 'k' }, 'Ready now'), h('h2', null, 'Review ' + due + ' word' + (due === 1 ? '' : 's')), h('p', null, 'Just before you would forget them.')), h('span', { class: 'go', html: PLAY })));
-    else if (nextIdx >= 0) put(root, h('a', { class: 'cont', href: '#/lesson/' + nextIdx }, h('div', null, h('div', { class: 'k' }, nextIdx ? 'Up next' : 'Start here'), h('h2', null, 'Lesson ' + (nextIdx + 1)), h('p', null, 'About three minutes.')), h('span', { class: 'go', html: PLAY })));
-    else if (!lessonList.length) put(root, h('div', { class: 'card', style: 'margin-top:16px' }, h('b', null, 'No lessons yet'), h('p', { class: 'muted', style: 'margin:4px 0 12px' }, 'Lessons are built from words that can be played. Add what you know and they appear.'), h('a', { class: 'btn small', href: '#/teach/new' }, 'Add a word')));
+    else if (nextIdx >= 0) put(root, h('a', { class: 'cont', href: '#/lesson/' + nextIdx }, h('div', null, h('div', { class: 'k' }, nextIdx ? 'Up next' : 'Then practise'), h('h2', null, 'Lesson ' + (nextIdx + 1)), h('p', null, 'About three minutes.')), h('span', { class: 'go', html: PLAY })));
+    else if (!lessonList.length) put(root, h('div', { class: 'card', style: 'margin-top:24px' }, h('b', null, 'No lessons yet'), h('p', { class: 'muted', style: 'margin:4px 0 12px' }, 'Lessons are built from words that can be played. Add what you know and they appear.'), h('a', { class: 'btn small', href: '#/teach/new' }, 'Add a word')));
     put(root, h('div', { class: 'stats' },
       h('div', { class: 'stat' }, h('b', null, String(st.stats.streak || 0)), h('span', null, 'day streak')),
       h('div', { class: 'stat' }, h('b', null, String(st.stats.xp || 0)), h('span', null, 'points')),
@@ -277,18 +320,11 @@
       const shelf = h('div', { class: 'hscroll' });
       lessonList.forEach((ids, i) => {
         const es = ids.map((id) => index.byId.get(id)).filter(Boolean), done = !!st.stats.lessonsDone[i];
-        const mosaic = h('div', { class: 'mosaic' }); es.slice(0, 4).forEach((e) => mosaic.append(h('span', { html: Art.art(e.gloss) })));
+        const mosaic = h('div', { class: 'mosaic' }); es.slice(0, 4).forEach((e) => mosaic.append(h('span', { html: pic(e.gloss) })));
         shelf.append(h('button', { class: 'tile', type: 'button', onclick: () => nav('#/lesson/' + i) }, h('div', { class: 'tile-art' + (done ? ' done' : '') }, mosaic), h('span', { class: 'tile-t' }, 'Lesson ' + (i + 1)), h('span', { class: 'tile-s' }, es.map((e) => e.gloss).slice(0, 4).join(', '))));
       });
       put(root, h('section', { class: 'sec' }, h('div', { class: 'sh' }, h('h2', null, 'Lessons')), shelf));
     }
-    const vsec = h('section', { class: 'sec', hidden: true }); root.append(vsec);
-    loadVideos().then((vs) => {
-      if (!vs.length || !vsec.isConnected) return;
-      const shelf = h('div', { class: 'hscroll' });
-      vs.forEach((v) => shelf.append(videoTile(v)));
-      put(vsec, h('div', { class: 'sh' }, h('h2', null, 'Watch and listen'), h('a', { href: '#/watch' }, 'See all')), shelf); vsec.hidden = false;
-    });
     put(root, h('details', { class: 'note', style: 'margin-top:24px' }, h('summary', null, 'How much to trust what you hear'),
       h('ul', null,
         h('li', null, 'Machine reading: nobody has said the IPA yet. The sound comes from reading the spelling like Latin letters. It can be wrong.'),
@@ -361,7 +397,7 @@
     }
     function finish() {
       bumpDay(); if (onDone) onDone();
-      put(stage, h('div', { class: 'dadi-wrap', style: 'width:120px;height:120px;margin:0 auto', html: Art.dadi() }), h('h1', null, 'Well done'),
+      put(stage, h('div', { class: 'dadi-wrap', style: 'width:120px;height:120px;margin:0 auto', html: mascot() }), h('h1', null, 'Well done'),
         h('p', null, graded ? 'You answered ' + graded + ' time' + (graded === 1 ? '' : 's') + ' and the schedule will bring each word back when it is due.' : 'Lesson finished.'),
         h('a', { class: 'btn block', href: '#/learn' }, 'Back to lessons'));
     }
@@ -377,7 +413,7 @@
   }
   function introStep(stage, s, next) {
     const e = s.e;
-    put(stage, h('div', { class: 'bigart', html: Art.art(e.gloss) }), ...wordBlock(e), h('div', { class: 'meaning' }, e.gloss + (e.formNote && e.formNote.length <= 30 ? ' (' + e.formNote + ')' : '')),
+    put(stage, h('div', { class: 'bigart', html: pic(e.gloss) }), ...wordBlock(e), h('div', { class: 'meaning' }, e.gloss + (e.formNote && e.formNote.length <= 30 ? ' (' + e.formNote + ')' : '')),
       h('div', { class: 'row', style: 'justify-content:center' }, playBtn(e), playBtn(e, true), h('span', { class: 'small muted' }, 'Normal and slow')),
       h('p', { class: 'small', style: 'margin-top:14px' }, 'Say it out loud, then ', h('a', { href: '#/teach/new?action=variant&rel=' + encodeURIComponent(e.id) }, 'tell us if you say it differently'), '.'),
       h('button', { class: 'btn block', type: 'button', onclick: next, style: 'margin-top:10px' }, 'Next'));
@@ -421,7 +457,7 @@
         h('p', { class: 'muted' }, 'How well did you know it?'), h('div', { class: 'grades' }, mk('again', 'Not at all'), mk('hard', 'Barely'), mk('good', 'Knew it'), mk('easy', 'Easy')));
       audio.play(e._pron.ipa);
     });
-    put(stage, h('p', { class: 'muted' }, 'Say it out loud before you look.'), h('div', { class: 'bigart', html: Art.art(e.gloss) }), h('div', { class: 'word', style: 'font-family:var(--font-ui);font-size:1.6rem' }, e.gloss), ring, show, answer);
+    put(stage, h('p', { class: 'muted' }, 'Say it out loud before you look.'), h('div', { class: 'bigart', html: pic(e.gloss) }), h('div', { class: 'word', style: 'font-family:var(--font-ui);font-size:1.6rem' }, e.gloss), ring, show, answer);
     stage._timer = timer;
   }
 
@@ -443,7 +479,7 @@
       list.textContent = '';
       r.slice(0, 200).forEach((e) => {
         const can = e._pron.complete;
-        list.append(h('div', { class: 'entry' }, h('div', { class: 'pic', html: Art.art(e.gloss) }),
+        list.append(h('div', { class: 'entry' }, h('div', { class: 'pic', html: pic(e.gloss) }),
           h('button', { class: 'main', type: 'button', onclick: () => detail(e) }, h('span', { class: 'form' }, e.spellings[0] || e.form), h('span', { class: 'gloss' }, e.gloss), h('span', null, trustBadge(e))),
           h('button', { class: 'play', type: 'button', html: PLAY, disabled: !can, 'aria-label': 'Hear ' + (e.spellings[0] || e.form), onclick: () => audio.play(e._pron.ipa) })));
       });
@@ -466,7 +502,7 @@
     row('Source', e.source);
     if (e.path) facts.append(h('dt', null, 'File'), h('dd', null, h('a', { href: CFG.repoUrl + '/blob/' + CFG.branch + '/' + e.path, rel: 'noopener noreferrer', target: '_blank' }, e.path)));
     row('ID', e.id);
-    sheet(h('div', null, h('div', { class: 'row' }, h('div', { style: 'width:64px;height:64px', html: Art.art(e.gloss) }), h('div', null, h('div', { class: 'word' + ((e.spellings[0] || e.form).length > 24 ? ' long' : ''), style: 'font-size:1.9rem' }, e.spellings[0] || e.form), h('div', { class: 'muted' }, e.gloss))),
+    sheet(h('div', null, h('div', { class: 'row' }, h('div', { style: 'width:64px;height:64px', html: pic(e.gloss) }), h('div', null, h('div', { class: 'word' + ((e.spellings[0] || e.form).length > 24 ? ' long' : ''), style: 'font-size:1.9rem' }, e.spellings[0] || e.form), h('div', { class: 'muted' }, e.gloss))),
       e.spellings.length > 1 ? h('p', { class: 'small' }, 'Also written: ' + e.spellings.slice(1).join(', ')) : null,
       h('p', { class: 'ipa' }, can ? '/' + p.ipa + '/' : ''), h('p', { class: 'small muted' }, how),
       h('div', { class: 'row' }, h('button', { class: 'btn small', type: 'button', disabled: !can, onclick: () => audio.play(p.ipa) }, 'Hear it'), h('button', { class: 'btn small tint', type: 'button', disabled: !can, onclick: () => audio.play(p.ipa, { speed: 0.6 }) }, 'Hear it slowly')),
@@ -793,7 +829,7 @@
 
   function aboutView(root) {
     put(root, h('h1', { class: 'title' }, 'About Dadi'),
-      h('div', { class: 'credit' }, h('div', { class: 'dadi-wrap', html: Art.dadi() }), h('p', null, 'Dadi is the learning and contribution tool for siṭaiṅga, the Chittagonian language, made for the Sitainge project. Created by ', h('b', null, CFG.creator), '.')),
+      h('div', { class: 'credit' }, h('div', { class: 'dadi-wrap', html: mascot() }), h('p', null, 'Dadi is the learning and contribution tool for siṭaiṅga, the Chittagonian language, made for the Sitainge project. Created by ', h('b', null, CFG.creator), '.')),
       h('p', null, 'The name is the word many Chittagonians use for grandmother, because most people of this generation learned the language from theirs.'),
       h('h2', null, 'How it works'),
       h('p', null, 'Words and sentences come from the project\'s public files on GitHub (', h('a', { href: CFG.repoUrl, target: '_blank', rel: 'noopener noreferrer' }, CFG.repo), '). Contributions go back as reviewable issues. Nothing is accepted automatically, and everything starts as unverified.'),
@@ -808,7 +844,8 @@
 
   /* ---------- start ---------- */
   async function boot() {
-    applyLook();
+    applyLook(); audio.ready();
+    Icons.load('data/icons.json').then((ok) => { if (ok && /^#\/(learn|words)?$/.test(location.hash || '#/learn')) route(); });
     const net = document.getElementById('net'); const upd = () => { net.textContent = navigator.onLine ? '' : 'Offline'; }; upd(); window.addEventListener('online', upd); window.addEventListener('offline', upd);
     if (Store.restoredFrom) toast('Your saved data was repaired from ' + Store.restoredFrom + '.');
     const cached = Store.cachedRepo();

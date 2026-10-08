@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Site redesign (D-039, D-040): journal-style landing page; live data from the repository; map of Chittagong and Cox's Bazar districts with unions, municipalities, City Corporation wards and metropolitan police areas.
+- Dictionary site, translator page and Chrome/Firefox extension (D-044).
+- Dadi: videos first, IPA chart, whole-word keyboard suggestions, picture icons, smoother device voice (D-041 to D-043).
 - Dadi redesign (D-032): five tabs, large titles, grouped lists and shelves, sheets, five colour schemes with light and dark, fixed-proportion IPA keyboard, tested from 320 to 1280 px.
 - Voices (D-033): device voice, optional clear offline voice (eSpeak NG, GPL, vendored and removable), and Dadi's own synthesizer; choose in Me > Voice. Fixed hiss and clicks in the synthesizer.
 - Translator and "connect your own AI" in Dadi (D-037). Bookmarklet translates ordinary web pages from the project's words.

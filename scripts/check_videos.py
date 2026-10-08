@@ -3,7 +3,7 @@
 
 What it does, and nothing more:
   - asks YouTube's public oEmbed service whether each video still exists and may be embedded (no key, no sign-up);
-  - records the check date, and refreshes the title and channel name from YouTube;
+  - records the check date, and refreshes the channel name from YouTube (titles are never stored);
   - marks a video "unavailable" if it is gone or cannot be embedded, and "flagged" if three or more open reports name it;
   - never approves anything. "approved" and "rejected" are set only by a human moderator (docs/contribute/moderators.md);
   - writes every change it makes to website/data/video-log.jsonl.
@@ -58,8 +58,6 @@ def run(videos, reports=None, today=None, fetch=None, sleep=0.3):
         kind, info = oembed(v['id'], fetch)
         if kind == 'ok':
             v['embeddable_checked'] = today
-            if info.get('title'):
-                v['title'] = info['title']
             if info.get('author_name'):
                 v['channel'] = info['author_name']
             if v.get('status') == 'unavailable':

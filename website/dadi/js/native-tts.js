@@ -81,6 +81,20 @@
     const v = (uri && us.find((x) => x.voiceURI === uri)) || (prefer === 'hi' ? us.find((x) => /^hi/.test(norm(x))) : null) || us[0];
     return { voice: v, script: /^bn/.test(norm(v)) ? 'bn' : 'dev' };
   }
+  /* Browsers load their voice list a moment after the page starts (Chrome fires "voiceschanged"). Without waiting, the first
+     word would wrongly find no voice and fall back to the synthetic one. Resolves true when at least one suitable voice exists. */
+  let readyP = null;
+  function ready(ms) {
+    if (!root.speechSynthesis) return Promise.resolve(false);
+    if (usable().length) return Promise.resolve(true);
+    if (!readyP) readyP = new Promise((res) => {
+      let done = false; const fin = () => { if (!done) { done = true; try { root.speechSynthesis.removeEventListener('voiceschanged', fin); } catch (e) { /* none */ } res(usable().length > 0); } };
+      try { root.speechSynthesis.addEventListener('voiceschanged', fin); } catch (e) { /* none */ }
+      try { root.speechSynthesis.getVoices(); } catch (e) { /* none */ }
+      setTimeout(fin, ms || 2500);
+    }).then((v) => { if (!v) readyP = null; return v; });
+    return readyP;
+  }
   const supported = () => !!(root.speechSynthesis && root.SpeechSynthesisUtterance);
   function available() { return supported() && !!pick(); }
   function describe() { const p = supported() && pick(); return p ? p.voice.name + ' (' + p.voice.lang + ')' : null; }
@@ -95,7 +109,7 @@
         root.speechSynthesis.cancel();
         const u = new root.SpeechSynthesisUtterance(text); u.voice = p.voice; u.lang = p.voice.lang; u.rate = Math.max(0.5, Math.min(1.2, (o.speed || 1) * 0.85));
         u.pitch = o.pitch === 'low' ? 0.85 : o.pitch === 'high' ? 1.2 : 1;
-        let done = false; const fin = (ok) => { if (!done) { done = true; resolve({ ok, device: true }); } };
+        let done = false; const fin = (ok) => { if (!done) { done = true; resolve({ ok, device: true, voice: p.voice.name }); } };
         u.onend = () => fin(true); u.onerror = () => fin(false);
         setTimeout(() => fin(true), 8000);
         root.speechSynthesis.speak(u);
@@ -104,6 +118,6 @@
   }
   function stop() { try { if (root.speechSynthesis) root.speechSynthesis.cancel(); } catch (e) { /* nothing */ } }
 
-  const api = { list, toIndic, tokens, available, supported, describe, speak, stop, pick };
+  const api = { list, toIndic, tokens, available, supported, describe, speak, stop, pick, ready };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.DadiNativeTTS = api;
 })(typeof self !== 'undefined' ? self : this);

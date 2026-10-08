@@ -30,3 +30,14 @@ By submitting a contribution through the public forms, the contributor confirms 
 - Confirm that Hamid Yasir, author of the 2019 materials, agrees to dedicate them under CC0 (see decision log).
 - `LICENSE`: the repository's official CC0 text (added through GitHub) stays as is; do not overwrite it.
 - Decide whether the long-term archive deposits also use CC0 or its own terms.
+
+## Third-party material added on 2026-10-08
+| Material | Where | Licence |
+|---|---|---|
+| Fluent Emoji Flat pictures (Microsoft) | `website/dadi/data/icons.json` | MIT |
+| emojibase-data (word index from Unicode CLDR) | same | MIT |
+| Lucide icons (UI) | `website/dadi/index.html` | ISC |
+| geoBoundaries gbOpen Bangladesh ADM2-4 | `website/data/map-admin.json` | CC BY 3.0 IGO (credit shown on the map) |
+| nuhil/bangladesh-geocode, aiFdn/Postcodes-of-Bangladesh | `website/data/admin.json` | MIT |
+| Facts from Wikipedia | `website/data/*.json` | CC BY-SA 4.0 (facts only, each source linked) |
+| eSpeak NG (optional) | `website/dadi/vendor/espeak-ng/` | GPL-3.0-or-later, separate from the CC0 dedication |

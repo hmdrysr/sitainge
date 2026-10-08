@@ -1,0 +1,32 @@
+{
+ "adm4_unmatched": {
+  "Raozan": [
+   "Abdullapur"
+  ],
+  "Boalkhali": [
+   "Purba Gomdandi"
+  ],
+  "Fatikchhari": [
+   "Dhurung",
+   "Rangamatia"
+  ],
+  "Cox's Bazar Sadar": [
+   "Patali Machhuakhali"
+  ]
+ },
+ "admin_unmatched": {
+  "Sandwip": [
+   "Azimpur",
+   "Urirchar"
+  ],
+  "Teknaf": [
+   "Saint Martin"
+  ],
+  "Kutubdia": [
+   "Ali Akbardeil"
+  ],
+  "Hathazari": [
+   "Nangalmora"
+  ]
+ }
+}

@@ -53,10 +53,11 @@
     async function play(ipa, o) {
       if (!supported && !(Native && Native.available())) return { ok: false, reason: 'This browser cannot play sound from the app.' };
       stop(); const my = token; const s = settings(), eng = s.engine || 'auto';
+      if (Native && (eng === 'auto' || eng === 'device')) { try { await Native.ready(); } catch (e) { /* none */ } if (my !== token) return { ok: false, reason: 'Stopped.' }; }
       if (o && o.symbol) return playOwnWord(ipa, o, my);
       if ((eng === 'auto' || eng === 'device') && Native && Native.available()) {
         const r = await Native.speak(ipa, { speed: (o && o.speed) || s.speed, pitch: (o && o.pitch) || s.pitch, uri: s.deviceVoice });
-        if (r.ok) return { ok: true, how: 'device', approximated: true };
+        if (r.ok) return { ok: true, how: 'device', approximated: true, voice: r.voice };
         if (eng === 'device') return r;
       }
       if ((eng === 'auto' || eng === 'clear') && Esp && Esp.canRun() && supported && (eng === 'clear' || s.clearOn)) {
@@ -76,6 +77,7 @@
     /* Download the clear voice now (so it works offline later). */
     async function prepareClear() { if (!Esp || !Esp.canRun()) throw new Error('This browser cannot run the clear voice.'); await Esp.speak('অ', { rate: rate() }); return true; }
     return { play, playSymbol, stop, supported, prepareClear,
+      ready: () => (Native ? Native.ready() : Promise.resolve(false)),
       engineInfo: () => ({ device: !!(Native && Native.available()), deviceName: Native && Native.describe(), deviceVoices: Native ? Native.list() : [], clear: !!(Esp && Esp.canRun()), clearVoices: Esp ? Esp.VOICES : [] }) };
   }
 

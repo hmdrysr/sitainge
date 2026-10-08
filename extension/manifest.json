@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "siṭaiṅga Translator",
+  "short_name": "siṭaiṅga",
+  "version": "0.1.0",
+  "description": "Draft translation of web pages into siṭaiṅga (Chittagonian) using only words held in the open project dictionary. Unverified. Nothing leaves your device.",
+  "permissions": ["activeTab", "scripting", "storage", "contextMenus"],
+  "host_permissions": ["https://raw.githubusercontent.com/hmdrysr/sitainge/*", "https://api.github.com/repos/hmdrysr/sitainge/*"],
+  "background": { "service_worker": "background.js", "scripts": ["lib/glossary.js", "background.js"] },
+  "action": { "default_title": "Translate to siṭaiṅga", "default_popup": "popup.html", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" } },
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'self'" },
+  "browser_specific_settings": { "gecko": { "id": "dadi@sitainge.invalid", "strict_min_version": "128.0", "data_collection_permissions": { "required": ["none"] } } }
+}

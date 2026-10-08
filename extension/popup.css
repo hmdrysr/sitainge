@@ -1,0 +1,5 @@
+:root{color-scheme:light dark;--a:#3a46c9}body{width:300px;margin:0;padding:14px;font:14px/1.4 system-ui,sans-serif}
+h1{font-size:16px;margin:0 0 6px}.s{font-size:12px;opacity:.75;margin:4px 0 10px}
+button{display:block;width:100%;min-height:40px;margin:6px 0;border-radius:999px;border:1.5px solid var(--a);background:transparent;color:var(--a);font:600 14px system-ui;cursor:pointer}
+button.p{background:var(--a);color:#fff}@media(prefers-color-scheme:dark){:root{--a:#8e98ff}button.p{color:#000}}
+#out{font-weight:600;min-height:1.4em}

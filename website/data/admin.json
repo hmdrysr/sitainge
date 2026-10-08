@@ -1,0 +1,1955 @@
+{
+ "updated": "2026-10-08",
+ "regions": [
+  {
+   "name": "Chittagong",
+   "headquarters": "Chittagong (city)",
+   "area_km2": 5282.92,
+   "population_2022": 9169464,
+   "population_note": "Infobox gives 9,169,464; body text and table give 9,169,465.",
+   "city_corporations": [
+    {
+     "name": "Chittagong City Corporation",
+     "established_as_city_corporation": 1990,
+     "wards": 41,
+     "area_km2": null,
+     "population_2022": null,
+     "post_offices": [
+      {
+       "name": "Al- Amin Baria Madra",
+       "postcode": "4221"
+      },
+      {
+       "name": "Amin Jute Mills",
+       "postcode": "4211"
+      },
+      {
+       "name": "Anandabazar",
+       "postcode": "4215"
+      },
+      {
+       "name": "Bayezid Bostami",
+       "postcode": "4210"
+      },
+      {
+       "name": "Chandgaon",
+       "postcode": "4212"
+      },
+      {
+       "name": "Chawkbazar",
+       "postcode": "4203"
+      },
+      {
+       "name": "Chitt. Cantonment",
+       "postcode": "4220"
+      },
+      {
+       "name": "Chitt. Customs Acca",
+       "postcode": "4219"
+      },
+      {
+       "name": "Chitt. Politechnic In",
+       "postcode": "4209"
+      },
+      {
+       "name": "Chitt. Sailers Colon",
+       "postcode": "4218"
+      },
+      {
+       "name": "Chittagong Airport",
+       "postcode": "4205"
+      },
+      {
+       "name": "Chittagong Bandar",
+       "postcode": "4100"
+      },
+      {
+       "name": "Chittagong GPO",
+       "postcode": "4000"
+      },
+      {
+       "name": "Export Processing",
+       "postcode": "4223"
+      },
+      {
+       "name": "Firozshah",
+       "postcode": "4207"
+      },
+      {
+       "name": "Halishahar",
+       "postcode": "4216"
+      },
+      {
+       "name": "Halishshar",
+       "postcode": "4225"
+      },
+      {
+       "name": "Jalalabad",
+       "postcode": "4214"
+      },
+      {
+       "name": "Jaldia Merine Accade",
+       "postcode": "4206"
+      },
+      {
+       "name": "Middle Patenga",
+       "postcode": "4222"
+      },
+      {
+       "name": "Mohard",
+       "postcode": "4208"
+      },
+      {
+       "name": "North Halishahar",
+       "postcode": "4226"
+      },
+      {
+       "name": "North Katuli",
+       "postcode": "4217"
+      },
+      {
+       "name": "Pahartoli",
+       "postcode": "4202"
+      },
+      {
+       "name": "Patenga",
+       "postcode": "4204"
+      },
+      {
+       "name": "Rampura TSO",
+       "postcode": "4224"
+      },
+      {
+       "name": "Wazedia",
+       "postcode": "4213"
+      }
+     ],
+     "post_offices_basis": "aiFdn dataset group 'Chittagong Sadar' (27 offices); older dataset, not ward-level.",
+     "sources": [
+      "wp_ccc",
+      "dailystar_ccc",
+      "aifdn_postcodes"
+     ],
+     "note": "Daily Star (2021-01-26) says the corporation took that name on 31 July 1990 after a Municipal Corporation upgrade in 1982 and a municipality founded 22 June 1863. Wikipedia flags its ward section as needing an update (January 2026); 41 is the figure in both sources.",
+     "ward_geometry": {
+      "wards_present": [
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19,
+       20,
+       21,
+       22,
+       23,
+       24,
+       25,
+       26,
+       27,
+       28,
+       29,
+       30,
+       31,
+       32,
+       33,
+       34,
+       35,
+       36,
+       37,
+       38,
+       39,
+       40,
+       41
+      ],
+      "ward_thanas": {
+       "1": [
+        "Bayazid Bostami"
+       ],
+       "2": [
+        "Bayazid Bostami"
+       ],
+       "3": [
+        "Bayazid Bostami"
+       ],
+       "4": [
+        "Chandgaon"
+       ],
+       "5": [
+        "Chandgaon"
+       ],
+       "6": [
+        "Chandgaon"
+       ],
+       "7": [
+        "Panchlaish"
+       ],
+       "8": [
+        "Khulshi",
+        "Panchlaish"
+       ],
+       "9": [
+        "Khulshi",
+        "Pahartali"
+       ],
+       "10": [
+        "Pahartali"
+       ],
+       "11": [
+        "Halishahar",
+        "Pahartali"
+       ],
+       "12": [
+        "Double Mooring",
+        "Pahartali"
+       ],
+       "13": [
+        "Khulshi"
+       ],
+       "14": [
+        "Khulshi"
+       ],
+       "15": [
+        "Kotwali",
+        "Panchlaish"
+       ],
+       "16": [],
+       "17": [
+        "Bakalia"
+       ],
+       "18": [
+        "Bakalia"
+       ],
+       "19": [
+        "Bakalia"
+       ],
+       "20": [
+        "Kotwali"
+       ],
+       "21": [
+        "Kotwali"
+       ],
+       "22": [
+        "Kotwali"
+       ],
+       "23": [
+        "Double Mooring"
+       ],
+       "24": [
+        "Double Mooring",
+        "Halishahar"
+       ],
+       "25": [
+        "Halishahar"
+       ],
+       "26": [
+        "Halishahar"
+       ],
+       "27": [
+        "Double Mooring"
+       ],
+       "28": [
+        "Double Mooring"
+       ],
+       "29": [
+        "Double Mooring"
+       ],
+       "30": [
+        "Double Mooring"
+       ],
+       "31": [
+        "Kotwali"
+       ],
+       "32": [
+        "Kotwali"
+       ],
+       "33": [
+        "Kotwali"
+       ],
+       "34": [
+        "Kotwali"
+       ],
+       "35": [
+        "Kotwali"
+       ],
+       "36": [
+        "Double Mooring"
+       ],
+       "37": [
+        "Chittagong Port"
+       ],
+       "38": [
+        "Chittagong Port"
+       ],
+       "39": [
+        "Chittagong Port",
+        "Patenga"
+       ],
+       "40": [
+        "Patenga"
+       ],
+       "41": []
+      },
+      "source": "geoboundaries_bgd",
+      "note": "Thana names are the ADM3 shapes (2015 BBS) that each ward polygon falls inside; a ward split across thanas lists each. Ward names are not in this dataset."
+     }
+    }
+   ],
+   "metropolitan_police": {
+    "name": "Chittagong Metropolitan Police",
+    "established": "30 November 1978",
+    "thanas_count": 16,
+    "thanas": [
+     "Akbarshah",
+     "Bakalia",
+     "Bandar",
+     "Bayazid",
+     "Chandgaon",
+     "Double Mooring",
+     "Halishahar",
+     "Khulshi",
+     "Kotwali",
+     "Pahartali",
+     "Panchlaish",
+     "Patenga",
+     "Chawkbazar",
+     "Sadarghat",
+     "EPZ",
+     "Karnaphuli"
+    ],
+    "sources": [
+     "wp_cmp",
+     "wp_ccc"
+    ],
+    "note": "Count of 16 is in both articles; the names are from the City Corporation article only (the Metropolitan Police article lists none). Wikipedia states 33 thanas in the district in total."
+   },
+   "thanas_total_in_district": 33,
+   "municipalities": [
+    {
+     "name": "Baraiyarhat",
+     "wards": 9,
+     "upazila": "Mirsharai"
+    },
+    {
+     "name": "Mirsharai",
+     "wards": 9,
+     "upazila": "Mirsharai"
+    },
+    {
+     "name": "Fatikchhari",
+     "wards": null,
+     "upazila": "Fatikchhari"
+    },
+    {
+     "name": "Nazirhat",
+     "wards": null,
+     "upazila": "Fatikchhari"
+    },
+    {
+     "name": "Sandwip",
+     "wards": 9,
+     "upazila": "Sandwip"
+    },
+    {
+     "name": "Sitakunda",
+     "wards": null,
+     "upazila": "Sitakunda"
+    },
+    {
+     "name": "Raozan",
+     "wards": 9,
+     "upazila": "Raozan"
+    },
+    {
+     "name": "Rangunia",
+     "wards": 9,
+     "upazila": "Rangunia"
+    },
+    {
+     "name": "Boalkhali",
+     "wards": null,
+     "upazila": "Boalkhali"
+    },
+    {
+     "name": "Patiya",
+     "wards": 9,
+     "upazila": "Patiya"
+    },
+    {
+     "name": "Chandanaish",
+     "wards": 9,
+     "upazila": "Chandanaish"
+    },
+    {
+     "name": "Dohazari",
+     "wards": null,
+     "upazila": "Chandanaish"
+    },
+    {
+     "name": "Satkania",
+     "wards": 9,
+     "upazila": "Satkania"
+    },
+    {
+     "name": "Banshkhali",
+     "wards": 9,
+     "upazila": "Banshkhali"
+    }
+   ],
+   "sources": [
+    "wp_chittagong_district",
+    "nuhil_geocode"
+   ],
+   "upazilas": [
+    {
+     "name": "Mirsharai",
+     "district": "Chittagong",
+     "area_km2": 482.88,
+     "area_km2_candidates": null,
+     "population_2022": 472794,
+     "police_stations": [
+      {
+       "name": "Mirsharai Thana",
+       "basis": "stated_current"
+      },
+      {
+       "name": "Jorarganj Thana",
+       "basis": "stated_current"
+      }
+     ],
+     "unions": [
+      "Karerhat",
+      "Hinguli",
+      "Jorarganj",
+      "Dhum",
+      "Osmanpur",
+      "Ichhakhali",
+      "Katachhara",
+      "Durgapur",
+      "Mirsharai",
+      "Mithanala",
+      "Maghadia",
+      "Khaiyachhara",
+      "Mayani",
+      "Haitkandi",
+      "Wahedpur",
+      "Saherkhali"
+     ],
+     "union_count": 16,
+     "post_offices": [
+      {
+       "name": "Abutorab",
+       "postcode": "4321"
+      },
+      {
+       "name": "Azampur",
+       "postcode": "4325"
+      },
+      {
+       "name": "Bharawazhat",
+       "postcode": "4323"
+      },
+      {
+       "name": "Darrogahat",
+       "postcode": "4322"
+      },
+      {
+       "name": "Joarganj",
+       "postcode": "4324"
+      },
+      {
+       "name": "Korerhat",
+       "postcode": "4327"
+      },
+      {
+       "name": "Mirsharai",
+       "postcode": "4320"
+      },
+      {
+       "name": "Mohazanhat",
+       "postcode": "4328"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Baraiyarhat",
+       "wards": 9
+      },
+      {
+       "name": "Mirsharai",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_mirsharai",
+      "wp_chittagong_district",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Fatikchhari",
+     "district": "Chittagong",
+     "area_km2": 773.13,
+     "area_km2_candidates": null,
+     "population_2022": 642089,
+     "police_stations": [
+      {
+       "name": "Fatikchhari Thana",
+       "basis": "stated_current"
+      },
+      {
+       "name": "Bhujpur Thana",
+       "basis": "stated_current"
+      }
+     ],
+     "unions": [
+      "Paindong",
+      "Kanchan Nagar",
+      "Sunderpur",
+      "Lelang",
+      "Nanupur",
+      "Roshangiri",
+      "Bokhtapur",
+      "Jafotnagar",
+      "Dharmapur",
+      "Samitirhat",
+      "Abdullapur",
+      "Khiram",
+      "Baganbazar",
+      "Dantmara",
+      "Narayanhat",
+      "Bhujpur",
+      "Harualchari",
+      "Suabil"
+     ],
+     "union_count": 18,
+     "post_offices": [
+      {
+       "name": "Bhandar Sharif",
+       "postcode": "4352"
+      },
+      {
+       "name": "Fatikchhari",
+       "postcode": "4350"
+      },
+      {
+       "name": "Harualchhari",
+       "postcode": "4354"
+      },
+      {
+       "name": "Najirhat",
+       "postcode": "4353"
+      },
+      {
+       "name": "Nanupur",
+       "postcode": "4351"
+      },
+      {
+       "name": "Narayanhat",
+       "postcode": "4355"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Fatikchhari",
+       "wards": null
+      },
+      {
+       "name": "Nazirhat",
+       "wards": null
+      }
+     ],
+     "notes": [
+      "Wikipedia names 12 unions (Fatikchhari Thana); the 6 unions under Bhujpur Thana are not named there. They are taken from the nuhil dataset: Baganbazar, Dantmara, Narayanhat, Bhujpur, Harualchari, Suabil (inferred as the nuhil names absent from the Wikipedia 12; nuhil 'Daulatpur' is read as Wikipedia 'Khiram'; unconfirmed)."
+     ],
+     "sources": [
+      "wp_fatikchhari",
+      "nuhil_geocode",
+      "wp_chittagong_district",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Sandwip",
+     "district": "Chittagong",
+     "area_km2": 762.42,
+     "area_km2_candidates": null,
+     "population_2022": 327564,
+     "police_stations": [
+      {
+       "name": "Sandwip Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Amanullah",
+      "Azimpur",
+      "Bauria",
+      "Digghapar",
+      "Gachhua",
+      "Haramia",
+      "Harispur",
+      "Kalapania",
+      "Magdhara",
+      "Maitbhanga",
+      "Musapur",
+      "Rahmatpur",
+      "Santoshpur",
+      "Sarikait",
+      "Urirchar"
+     ],
+     "union_count": 15,
+     "post_offices": [
+      {
+       "name": "Sandwip",
+       "postcode": "4300"
+      },
+      {
+       "name": "Shiberhat",
+       "postcode": "4301"
+      },
+      {
+       "name": "Urirchar",
+       "postcode": "4302"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Sandwip",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_sandwip",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Sitakunda",
+     "district": "Chittagong",
+     "area_km2": 483.97,
+     "area_km2_candidates": null,
+     "population_2022": 457396,
+     "police_stations": [
+      {
+       "name": "Sitakunda Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Banshbaria",
+      "Barabkunda",
+      "Bariadyala",
+      "Bhatiari",
+      "Kumira",
+      "Muradpur",
+      "Salimpur",
+      "Sonaichhari",
+      "Saidpur"
+     ],
+     "union_count": 9,
+     "post_offices": [
+      {
+       "name": "Barabkunda",
+       "postcode": "4312"
+      },
+      {
+       "name": "Baroidhala",
+       "postcode": "4311"
+      },
+      {
+       "name": "Bawashbaria",
+       "postcode": "4313"
+      },
+      {
+       "name": "Bhatiari",
+       "postcode": "4315"
+      },
+      {
+       "name": "Fouzdarhat",
+       "postcode": "4316"
+      },
+      {
+       "name": "Jafrabad",
+       "postcode": "4317"
+      },
+      {
+       "name": "Kumira",
+       "postcode": "4314"
+      },
+      {
+       "name": "Sitakunda",
+       "postcode": "4310"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Sitakunda",
+       "wards": null
+      }
+     ],
+     "notes": [
+      "Wikipedia also lists 'Bhatiari Cantonment Area' among 10 'unions'; it is not a union and is omitted. Nine unions listed (matches nuhil)."
+     ],
+     "sources": [
+      "wp_sitakunda",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Hathazari",
+     "district": "Chittagong",
+     "area_km2": 246.32,
+     "area_km2_candidates": null,
+     "population_2022": 498182,
+     "police_stations": [
+      {
+       "name": "Hathazari Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Burirchar",
+      "Chhibatali",
+      "Chikandandi",
+      "South Madarsha",
+      "Dhalai",
+      "Fatehpur",
+      "Farhadabad",
+      "Garduara",
+      "Gumanmardan",
+      "Hathazari",
+      "Mekhal",
+      "Mirzapur",
+      "Nangalmora",
+      "Shikarpur",
+      "North Madarsha"
+     ],
+     "union_count": 15,
+     "post_offices": [
+      {
+       "name": "Chittagong University",
+       "postcode": "4331"
+      },
+      {
+       "name": "Fatahabad",
+       "postcode": "4335"
+      },
+      {
+       "name": "Gorduara",
+       "postcode": "4332"
+      },
+      {
+       "name": "Hathazari",
+       "postcode": "4330"
+      },
+      {
+       "name": "Katirhat",
+       "postcode": "4333"
+      },
+      {
+       "name": "Madrasa",
+       "postcode": "4339"
+      },
+      {
+       "name": "Mirzapur",
+       "postcode": "4334"
+      },
+      {
+       "name": "Nuralibari",
+       "postcode": "4337"
+      },
+      {
+       "name": "Yunus Nagar",
+       "postcode": "4338"
+      }
+     ],
+     "municipalities": [],
+     "notes": [],
+     "sources": [
+      "wp_hathazari",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Raozan",
+     "district": "Chittagong",
+     "area_km2": 246.58,
+     "area_km2_candidates": null,
+     "population_2022": 396358,
+     "police_stations": null,
+     "unions": [
+      "Bagoan",
+      "Binajuri",
+      "Chikdair",
+      "Dabua",
+      "Gahira",
+      "Haladia",
+      "Kadalpur",
+      "Noajispur",
+      "Noapara",
+      "Pahartali",
+      "Paschim Guzara",
+      "Purba Guzara",
+      "Raozan",
+      "Urkirchar"
+     ],
+     "union_count": 14,
+     "post_offices": [
+      {
+       "name": "B.I.T Post Office",
+       "postcode": "4349"
+      },
+      {
+       "name": "Beenajuri",
+       "postcode": "4341"
+      },
+      {
+       "name": "Dewanpur",
+       "postcode": "4347"
+      },
+      {
+       "name": "Fatepur",
+       "postcode": "4345"
+      },
+      {
+       "name": "Gahira",
+       "postcode": "4343"
+      },
+      {
+       "name": "Guzra Noapara",
+       "postcode": "4346"
+      },
+      {
+       "name": "jagannath Hat",
+       "postcode": "4344"
+      },
+      {
+       "name": "Kundeshwari",
+       "postcode": "4342"
+      },
+      {
+       "name": "Mohamuni",
+       "postcode": "4348"
+      },
+      {
+       "name": "Rouzan",
+       "postcode": "4340"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Raozan",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_raozan",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Rangunia",
+     "district": "Chittagong",
+     "area_km2": 361.54,
+     "area_km2_candidates": null,
+     "population_2022": 392904,
+     "police_stations": [
+      {
+       "name": "Rangunia Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Betagi",
+      "Chandraghona",
+      "Dakshin Rajanagar",
+      "Hosnabad",
+      "Islampur",
+      "Kodala",
+      "Lalanagar",
+      "Mariumnagar",
+      "Padua",
+      "Parua",
+      "Pomara",
+      "Rajanagar",
+      "Rangunia",
+      "Sharafbhata",
+      "Silak"
+     ],
+     "union_count": 15,
+     "post_offices": [
+      {
+       "name": "Dhamair",
+       "postcode": "4361"
+      },
+      {
+       "name": "Rangunia",
+       "postcode": "4360"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Rangunia",
+       "wards": 9
+      }
+     ],
+     "notes": [
+      "Wikipedia lists 15 unions including 'Padua', which is also a Lohagara union; check against LGD."
+     ],
+     "sources": [
+      "wp_rangunia",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Karnaphuli",
+     "district": "Chittagong",
+     "area_km2": 55.36,
+     "area_km2_candidates": null,
+     "population_2022": 203705,
+     "police_stations": [
+      {
+       "name": "Karnaphuli Thana",
+       "basis": "stated_current"
+      }
+     ],
+     "unions": [
+      "Karnaphuli",
+      "Char Patharghata",
+      "Shikalbaha",
+      "Char Lakhya",
+      "Juldha",
+      "Bara Uthan"
+     ],
+     "union_count": 6,
+     "post_offices": null,
+     "municipalities": [],
+     "notes": [
+      "Wikipedia lists six names without calling them unions; five of them are also listed under Patiya."
+     ],
+     "sources": [
+      "wp_karnaphuli",
+      "wp_ccc"
+     ]
+    },
+    {
+     "name": "Boalkhali",
+     "district": "Chittagong",
+     "area_km2": 126.46,
+     "area_km2_candidates": null,
+     "population_2022": 258688,
+     "police_stations": null,
+     "unions": [
+      "Ahalla Karaldenga",
+      "Amuchia",
+      "Charandwip",
+      "Kadhurkhil",
+      "Pashchim Gomdandi",
+      "Popadia",
+      "Saroatali",
+      "Shakpura",
+      "Sreepur Kharandwip"
+     ],
+     "union_count": 9,
+     "post_offices": [
+      {
+       "name": "Boalkhali",
+       "postcode": "4366"
+      },
+      {
+       "name": "Charandwip",
+       "postcode": "4369"
+      },
+      {
+       "name": "Iqbal Park",
+       "postcode": "4365"
+      },
+      {
+       "name": "Kadurkhal",
+       "postcode": "4368"
+      },
+      {
+       "name": "Kanungopara",
+       "postcode": "4363"
+      },
+      {
+       "name": "Sakpura",
+       "postcode": "4367"
+      },
+      {
+       "name": "Saroatoli",
+       "postcode": "4364"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Boalkhali",
+       "wards": null
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_boalkhali",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Patiya",
+     "district": "Chittagong",
+     "area_km2": null,
+     "area_km2_candidates": [
+      156.34,
+      316.47
+     ],
+     "population_2022": 397679,
+     "police_stations": [
+      {
+       "name": "Patiya Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Asia",
+      "Bara Uthan",
+      "Baralia",
+      "Bhatikhain",
+      "Chanhara",
+      "Char Lakhya",
+      "Char Patharghata",
+      "Dakshin Bhurshi",
+      "Dhalghat",
+      "Habilasdwip",
+      "Haidgaon",
+      "Janglukhain",
+      "Jiri",
+      "Juldha",
+      "Kachuai",
+      "Kasiais",
+      "Kelishahar",
+      "Kharana",
+      "Kolagaon",
+      "Kusumpura",
+      "Shikalbaha",
+      "Sobhandandi"
+     ],
+     "union_count": 22,
+     "post_offices": [
+      {
+       "name": "Budhpara",
+       "postcode": "4371"
+      },
+      {
+       "name": "Patiya Head Office",
+       "postcode": "4370"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Patiya",
+       "wards": 9
+      }
+     ],
+     "notes": [
+      "Wikipedia gives area 156.34 km2 (infobox) and 316.47 km2 (body); area left null. Five of the 22 listed unions are also listed under Karnaphuli."
+     ],
+     "sources": [
+      "wp_patiya",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Anwara",
+     "district": "Chittagong",
+     "area_km2": 164.13,
+     "area_km2_candidates": null,
+     "population_2022": 319482,
+     "police_stations": null,
+     "unions": [
+      "Anwara",
+      "Bairag",
+      "Barakhain",
+      "Barasat",
+      "Burumchhara",
+      "Battali",
+      "Chatari",
+      "Haildhar",
+      "Juidandi",
+      "Paraikora",
+      "Roypur"
+     ],
+     "union_count": 11,
+     "post_offices": [
+      {
+       "name": "Anowara",
+       "postcode": "4376"
+      },
+      {
+       "name": "Battali",
+       "postcode": "4378"
+      },
+      {
+       "name": "Paroikora",
+       "postcode": "4377"
+      }
+     ],
+     "municipalities": [],
+     "notes": [],
+     "sources": [
+      "wp_anwara",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Chandanaish",
+     "district": "Chittagong",
+     "area_km2": 201.99,
+     "area_km2_candidates": null,
+     "population_2022": 252242,
+     "police_stations": [
+      {
+       "name": "Chandanaish Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Bailtali",
+      "Barama",
+      "Barkal",
+      "Dhopachhari",
+      "Dohazari",
+      "Hashimpur",
+      "Joara",
+      "Kanchanabad",
+      "Satbaria"
+     ],
+     "union_count": 9,
+     "post_offices": [
+      {
+       "name": "Barma",
+       "postcode": "4383"
+      },
+      {
+       "name": "Dohazari",
+       "postcode": "4382"
+      },
+      {
+       "name": "East Joara",
+       "postcode": "4380"
+      },
+      {
+       "name": "Gachbaria",
+       "postcode": "4381"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Chandanaish",
+       "wards": 9
+      },
+      {
+       "name": "Dohazari",
+       "wards": null
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_chandanaish",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Satkania",
+     "district": "Chittagong",
+     "area_km2": 280.99,
+     "area_km2_candidates": null,
+     "population_2022": 454062,
+     "police_stations": [
+      {
+       "name": "Satkania Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Amilaish",
+      "Bazalia",
+      "Charati",
+      "Dharmapur",
+      "Dhemsa",
+      "Eochia",
+      "Kaliaish",
+      "Kanchana",
+      "Keochia",
+      "Khagaria",
+      "Madarsha",
+      "Nalua",
+      "Paschim Dhemsa",
+      "Purangor",
+      "Sadaha",
+      "Satkania",
+      "Sonakania"
+     ],
+     "union_count": 17,
+     "post_offices": [
+      {
+       "name": "Baitul Ijjat",
+       "postcode": "4387"
+      },
+      {
+       "name": "Bazalia",
+       "postcode": "4388"
+      },
+      {
+       "name": "Satkania",
+       "postcode": "4386"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Satkania",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_satkania",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Banshkhali",
+     "district": "Chittagong",
+     "area_km2": 376.9,
+     "area_km2_candidates": null,
+     "population_2022": 537593,
+     "police_stations": [
+      {
+       "name": "Banshkhali Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Pukuria",
+      "Sadhanpur",
+      "Khankhanabad",
+      "Baharchhara",
+      "Kalipur",
+      "Bailchhari",
+      "Katharia",
+      "Saral",
+      "Gandamara",
+      "Silkup",
+      "Chambal",
+      "Puichhari",
+      "Chhanua",
+      "Sekherkhil"
+     ],
+     "union_count": 14,
+     "post_offices": [
+      {
+       "name": "Banigram",
+       "postcode": "4393"
+      },
+      {
+       "name": "Gunagari",
+       "postcode": "4392"
+      },
+      {
+       "name": "Jaldi",
+       "postcode": "4390"
+      },
+      {
+       "name": "Khan Bahadur",
+       "postcode": "4391"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Banshkhali",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_banshkhali",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Lohagara",
+     "district": "Chittagong",
+     "area_km2": 258.87,
+     "area_km2_candidates": null,
+     "population_2022": 328220,
+     "police_stations": [
+      {
+       "name": "Lohagara Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Adhunagar",
+      "Amirabad",
+      "Putibila",
+      "Barahatia",
+      "Charamba",
+      "Chunati",
+      "Kalauzan",
+      "Lohagara",
+      "Padua"
+     ],
+     "union_count": 9,
+     "post_offices": [
+      {
+       "name": "Chunti",
+       "postcode": "4398"
+      },
+      {
+       "name": "Lohagara",
+       "postcode": "4396"
+      },
+      {
+       "name": "Padua",
+       "postcode": "4397"
+      }
+     ],
+     "municipalities": [],
+     "notes": [],
+     "sources": [
+      "wp_lohagara",
+      "aifdn_postcodes"
+     ]
+    }
+   ],
+   "upazila_count": 15
+  },
+  {
+   "name": "Cox's Bazar",
+   "headquarters": "Cox's Bazar (town)",
+   "headquarters_basis": "Not stated in the Wikipedia article; the nuhil dataset gives the District Commissioner's office coordinates 21.44316, 91.97382, which fall in Cox's Bazar town.",
+   "area_km2": 2491.85,
+   "population_2022": 2823268,
+   "population_note": "Infobox area 2,491.85 km2; body text 2,491.86 km2. The nine upazila populations sum exactly to the district total.",
+   "city_corporations": [],
+   "city_corporation_note": "No city corporation found in any fetched source; Cox's Bazar has a municipality (pourashava).",
+   "metropolitan_police": null,
+   "municipalities": [
+    {
+     "name": "Cox's Bazar",
+     "wards": 12,
+     "upazila": "Cox's Bazar Sadar"
+    },
+    {
+     "name": "Chakaria Bazar",
+     "wards": 9,
+     "upazila": "Chakaria"
+    },
+    {
+     "name": "Moheshkhali",
+     "wards": 9,
+     "upazila": "Maheshkhali"
+    },
+    {
+     "name": "Teknaf",
+     "wards": 9,
+     "upazila": "Teknaf"
+    }
+   ],
+   "sources": [
+    "wp_coxs_bazar_district",
+    "nuhil_geocode"
+   ],
+   "upazilas": [
+    {
+     "name": "Cox's Bazar Sadar",
+     "district": "Cox's Bazar",
+     "area_km2": 108.57,
+     "area_km2_candidates": null,
+     "population_2022": 417365,
+     "police_stations": [
+      {
+       "name": "Cox's Bazar Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Chowfaldandi",
+      "Jhilongjha",
+      "Khurushkhul",
+      "Pokkhali",
+      "Varuakhali"
+     ],
+     "union_count": 5,
+     "post_offices": [
+      {
+       "name": "Cox's Bazar Sadar",
+       "postcode": "4700"
+      },
+      {
+       "name": "Zhilanja",
+       "postcode": "4701"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Cox's Bazar",
+       "wards": 12
+      }
+     ],
+     "notes": [
+      "Wikipedia shows 417,365 for both 2011 and 2022; the 2022 figure is consistent with the district total (the nine upazila populations sum exactly to 2,823,268)."
+     ],
+     "sources": [
+      "wp_coxs_bazar_sadar",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Chakaria",
+     "district": "Cox's Bazar",
+     "area_km2": 503.83,
+     "area_km2_candidates": null,
+     "population_2022": 571280,
+     "police_stations": [
+      {
+       "name": "Chakaria Thana",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Badarkhali",
+      "Baraitali",
+      "Bheola Manikchar",
+      "Bamo Bilchari",
+      "Chiringa",
+      "Demusia",
+      "Dulahazara",
+      "Fashiakhali",
+      "Harbang",
+      "Kaiarbil",
+      "Kakhara",
+      "Khuntakhali",
+      "Konakhali",
+      "Lakhyarchar",
+      "Paschim Bara Bheola",
+      "Purba Bara Bheola",
+      "Saharbil",
+      "Surajpur-Manikpur"
+     ],
+     "union_count": 18,
+     "post_offices": [
+      {
+       "name": "Badarkali",
+       "postcode": "4742"
+      },
+      {
+       "name": "Chiringga",
+       "postcode": "4740"
+      },
+      {
+       "name": "Chiringga S.O",
+       "postcode": "4741"
+      },
+      {
+       "name": "Malumghat",
+       "postcode": "4743"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Chakaria Bazar",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_chakaria",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Kutubdia",
+     "district": "Cox's Bazar",
+     "area_km2": null,
+     "area_km2_candidates": [
+      215.79,
+      93.0
+     ],
+     "population_2022": 143622,
+     "police_stations": [
+      {
+       "name": "Baraghop police station",
+       "basis": "stated_historical"
+      }
+     ],
+     "unions": [
+      "Ali Akbardeil",
+      "Baraghop",
+      "Dakshin Dhurung",
+      "Kaiyarbil",
+      "Lemsikhali",
+      "Uttar Dhurung"
+     ],
+     "union_count": 6,
+     "post_offices": [
+      {
+       "name": "Kutubdia",
+       "postcode": "4720"
+      }
+     ],
+     "municipalities": [],
+     "notes": [
+      "Wikipedia gives area 215.79 km2 (infobox) and 93 km2 (body); area left null."
+     ],
+     "sources": [
+      "wp_kutubdia",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Ukhia",
+     "district": "Cox's Bazar",
+     "area_km2": 261.8,
+     "area_km2_candidates": null,
+     "population_2022": 263158,
+     "police_stations": null,
+     "unions": [
+      "Holdia Palong",
+      "Jalia Palong",
+      "Raja Palong",
+      "Ratna Palong",
+      "Palong Khali"
+     ],
+     "union_count": 5,
+     "post_offices": [
+      {
+       "name": "Ukhia",
+       "postcode": "4750"
+      }
+     ],
+     "municipalities": [],
+     "notes": [],
+     "sources": [
+      "wp_ukhia",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Maheshkhali",
+     "district": "Cox's Bazar",
+     "area_km2": 362.18,
+     "area_km2_candidates": null,
+     "population_2022": 385510,
+     "police_stations": null,
+     "unions": [
+      "Bara Maheshkhali",
+      "Chota Maheshkhali",
+      "Dhalghata",
+      "Hoanak",
+      "Kalarmarchhara",
+      "Kutubjom",
+      "Matarbari",
+      "Saflapur"
+     ],
+     "union_count": 8,
+     "post_offices": [
+      {
+       "name": "Gorakghat",
+       "postcode": "4710"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Moheshkhali",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_maheshkhali",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Pekua",
+     "district": "Cox's Bazar",
+     "area_km2": 139.61,
+     "area_km2_candidates": null,
+     "population_2022": 214357,
+     "police_stations": null,
+     "unions": [
+      "Barabakia",
+      "Magnama",
+      "Pekua",
+      "Rajakhali",
+      "Shilkhali",
+      "Taitong",
+      "Ujantia"
+     ],
+     "union_count": 7,
+     "post_offices": null,
+     "municipalities": [],
+     "notes": [],
+     "sources": [
+      "wp_pekua"
+     ]
+    },
+    {
+     "name": "Ramu",
+     "district": "Cox's Bazar",
+     "area_km2": 391.71,
+     "area_km2_candidates": null,
+     "population_2022": 344545,
+     "police_stations": null,
+     "unions": [
+      "Chakmarkul",
+      "Dakshin Mithachhari",
+      "Eidghar",
+      "Fotekharkul",
+      "Garjoniya",
+      "Jouarianala",
+      "Kacchapia",
+      "Kawarkhop",
+      "Khuniapalong",
+      "Rajarkul",
+      "Rashidnagar"
+     ],
+     "union_count": 11,
+     "post_offices": [
+      {
+       "name": "Ramu",
+       "postcode": "4730"
+      }
+     ],
+     "municipalities": [],
+     "notes": [],
+     "sources": [
+      "wp_ramu",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Teknaf",
+     "district": "Cox's Bazar",
+     "area_km2": 388.66,
+     "area_km2_candidates": null,
+     "population_2022": 333865,
+     "police_stations": null,
+     "unions": [
+      "Baharchhara",
+      "Nhila",
+      "Sabrang",
+      "Saint Martin",
+      "Teknaf",
+      "Whykong"
+     ],
+     "union_count": 6,
+     "post_offices": [
+      {
+       "name": "Hnila",
+       "postcode": "4761"
+      },
+      {
+       "name": "St. Martin",
+       "postcode": "4762"
+      },
+      {
+       "name": "Teknaf",
+       "postcode": "4760"
+      }
+     ],
+     "municipalities": [
+      {
+       "name": "Teknaf",
+       "wards": 9
+      }
+     ],
+     "notes": [],
+     "sources": [
+      "wp_teknaf",
+      "aifdn_postcodes"
+     ]
+    },
+    {
+     "name": "Eidgaon",
+     "district": "Cox's Bazar",
+     "area_km2": 119.66,
+     "area_km2_candidates": null,
+     "population_2022": 149566,
+     "police_stations": [
+      {
+       "name": "Eidgaon Thana",
+       "basis": "stated_current"
+      }
+     ],
+     "unions": [
+      "Eidgaon",
+      "Islamabad",
+      "Islampur",
+      "Jalalabad",
+      "Pokkhali"
+     ],
+     "union_count": 5,
+     "post_offices": [
+      {
+       "name": "Eidga",
+       "postcode": "4702"
+      }
+     ],
+     "municipalities": [],
+     "notes": [
+      "Union names are not stated in the Eidgaon article. Inferred: the five unions the nuhil dataset still lists under Cox's Bazar Sadar (Eidgaon, Islamabad, Islampur, Jalalabad, Pokkhali) match Wikipedia's count of five and the 2021 split; unconfirmed. Upazila established 26 July 2021; thana established 21 October 2019 (per the article)."
+     ],
+     "sources": [
+      "wp_eidgaon",
+      "nuhil_geocode",
+      "aifdn_postcodes"
+     ]
+    }
+   ],
+   "upazila_count": 9
+  }
+ ],
+ "sources": [
+  {
+   "id": "wp_chittagong_district",
+   "title": "Chittagong District (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Chittagong_District",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_coxs_bazar_district",
+   "title": "Cox's Bazar District (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_District",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_ccc",
+   "title": "Chittagong City Corporation (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Chittagong_City_Corporation",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_cmp",
+   "title": "Chittagong Metropolitan Police (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Chittagong_Metropolitan_Police",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "dailystar_ccc",
+   "title": "Chittagong City Corporation: A lifeline of the country's economy (The Daily Star, 26 January 2021; direct link left out, search the title on thedailystar.net)",
+   "url": "https://www.thedailystar.net/",
+   "licence": "Copyright The Daily Star; cited for facts only",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "nuhil_geocode",
+   "title": "nuhil/bangladesh-geocode (divisions, districts, upazilas, unions JSON)",
+   "url": "https://github.com/nuhil/bangladesh-geocode",
+   "licence": "MIT (Copyright 2014 Nuhil Mehdy)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "aifdn_postcodes",
+   "title": "aiFdn/Postcodes-of-Bangladesh, json/postcodes.json",
+   "url": "https://github.com/aiFdn/Postcodes-of-Bangladesh/blob/master/json/postcodes.json",
+   "licence": "MIT (Copyright 2017 Akhaura Info Foundation)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "geoboundaries_bgd",
+   "title": "geoBoundaries gbOpen BGD ADM2/ADM3/ADM4 (source: Bangladesh Bureau of Statistics via OCHA ROAP, boundary year 2020)",
+   "url": "https://github.com/wmgeolab/geoBoundaries/tree/main/releaseData/gbOpen/BGD",
+   "licence": "CC BY 3.0 IGO",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_mirsharai",
+   "title": "Mirsharai Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Mirsharai_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_fatikchhari",
+   "title": "Fatikchhari Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Fatikchhari_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_sandwip",
+   "title": "Sandwip Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Sandwip_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_sitakunda",
+   "title": "Sitakunda Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Sitakunda_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_hathazari",
+   "title": "Hathazari Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Hathazari_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_raozan",
+   "title": "Raozan Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Raozan_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_rangunia",
+   "title": "Rangunia Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Rangunia_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_karnaphuli",
+   "title": "Karnaphuli Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Karnaphuli_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_boalkhali",
+   "title": "Boalkhali Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Boalkhali_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_patiya",
+   "title": "Patiya Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Patiya_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_anwara",
+   "title": "Anwara Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Anwara_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_chandanaish",
+   "title": "Chandanaish Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Chandanaish_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_satkania",
+   "title": "Satkania Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Satkania_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_banshkhali",
+   "title": "Banshkhali Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Banshkhali_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_lohagara",
+   "title": "Lohagara Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Lohagara_Upazila,_Chittagong",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_coxs_bazar_sadar",
+   "title": "Cox's Bazar Sadar Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Cox%27s_Bazar_Sadar_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_chakaria",
+   "title": "Chakaria Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Chakaria_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_kutubdia",
+   "title": "Kutubdia Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Kutubdia_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_ukhia",
+   "title": "Ukhia Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Ukhia_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_maheshkhali",
+   "title": "Maheshkhali Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Maheshkhali_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_pekua",
+   "title": "Pekua Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Pekua_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_ramu",
+   "title": "Ramu Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Ramu_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_teknaf",
+   "title": "Teknaf Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Teknaf_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  },
+  {
+   "id": "wp_eidgaon",
+   "title": "Eidgaon Upazila (Wikipedia)",
+   "url": "https://en.wikipedia.org/wiki/Eidgaon_Upazila",
+   "licence": "CC BY-SA 4.0 (Wikipedia text)",
+   "retrieved": "2026-10-08"
+  }
+ ]
+}

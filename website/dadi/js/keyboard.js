@@ -24,7 +24,7 @@
     return out;
   }
 
-  /* api: { audio: { play, playSymbol }, close(), onChange?() } ; mount(container, field) shows the keyboard for one text field. */
+  /* api: { audio: { play, playSymbol }, close(), onChange?(), suggest?(word) -> [{ ipa, gloss }] } ; mount(container, field) shows the keyboard for one text field. */
   function create(api) {
     let field = null, kb = null, strip, info, pop, caret = null, popTimer = null;
     const pos_ = () => Math.max(0, Math.min(caret == null ? field.value.length : caret, field.value.length));
@@ -44,22 +44,37 @@
       if (!silent(sym)) api.audio.playSymbol(sym);
       refresh();
     }
-    /* The strip: neighbours of the sound just before the cursor. Tapping one swaps it in. */
+    /* The strip: whole-word suggestions first (from the project's words), then close neighbours of the last sound. Tapping one swaps it in. */
     function refresh() {
       strip.textContent = '';
-      const pos = pos_(), g = lastGrapheme(field.value, pos);
-      const base = g.text ? Array.from(g.text)[0] : '';
-      const alts = base ? alternatives(base) : [];
-      if (!alts.length) { strip.append(el('span', 'kb-hint', g.text ? 'No close neighbours for ' + g.text : 'Tap a key. You will hear it.')); return; }
-      strip.append(el('span', 'kb-hint', 'Instead of ' + g.text + ':'));
-      alts.forEach((s) => {
-        const b = el('button', 'ks', s); b.type = 'button'; b.title = IPA.describe(s); b.setAttribute('aria-label', 'Use ' + s + ' ' + IPA.describe(s));
-        b.addEventListener('click', () => {
-          const rest = g.text.slice(base.length), before = field.value.slice(0, g.start), after = field.value.slice(pos);
-          field.value = before + s + rest + after; setCaret((before + s + rest).length); changed(); describe(s); api.audio.playSymbol(s); refresh();
+      const pos = pos_(), before = field.value.slice(0, pos), g = lastGrapheme(field.value, pos);
+      const base = g.text ? Array.from(g.text)[0] : '', alts = base ? alternatives(base) : [];
+      const word = (/(\S*)$/.exec(before) || ['', ''])[1];
+      const words = api.suggest && word.length >= 2 ? api.suggest(word) : [];
+      if (!alts.length && !words.length) { strip.append(el('span', 'kb-hint', g.text ? 'No close neighbours for ' + g.text : 'Tap a key. You will hear it.')); return; }
+      if (words.length) {
+        strip.append(el('span', 'kb-hint', 'Words:'));
+        words.forEach((w) => {
+          const b = el('button', 'ks kw'); b.type = 'button'; b.setAttribute('aria-label', 'Use the word ' + w.ipa + ', ' + w.gloss);
+          b.append(el('span', 'kw-i', w.ipa), el('span', 'kw-g', w.gloss));
+          b.addEventListener('click', () => {
+            const start = pos - word.length, after = field.value.slice(pos);
+            field.value = field.value.slice(0, start) + w.ipa + after; setCaret(start + w.ipa.length); changed(); info.textContent = w.ipa + '  ' + w.gloss; api.audio.play(w.ipa); refresh();
+          });
+          strip.append(b);
         });
-        strip.append(b);
-      });
+      }
+      if (alts.length) {
+        strip.append(el('span', 'kb-hint', 'Instead of ' + g.text + ':'));
+        alts.forEach((s) => {
+          const b = el('button', 'ks', s); b.type = 'button'; b.title = IPA.describe(s); b.setAttribute('aria-label', 'Use ' + s + ' ' + IPA.describe(s));
+          b.addEventListener('click', () => {
+            const rest = g.text.slice(base.length), pre = field.value.slice(0, g.start), after = field.value.slice(pos);
+            field.value = pre + s + rest + after; setCaret((pre + s + rest).length); changed(); describe(s); api.audio.playSymbol(s); refresh();
+          });
+          strip.append(b);
+        });
+      }
       strip.scrollLeft = 0;
     }
 

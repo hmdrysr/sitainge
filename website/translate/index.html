@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https: 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Translate to siṭaiṅga</title>
+<meta name="description" content="Draft English to siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. Unverified. Runs in your browser.">
+<link rel="stylesheet" href="../site.css">
+<link rel="stylesheet" href="translate.css">
+</head>
+<body>
+<main class="wrap tr">
+<p><a href="../">siṭaiṅga project</a> &middot; <a href="../dadi/">Dadi</a></p>
+<h1>English to siṭaiṅga</h1>
+<p class="lead">A word-for-word draft using only words the project already holds. It looks meanings up; it does not do grammar, and it invents nothing. Words it does not know stay in English.</p>
+<div class="panes">
+  <section aria-labelledby="l-in"><h2 id="l-in">English</h2>
+    <textarea id="in" rows="8" spellcheck="true" autocomplete="off" placeholder="Type or paste English here" aria-describedby="cov"></textarea></section>
+  <section aria-labelledby="l-out"><h2 id="l-out">siṭaiṅga (draft)</h2>
+    <div id="out" class="out" lang="ctg" aria-live="polite"></div></section>
+</div>
+<p id="cov" class="cov" role="status">Type something to begin.</p>
+<div id="detail" class="detail" hidden></div>
+<div class="row">
+  <button id="copy" class="btn primary" type="button">Copy</button>
+  <button id="listen" class="btn" type="button">Listen</button>
+  <a id="suggest" class="btn" href="https://github.com/hmdrysr/sitainge/issues/new" target="_blank" rel="noopener noreferrer">Suggest a missing word</a>
+</div>
+<p id="tts" class="note"></p>
+<p class="note">Highlighted dotted words were found; tap one to see the English original, its source entry and its evidence level. Words with a red wavy underline were not found. Every level here is unverified unless the project has assessed it. AI output is never counted as evidence.</p>
+
+<h2>Translate a web page</h2>
+<p>This page cannot fetch other websites for you: browsers block it, and nothing you read should pass through a server anyway. Two ways that keep the text on your device:</p>
+<ul>
+<li><strong>Extension</strong> (Chrome, Edge, Firefox): <a href="../downloads/sitainge-translator-extension-0.1.0.zip">download the extension (.zip)</a>. It is not yet in any store; the <a href="../docs/browser-extension.md">install notes</a> explain how to load it.</li>
+<li><strong>Bookmarklet</strong>: drag <a id="bm" class="btn" href="#">siṭaiṅga page</a> to your bookmarks bar, then click it on any page. It may be blocked on sites with a strict security policy. Or copy the code: <button id="bmcopy" class="btn" type="button">Copy bookmarklet</button></li>
+</ul>
+<p id="src" class="note"></p>
+<p class="note">CC0. No tracking, no accounts. Your text stays in this browser; only the project's public dictionary files are fetched.</p>
+</main>
+<script src="../dadi/js/ipa-data.js"></script>
+<script src="../dadi/js/g2p.js"></script>
+<script src="../dadi/js/native-tts.js"></script>
+<script src="../dadi/js/data.js"></script>
+<script src="../dadi/js/translate.js"></script>
+<script src="translate.js"></script>
+</body>
+</html>
