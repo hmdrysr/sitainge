@@ -1,7 +1,7 @@
 {
   "name": "siṭaiṅge: contribute",
   "short_name": "siṭaiṅge",
-  "description": "Contribute words and sentences in siṭaiṅga (Chittagonian). Works offline. Nothing is sent until you choose to share it.",
+  "description": "Contribute words and sentences in siṭaiṅga (Chittagonian) with a form that works offline. Nothing is sent until you choose to share it.",
   "start_url": "./contribute.html",
   "scope": "./",
   "display": "standalone",

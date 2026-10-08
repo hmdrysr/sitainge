@@ -5,7 +5,7 @@
   'use strict';
   const KEY = 'dadi.ai';
   const KINDS = {
-    copy: { label: 'No connection: copy a prompt', needs: [] },
+    copy: { label: 'No connection (copy a prompt)', needs: [] },
     openai: { label: 'OpenAI-compatible (OpenAI, OpenRouter, LM Studio, and others)', needs: ['endpoint', 'model', 'key'], endpoint: 'https://openrouter.ai/api/v1' },
     anthropic: { label: 'Anthropic (Claude)', needs: ['model', 'key'], endpoint: 'https://api.anthropic.com' },
     ollama: { label: 'Ollama on this device or network', needs: ['endpoint', 'model'], endpoint: 'http://localhost:11434' }
@@ -31,7 +31,7 @@
   }
 
   async function ask(cfg, prompt, signal) {
-    const k = KINDS[cfg.kind]; if (!k || cfg.kind === 'copy') throw new Error('Connect an AI first, or copy the prompt.');
+    const k = KINDS[cfg.kind]; if (!k || cfg.kind === 'copy') throw new Error('Connect an AI service first, or copy the prompt.');
     const base = (cfg.endpoint || k.endpoint).replace(/\/+$/, '');
     let url, headers = { 'content-type': 'application/json' }, body;
     if (cfg.kind === 'anthropic') {
@@ -40,10 +40,10 @@
     } else if (cfg.kind === 'ollama') { url = base + '/api/chat'; body = { model: cfg.model, stream: false, messages: [{ role: 'user', content: prompt }] }; }
     else { url = base + '/chat/completions'; if (cfg.key) headers.authorization = 'Bearer ' + cfg.key; body = { model: cfg.model, messages: [{ role: 'user', content: prompt }] }; }
     let r; try { r = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal }); } catch (e) { throw new Error('Could not reach ' + base + '. Check the address and your connection' + (cfg.kind === 'ollama' ? ', and that Ollama allows this site (OLLAMA_ORIGINS).' : '.')); }
-    if (!r.ok) { let m = ''; try { m = (await r.json()).error; m = (m && m.message) || m || ''; } catch (e) { /* none */ } throw new Error('The AI service said no (HTTP ' + r.status + ')' + (m ? ': ' + m : '') + '.'); }
+    if (!r.ok) { let m = ''; try { m = (await r.json()).error; m = (m && m.message) || m || ''; } catch (e) { /* none */ } throw new Error('The AI service declined the request (HTTP ' + r.status + ')' + (m ? ': ' + m : '') + '.'); }
     const j = await r.json();
     const t = cfg.kind === 'anthropic' ? (j.content || []).map((c) => c.text || '').join('') : cfg.kind === 'ollama' ? (j.message && j.message.content) : (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content);
-    if (!t) throw new Error('The AI service sent an empty answer.');
+    if (!t) throw new Error('The AI service returned an empty response.');
     return String(t).trim();
   }
 

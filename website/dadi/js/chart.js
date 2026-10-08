@@ -50,10 +50,10 @@
     const marks = el('div', 'pair wrapall'); IPA.MODIFIERS.forEach(([s, n]) => { const shown = /^[̀-ͯ]$/.test(s) ? '◌' + s : s; marks.append(sym(shown, n)); });
 
     const sec = (title, note, node) => { const s = el('section', 'chart-sec'); s.append(el('h3', null, title)); if (note) s.append(el('p', 'small muted', note)); s.append(node); return s; };
-    wrap.append(info, sec('Consonants', 'Where the sound is made across, how across the rows. Left of a pair is voiceless, right is voiced.', consWrap),
-      sec('Vowels', 'Tongue height down the side, front to back across. Left of a pair is unrounded, right is rounded.', vowWrap),
-      sec('Other symbols', 'Implosives and rarer sounds. Some are played as the nearest sound that Dadi can make.', others),
-      sec('Marks', 'These attach to the sound before them: length, breath, nasal and stress.', marks));
+    wrap.append(info, sec('Consonants', 'Place of articulation runs across the columns and manner of articulation down the rows. In each pair, the left symbol is voiceless and the right is voiced.', consWrap),
+      sec('Vowels', 'Tongue height runs down the side and frontness to backness across the columns. In each pair, the left symbol is unrounded and the right is rounded.', vowWrap),
+      sec('Other symbols', 'Implosives and less common sounds. Some are played as the nearest sound that Dadi can produce.', others),
+      sec('Marks', 'These marks attach to the preceding sound and indicate length, breath, nasality and stress.', marks));
     return wrap;
   }
   const api = { build, vowelCell, PLACES, MANNERS };

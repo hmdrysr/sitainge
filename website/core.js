@@ -66,12 +66,12 @@
     if (!c.credit) e.push('Choose how you want to be credited.');
     if (!c.audio) e.push('Choose what to do about voice recordings.');
     if (c.audio === 'public' && c.publish !== 'yes') e.push('Recordings cannot be published while the text is set to "Discuss with me first". Change one of the two choices.');
-    if (c.audio === 'none' && items.some((it) => it.audio_file)) e.push('Recordings exist, but you chose no recordings.');
+    if (c.audio === 'none' && items.some((it) => it.audio_file)) e.push('You chose no recordings, but a recording is attached to an item.');
     if (c.credit === 'name' && !clean(c.creditName)) e.push('You chose to be credited by name. Enter the name to show.');
     if (!items.length) e.push('There is nothing to export yet.');
-    if (items.length > LIMITS.items) e.push('This submission has too many items (limit ' + LIMITS.items + '). Export now and start a second submission.');
+    if (items.length > LIMITS.items) e.push('This submission has too many items (the limit is ' + LIMITS.items + '). Export it now and start a second submission.');
     items.forEach((it) => {
-      if (it.status === 'used' && !it.response_as_given) e.push('Item ' + it.n + ' (' + it.prompt_english + '): marked as answered but empty.');
+      if (it.status === 'used' && !it.response_as_given) e.push('Item ' + it.n + ' (' + it.prompt_english + '): marked as answered, but the answer is empty.');
       ['response_as_given', 'speaker_comment', 'usage_note', 'pronunciation_note', 'context_given'].forEach((k) => {
         if (it[k].length > LIMITS.field) e.push('Item ' + it.n + ': "' + k + '" is longer than ' + LIMITS.field + ' characters.');
       });

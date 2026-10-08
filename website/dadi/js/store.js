@@ -69,7 +69,7 @@
       return JSON.stringify({ app: 'dadi', exported: new Date().toISOString(), state: safe, history: history(), reviews: reviews() }, null, 1);
     }
     function importAll(text) {
-      let o; try { o = JSON.parse(text); } catch (e) { return { ok: false, error: 'This is not a Dadi backup file (not valid JSON).' }; }
+      let o; try { o = JSON.parse(text); } catch (e) { return { ok: false, error: 'This is not a Dadi backup file (it is not valid JSON).' }; }
       if (!o || o.app !== 'dadi' || !o.state || o.state.v !== 1) return { ok: false, error: 'This file is not a Dadi backup.' };
       /* Merge, never overwrite: keep the newer card by last review; add queue items we do not have. */
       const inc = o.state, mine = state;
@@ -83,7 +83,7 @@
       mine.stats.streak = Math.max(mine.stats.streak || 0, (inc.stats && inc.stats.streak) || 0);
       Object.assign(mine.stats.lessonsDone, (inc.stats && inc.stats.lessonsDone) || {});
       mergeLearn(mine, inc.learn, o.reviews);
-      save(); log('import', 'merged a backup file made ' + (o.exported || 'at an unknown time'));
+      save(); log('import', 'merged a backup file created ' + (o.exported || 'at an unknown time'));
       return { ok: true };
     }
 

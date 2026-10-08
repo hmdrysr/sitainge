@@ -43,7 +43,7 @@
       const res = await Core.buildSubmission(state, blocks, d, Math.random().toString(36).slice(2, 6));
       const body = res.text;
       const errors = res.errors.slice();
-      if (body.length > BODY_MAX) errors.push('This batch is too large for one GitHub issue. Send fewer contributions at a time.');
+      if (body.length > BODY_MAX) errors.push('This batch is too large for one GitHub issue. Please send fewer contributions at a time.');
       batches.push({ text: body, title: '[Dadi] ' + slice.length + ' contribution' + (slice.length === 1 ? '' : 's') + ' · ' + res.id, items: res.items, errors, pii: res.pii, ids: slice.map((q) => q.id), submissionId: res.id });
     }
     return batches;

@@ -54,7 +54,7 @@
 
     /* Whole words and sentences. Resolves { ok, how:'device'|'clear'|'dadi', approximated } and never throws. */
     async function play(ipa, o) {
-      if (!supported && !(Native && Native.available())) return { ok: false, reason: 'This browser cannot play sound from the app.' };
+      if (!supported && !(Native && Native.available())) return { ok: false, reason: 'This browser cannot play sound from Dadi.' };
       stop(); const my = token; const s = settings(), eng = s.engine || 'auto';
       if (Native && (eng === 'auto' || eng === 'device')) { try { await Native.ready(); } catch (e) { /* none */ } if (my !== token) return { ok: false, reason: 'Stopped.' }; }
       if (o && o.symbol) return playOwnWord(ipa, o, my);
@@ -70,10 +70,10 @@
       return playOwnWord(ipa, o, my);
     }
     async function playOwnWord(ipa, o, my) {
-      if (!supported) return { ok: false, reason: 'This browser cannot play sound from the app.' };
+      if (!supported) return { ok: false, reason: 'This browser cannot play sound from Dadi.' };
       const s = settings(), f0 = PITCH[(o && o.pitch) || s.pitch] || 150, speed = (o && o.speed) || s.speed || 1;
       const r = renderOwn(ipa, o, f0, speed);
-      if (!r.samples.length) return { ok: false, reason: 'Nothing to play.', unsupported: r.unsupported };
+      if (!r.samples.length) return { ok: false, reason: 'There is nothing to play.', unsupported: r.unsupported };
       return playBuffer(r.samples, r.sampleRate, my, { how: 'dadi', unsupported: r.unsupported, approximated: r.approximated });
     }
     const playSymbol = (sym, o) => { stop(); return playOwnWord(sym, Object.assign({ symbol: true }, o || {}), token); };

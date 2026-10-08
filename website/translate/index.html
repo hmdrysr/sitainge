@@ -8,7 +8,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
 <title>Translator · siṭaiṅge</title>
-<meta name="description" content="A draft English to siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. The output is unverified. It runs in the browser.">
+<meta name="description" content="A draft English-to-siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. The output is unverified, and the tool runs in the browser.">
 <link rel="icon" href="../icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../site.css">
 <script src="../shell.js"></script>
@@ -25,7 +25,7 @@
 </header>
 <main id="main" tabindex="-1" class="wrap page tr">
 <h1>English to siṭaiṅga</h1>
-<p class="lede">A word-for-word draft that uses only words already in the project dictionary. The tool looks up meanings; it applies no grammar and adds no words. Words that are not in the dictionary stay in English.</p>
+<p class="lede">A word-for-word draft using only words already in the project dictionary. The tool looks up meanings; it applies no grammar and adds no words. Any word not found in the dictionary stays in English.</p>
 <div class="panes">
   <section aria-labelledby="l-in"><h2 id="l-in">English</h2>
     <textarea id="in" rows="8" spellcheck="true" autocomplete="off" placeholder="Type or paste English text" aria-describedby="cov"></textarea></section>
@@ -40,17 +40,17 @@
   <a id="suggest" class="btn" href="https://github.com/hmdrysr/sitainge/issues/new" target="_blank" rel="noopener noreferrer">Suggest a missing word</a>
 </div>
 <p id="tts" class="note" hidden></p>
-<p class="note">Words with a dotted underline were found in the dictionary. Select one to see the English original, its source entry and its evidence level. Words with a red wavy underline were not found. Every level shown is unverified unless the project has assessed it. AI output is not counted as evidence.</p>
+<p class="note">Words with a dotted underline were found in the dictionary; select one to see the English original, its source entry and its evidence level. Words with a red wavy underline were not found. Every level shown is unverified unless the project has assessed it. AI output is never counted as evidence.</p>
 
 <h2 id="extension">Translate a web page</h2>
-<p>This page cannot fetch other websites. Browsers block it, and page text should not pass through a server. Two options keep the text on the device.</p>
+<p>This page cannot fetch other websites, because browsers block the request and page text should not pass through a server. Two options keep the text on your device.</p>
 <ul class="plain">
-<li><b>Extension</b> (Chrome, Edge, Firefox): <a href="../downloads/sitainge-translator-extension-0.1.0.zip">download the extension (.zip)</a>. It is not yet in any store. The <a href="https://github.com/hmdrysr/sitainge/blob/main/docs/browser-extension.md">installation notes</a> explain how to load it.</li>
-<li><b>Bookmarklet</b>: drag <a id="bm" class="btn" href="#">siṭaiṅga page</a> to the bookmarks bar, then select it on any page. Sites with a strict security policy may block it. The code can also be copied: <button id="bmcopy" class="btn" type="button">Copy bookmarklet</button></li>
+<li><b>Extension</b> (Chrome, Edge, Firefox): <a href="../downloads/sitainge-translator-extension-0.1.0.zip">download the extension (.zip)</a>. It is not yet available in any store. The <a href="https://github.com/hmdrysr/sitainge/blob/main/docs/browser-extension.md">installation notes</a> explain how to load it.</li>
+<li><b>Bookmarklet</b>: drag the <a id="bm" class="btn" href="#">siṭaiṅga page</a> link to the bookmarks bar, then select it on any page. Sites with a strict security policy may block it. You can also copy the code: <button id="bmcopy" class="btn" type="button">Copy bookmarklet</button></li>
 </ul>
 <p id="src" class="small"></p>
 </main>
-<footer class="foot"><div class="wrap"><p class="small">The data is in the public domain (CC0 1.0). The page uses no tracking and no accounts. Typed text stays in the browser; only the project's public dictionary files are downloaded.</p>
+<footer class="foot"><div class="wrap"><p class="small">The data is in the public domain (CC0 1.0). This page uses no tracking and requires no account. Typed text stays in the browser; only the project's public dictionary files are downloaded.</p>
 </div></footer>
 <script src="../dadi/js/ipa-data.js"></script>
 <script src="../dadi/js/g2p.js"></script>

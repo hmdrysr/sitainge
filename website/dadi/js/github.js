@@ -15,12 +15,12 @@
     async function post(path, body) {
       const r = await f(relay + path, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(body) });
       let j = null; try { j = await r.json(); } catch (e) { /* not JSON */ }
-      if (!r.ok && !(j && j.error)) throw new Error('The sign-in helper answered HTTP ' + r.status);
+      if (!r.ok && !(j && j.error)) throw new Error('The sign-in helper responded with HTTP ' + r.status);
       return j || {};
     }
 
     async function deviceStart() {
-      if (!configured) throw new Error('Sign-in is not set up on this copy of Dadi.');
+      if (!configured) throw new Error('Sign-in has not been set up on this copy of Dadi.');
       const j = await post('/device/code', { client_id: cfg.clientId });
       if (j.error) throw new Error(j.error_description || j.error);
       return { deviceCode: j.device_code, userCode: j.user_code, url: j.verification_uri, interval: j.interval || 5, expiresIn: j.expires_in || 900 };
@@ -36,11 +36,11 @@
         if (j.access_token) return { token: j.access_token, expiresIn: j.expires_in || null };
         if (j.error === 'authorization_pending') continue;
         if (j.error === 'slow_down') { wait = (j.interval || wait + 5); continue; }
-        if (j.error === 'expired_token') throw new Error('The code expired. Start again.');
+        if (j.error === 'expired_token') throw new Error('The code has expired. Please start again.');
         if (j.error === 'access_denied') throw new Error('Sign-in was cancelled on GitHub.');
         throw new Error(j.error_description || j.error || 'Sign-in failed.');
       }
-      throw new Error('The code expired. Start again.');
+      throw new Error('The code has expired. Please start again.');
     }
 
     const headers = (token) => ({ Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' });
@@ -55,9 +55,9 @@
     async function createIssue(token, issue) {
       const r = await f(API + '/repos/' + cfg.repo + '/issues', { method: 'POST', headers: headers(token), body: JSON.stringify({ title: issue.title, body: issue.body }) });
       if (r.status === 401) { const e = new Error('Your GitHub sign-in has expired. Please sign in again. Your contribution is still saved on this device.'); e.code = 'expired'; throw e; }
-      if (r.status === 403) { const e = new Error('GitHub refused (limit reached, or the Dadi app is not allowed on this repository). Your contribution is still saved on this device.'); e.code = 'forbidden'; throw e; }
-      if (r.status === 404) { const e = new Error('The repository or the Dadi app was not found. Ask the project owner to check the app installation. Your contribution is still saved.'); e.code = 'notfound'; throw e; }
-      if (!r.ok) { const e = new Error('GitHub could not take the contribution (HTTP ' + r.status + '). It is still saved on this device.'); e.code = 'http'; throw e; }
+      if (r.status === 403) { const e = new Error('GitHub refused the request, either because a rate limit was reached or because the Dadi app is not permitted on this repository. Your contribution is still saved on this device.'); e.code = 'forbidden'; throw e; }
+      if (r.status === 404) { const e = new Error('The repository or the Dadi app could not be found. Please ask the project owner to check the app installation. Your contribution is still saved on this device.'); e.code = 'notfound'; throw e; }
+      if (!r.ok) { const e = new Error('GitHub could not accept the contribution (HTTP ' + r.status + '). It is still saved on this device.'); e.code = 'http'; throw e; }
       const j = await r.json(); return { number: j.number, url: j.html_url };
     }
 

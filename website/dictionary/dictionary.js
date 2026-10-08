@@ -40,8 +40,8 @@
     let d = null;
     try { const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 6000); try { const r = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/website/data/rohingya-seed.json', { signal: ctl.signal }); if (r.ok) d = await r.json(); } finally { clearTimeout(timer); } } catch (e) { d = null; }
     if (!d || !d.entries) { const r = await fetch('../data/rohingya-seed.json'); if (!r.ok) throw new Error('HTTP ' + r.status); d = await r.json(); }
-    const recs = d.entries.map((e) => ({ id: e.id, state: 'RAW', form_as_submitted: e.form, spellings: [e.form], english_gloss: e.gloss || 'No English translation in the source', unit: e.unit, source: e.source,
-      evidence_level: 'unassessed', consent: 'research-only', ai_assisted: false, confidence: 'published source; not verified by a speaker', form_note: e.unit === 'sentence' ? 'sentence-level record' : null }));
+    const recs = d.entries.map((e) => ({ id: e.id, state: 'RAW', form_as_submitted: e.form, spellings: [e.form], english_gloss: e.gloss || 'No English translation is given in the source', unit: e.unit, source: e.source,
+      evidence_level: 'unassessed', consent: 'research-only', ai_assisted: false, confidence: 'From a published source; not verified by a speaker', form_note: e.unit === 'sentence' ? 'Sentence-level record' : null }));
     const entries = recs.map((r) => D.normalize(r, '')).filter(Boolean);
     const index = D.buildIndex(entries);
     index.all.forEach((e) => { e._gk = glossKeys(e.gloss); e._hw = fold(e.spellings[0] || e.form); e._en = fold(e.gloss); });
@@ -51,12 +51,12 @@
     S.lang = l; S.q = ''; el.input.value = ''; el.toggleClear(); S.kind = ''; S.letter = ''; S.shown = PAGE; S.facets = null; S.region = ''; S.level = '';
     el.lang.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.getAttribute('data-l') === l ? 'true' : 'false'));
     const rhg = l === 'rhg';
-    el.note.hidden = !rhg; el.lede.textContent = rhg ? 'Romanized Rohingya words and sentences from published sources.' : 'Words and sentences of siṭaiṅga (Chittagonian) from contributor records.';
+    el.note.hidden = !rhg; el.lede.textContent = rhg ? 'Romanized Rohingya words and sentences drawn from published sources.' : 'Words and sentences in siṭaiṅga (Chittagonian), drawn from contributor records.';
     el.input.placeholder = rhg ? 'Search in Rohingya or English' : 'Search in siṭaiṅga or English';
     if (rhg) {
       if (!S.rhg) { setStatus('Loading the Rohingya records…'); try { await loadRhg(); } catch (e) { setStatus('The Rohingya records could not be loaded.'); S.lang = 'ctg'; return setLang('ctg'); } }
-      S.index = S.rhg.index; S.fz = S.rhg.fz; setStatus(nf(S.rhg.n) + ' Rohingya records, all unverified.');
-    } else if (S.ctg) { S.index = S.ctg.index; S.fz = S.ctg.fz; setStatus('siṭaiṅga records.'); }
+      S.index = S.rhg.index; S.fz = S.rhg.fz; setStatus(nf(S.rhg.n) + (S.rhg.n === 1 ? ' Rohingya record, which is unverified.' : ' Rohingya records, all unverified.'));
+    } else if (S.ctg) { S.index = S.ctg.index; S.fz = S.ctg.fz; setStatus('Showing the siṭaiṅga records.'); }
     refresh();
   }
   function readCache() { try { const c = JSON.parse(localStorage.getItem(CACHE_KEY)); return c && c.entries && c.entries.length ? c : null; } catch (e) { return null; } }
@@ -79,7 +79,7 @@
     refresh(); syncSheet();
     try {
       const d = await live(); writeCache(d); load(d, true);
-      setStatus('Read from GitHub on ' + when(d.fetchedAt) + (d.partial ? ' (some files could not be read)' : '') + '.');
+      setStatus('Loaded from GitHub on ' + when(d.fetchedAt) + (d.partial ? ' (some files could not be read)' : '') + '.');
       refresh(); syncSheet();
     } catch (e) {
       if (first) statusFor(from, first, true);
@@ -98,7 +98,7 @@
   const LEVELS = {
     A: 'Level A: directly documented',
     B: 'Level B: independently confirmed',
-    C: 'Level C: strongly supported, needs further confirmation',
+    C: 'Level C: strongly supported; further confirmation needed',
     D: 'Level D: proposed',
     E: 'Level E: unknown'
   };
@@ -146,20 +146,20 @@
 
   /* ---------- page ---------- */
   function build() {
-    const input = h('input', { type: 'search', id: 'q', class: 'q', placeholder: 'Search in siṭaiṅga or English', 'aria-label': 'Search the dictionary in siṭaiṅga, English or IPA', autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false', enterkeyhint: 'search' });
+    const input = h('input', { type: 'search', id: 'q', class: 'q', placeholder: 'Search in siṭaiṅga or English', 'aria-label': 'Search the dictionary by siṭaiṅga, English or IPA', autocomplete: 'off', autocapitalize: 'off', autocorrect: 'off', spellcheck: 'false', enterkeyhint: 'search' });
     let timer = 0;
     input.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => { S.q = input.value; S.letter = ''; S.shown = PAGE; refresh(); }, 90); toggleClear(); });
     const clear = h('button', { type: 'button', class: 'clear', 'aria-label': 'Clear search', hidden: true, onclick: () => { input.value = ''; S.q = ''; S.shown = PAGE; toggleClear(); refresh(); input.focus(); } }, [icon('x')]);
     function toggleClear() { clear.hidden = !input.value; }
     const field = h('form', { class: 'field', role: 'search', onsubmit: (ev) => { ev.preventDefault(); input.blur(); } }, [icon('search', 'lead'), input, clear]);
 
-    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Show' }, [['', 'All'], ['word', 'Words'], ['sentence', 'Sentences']].map(([k, t]) =>
+    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Entry type' }, [['', 'All'], ['word', 'Words'], ['sentence', 'Sentences']].map(([k, t]) =>
       h('button', { type: 'button', 'data-k': k, 'aria-pressed': S.kind === k ? 'true' : 'false', text: t, onclick: () => { S.kind = k; S.letter = ''; S.shown = PAGE; refresh(); } })));
     const filterBtn = h('button', { type: 'button', class: 'pill', 'aria-haspopup': 'dialog', onclick: openFilters }, [icon('filter'), h('span', { text: 'Filter' }), h('span', { class: 'dot', hidden: true })]);
     const count = h('p', { class: 'count', role: 'status', 'aria-live': 'polite' });
     const lang = h('div', { class: 'seg lang', role: 'group', 'aria-label': 'Language' }, [['ctg', 'Chittagonian'], ['rhg', 'Rohingya']].map(([k, t]) =>
       h('button', { type: 'button', 'data-l': k, 'aria-pressed': S.lang === k ? 'true' : 'false', text: t, onclick: () => setLang(k) })));
-    const note = h('p', { class: 'lang-note', hidden: true, text: 'Rohingya (ISO 639-3 rhg) is a different language from siṭaiṅga. These records are unverified. They come from published sources whose spellings are the compilers\' own, and no speaker has checked them.' });
+    const note = h('p', { class: 'lang-note', hidden: true, text: 'Rohingya (ISO 639-3 rhg) is a different language from siṭaiṅga. These records are unverified: they come from published sources, the spellings are the compilers\' own, and no speaker has checked them.' });
     const browse = h('div', { class: 'browse' });
     const out = h('div', { class: 'out' });
 
@@ -170,7 +170,7 @@
     fsheet.addEventListener('click', (ev) => { if (ev.target === fsheet) fsheet.close(); });
 
     view.replaceChildren(
-      h('div', { class: 'head' }, [h('h1', { text: 'Dictionary' }), h('p', { class: 'lede', text: 'Words and sentences of siṭaiṅga (Chittagonian) from contributor records.' }), lang, note]),
+      h('div', { class: 'head' }, [h('h1', { text: 'Dictionary' }), h('p', { class: 'lede', text: 'Words and sentences in siṭaiṅga (Chittagonian), drawn from contributor records.' }), lang, note]),
       h('div', { class: 'sticky' }, [field, h('div', { class: 'tools' }, [seg, filterBtn])]),
       count, browse, out, sheet, fsheet);
     Object.assign(el, { lang, note, lede: view.querySelector('.lede'), input, clear, seg, filterBtn, count, browse, out, sheet, fsheet, toggleClear });
@@ -219,16 +219,16 @@
     const out = el.out, list = S.list, q = S.q.trim(), total = S.index.all.length;
     if (!total) {
       el.count.textContent = '';
-      out.replaceChildren(h('div', { class: 'empty' }, [h('p', { class: 'etitle', text: 'No entries have been loaded.' }), h('p', { text: 'Check the connection and reload the page. A saved copy appears here once the page has loaded the records once.' })])); return;
+      out.replaceChildren(h('div', { class: 'empty' }, [h('p', { class: 'etitle', text: 'No entries have been loaded.' }), h('p', { text: 'Check the connection and reload the page. Once the records have loaded, a saved copy will appear here on later visits.' })])); return;
     }
-    el.count.textContent = q ? (list.length ? nf(list.length) + (list.length === 1 ? ' result' : ' results') + (S.fuzzy ? ' (including close spellings)' : '') : '') : (S.letter ? nf(list.length) + ' under ' + S.letter : nf(list.length) + (list.length === 1 ? ' entry' : ' entries'));
+    el.count.textContent = q ? (list.length ? nf(list.length) + (list.length === 1 ? ' result' : ' results') + (S.fuzzy ? ' (including close spellings)' : '') : '') : (S.letter ? nf(list.length) + (list.length === 1 ? ' entry' : ' entries') + ' under ' + S.letter : nf(list.length) + (list.length === 1 ? ' entry' : ' entries'));
     if (!list.length) {
-      const kids = [h('p', { class: 'etitle', text: q ? 'No match for “' + q + '”' : 'Nothing matches these filters' })];
+      const kids = [h('p', { class: 'etitle', text: q ? 'No match for “' + q + '”' : 'No entries match these filters' })];
       if (S.sugg) kids.push(h('p', {}, ['Did you mean ', h('button', { type: 'button', class: 'link', text: S.sugg, onclick: () => { el.input.value = S.sugg; S.q = S.sugg; el.toggleClear(); S.shown = PAGE; refresh(); } }), '?']));
-      kids.push(h('p', { text: q ? 'Try the English meaning, a shorter spelling, or fewer words. Spelling variants such as sh and s, or ph and f, are matched automatically. The dictionary holds only what contributors have recorded, so a missing word may not have been added yet.' : 'Clear a filter to see more entries.' }));
+      kids.push(h('p', { text: q ? 'Try the English meaning, a shorter spelling or fewer words. Variant spellings such as sh and s, or ph and f, are matched automatically. The dictionary holds only what contributors have recorded, so the word may not have been added yet.' : 'Remove a filter to see more entries.' }));
       const acts = [];
       if (S.kind || S.level || S.region) acts.push(h('button', { type: 'button', class: 'pill', text: 'Clear filters', onclick: () => { S.kind = S.level = S.region = ''; S.sort = 'best'; refresh(); } }));
-      if (q) acts.push(h('a', { class: 'pill', href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Word request: ' + q) + '&body=' + encodeURIComponent('I looked for "' + q + '" and did not find it.\n'), rel: 'noopener', text: 'Request this word on GitHub' }));
+      if (q) acts.push(h('a', { class: 'pill', href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Word request: ' + q) + '&body=' + encodeURIComponent('I looked for "' + q + '" and did not find it.\n'), rel: 'noopener', text: 'Request on GitHub' }));
       if (acts.length) kids.push(h('div', { class: 'eacts' }, acts));
       out.replaceChildren(h('div', { class: 'empty' }, kids)); return;
     }
@@ -237,7 +237,7 @@
     const kids = [];
     if (q && S.sugg) kids.push(h('p', { class: 'dym' }, ['Did you mean ', h('button', { type: 'button', class: 'link', text: S.sugg, onclick: () => { el.input.value = S.sugg; S.q = S.sugg; el.toggleClear(); S.shown = PAGE; refresh(); } }), '?']));
     kids.push(ul);
-    kids.push(h('p', { class: 'small note', text: 'Entries without a badge have not yet been verified by a speaker.' }));
+    kids.push(h('p', { class: 'small note', text: 'Entries without a level badge have not yet been verified by a speaker.' }));
     if (list.length > S.shown) kids.push(h('p', { class: 'more' }, [h('button', { type: 'button', class: 'btn', text: 'Show more (' + nf(list.length - S.shown) + ' remaining)', onclick: showMore })]));
     out.replaceChildren.apply(out, kids);
     draw(out);
@@ -268,7 +268,7 @@
     ];
     if (f.regions.length) body.push(group('Region', 'region', [['', 'Any']].concat(f.regions.map((r) => [r, r])), S.region, (v) => { S.region = v; S.letter = ''; S.shown = PAGE; }));
     d.replaceChildren(h('div', { class: 'shead' }, [h('h2', { id: 'fsheet-title', text: 'Sort and filter' }), h('button', { type: 'button', class: 'x', 'aria-label': 'Close', onclick: () => d.close() }, [icon('x')])]),
-      h('div', { class: 'sbody' }, body.concat([h('p', { class: 'small', text: 'Evidence levels run from A (directly documented) to E (unknown). Every entry currently loaded is still waiting to be assessed, so that filter may offer a single choice.' })])),
+      h('div', { class: 'sbody' }, body.concat([h('p', { class: 'small', text: 'Evidence levels run from A (directly documented) to E (unknown). Every entry currently loaded is awaiting assessment, so the level filter may offer only one choice.' })])),
       h('div', { class: 'sfoot' }, [h('button', { type: 'button', class: 'btn', text: 'Reset', onclick: () => { S.sort = 'best'; S.level = S.region = ''; refresh(); openFilters(); } }), h('button', { type: 'button', class: 'btn primary', text: 'Done', onclick: () => d.close() })]));
     draw(d);
     if (!d.open) d.showModal();
@@ -281,7 +281,7 @@
     S.open = id;
     const close = h('button', { type: 'button', class: 'x', 'aria-label': 'Close', onclick: closeSheet }, [icon('x')]);
     if (!e) {
-      d.replaceChildren(h('div', { class: 'shead' }, [h('h2', { id: 'sheet-title', text: 'Entry not found' }), close]), h('div', { class: 'sbody' }, [h('p', { text: 'No entry with the identifier ' + id + ' is in the data currently loaded. It may have been renamed, archived or not yet published.' })]));
+      d.replaceChildren(h('div', { class: 'shead' }, [h('h2', { id: 'sheet-title', text: 'Entry not found' }), close]), h('div', { class: 'sbody' }, [h('p', { text: 'The data currently loaded contains no entry with the identifier ' + id + '. It may have been renamed or archived, or it may not yet be published.' })]));
     } else {
       const hd = headword(e), others = e.spellings.filter((s) => s !== hd);
       const dl = h('dl', { class: 'facts' });
@@ -295,11 +295,11 @@
       if (e.confidence) fact(dl, 'Confidence', e.confidence);
       fact(dl, 'Notes', e.notes);
       fact(dl, 'Record', e.id + ' (' + String(e.state || '').toLowerCase() + ', ' + kindText(e.kind).toLowerCase() + ')');
-      if (e.ai) fact(dl, 'AI help', 'A computer tool helped prepare this record. Its output is not counted as evidence.');
+      if (e.ai) fact(dl, 'AI assistance', 'A computer tool helped prepare this record. Its output is not counted as evidence.');
       const body = body_(e, hd, others, dl);
       d.replaceChildren(h('div', { class: 'shead' }, [h('h2', { id: 'sheet-title', class: 'sr', text: hd }), close]), body,
         h('div', { class: 'sfoot' }, [
-          h('a', { class: 'btn', rel: 'noopener', href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Correction: ' + e.id + ' ' + hd) + '&body=' + encodeURIComponent('Entry: ' + e.id + '\nRecord file: ' + (e.path || 'unknown') + '\nShown as: ' + hd + ' = ' + e.gloss + '\n\nWhat should change, and how do you know (for example, you speak it, or a source says so)?\n'), text: 'Suggest a fix' }),
+          h('a', { class: 'btn', rel: 'noopener', href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Correction: ' + e.id + ' ' + hd) + '&body=' + encodeURIComponent('Entry: ' + e.id + '\nRecord file: ' + (e.path || 'unknown') + '\nShown as: ' + hd + ' = ' + e.gloss + '\n\nWhat should change, and what is the basis for the change (for example, you speak it, or a source says so)?\n'), text: 'Suggest a fix' }),
           e.path ? h('a', { class: 'btn', rel: 'noopener', href: 'https://github.com/' + REPO + '/edit/main/' + e.path, text: 'Edit on GitHub' }) : null]));
     }
     draw(d);
@@ -317,7 +317,7 @@
     if (others.length) kids.push(h('div', { class: 'alts' }, [h('p', { class: 'small', text: 'Other spellings' }), h('ul', { class: 'altl' }, others.map((s) => h('li', { text: s })))]));
     if (e.recording) {
       const r = String(e.recording), url = /^(https:\/\/|\.{0,2}\/)/.test(r);
-      kids.push(h('div', { class: 'rec' }, [h('p', { class: 'small', text: 'Recording of a speaker' }), url ? h('audio', { controls: true, preload: 'none', src: r }) : h('p', { text: 'Listed as ' + r + '. It cannot be played here yet.' })]));
+      kids.push(h('div', { class: 'rec' }, [h('p', { class: 'small', text: 'Recording of a speaker' }), url ? h('audio', { controls: true, preload: 'none', src: r }) : h('p', { text: 'Listed as ' + r + '; it cannot be played here yet.' })]));
     }
     kids.push(dl);
     const rel = relatedTo(e);

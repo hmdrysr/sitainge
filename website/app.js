@@ -68,7 +68,7 @@
     const box = h('div', { class: 'card' }), say = h('div', { class: 'small mut', 'aria-live': 'polite' }), maxMs = 90000;
     function showIdle() {
       box.replaceChildren(h('strong', { text: 'Record your voice (optional)' }),
-        h('p', { class: 'small mut', text: 'Say only your answer. Do not say your name, phone number or address.' }), say,
+        h('p', { class: 'small mut', text: 'Say only your answer. Do not give your name, phone number or address.' }), say,
         h('div', { class: 'row' }, h('button', { type: 'button', onclick: startRec }, 'Record')));
     }
     function showClip() {
@@ -80,7 +80,7 @@
     }
     async function startRec() {
       if (!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder)) { say.textContent = 'Recording is not supported in this browser. You can still type your answer.'; return; }
-      let stream; try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch (e) { say.textContent = 'The microphone is blocked. Allow access in the browser settings, or type the answer.'; return; }
+      let stream; try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch (e) { say.textContent = 'The microphone is blocked. Allow access in your browser settings, or type your answer.'; return; }
       const mime = mimeFor(); let mr;
       try { mr = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 48000 } : { audioBitsPerSecond: 48000 }); }
       catch (e) { stream.getTracks().forEach((t) => t.stop()); say.textContent = 'Recording could not start in this browser.'; return; }
@@ -147,19 +147,19 @@
     credName.value = c.creditName || ''; credName.addEventListener('input', () => { c.creditName = credName.value; save(); });
     render(
       h('h1', { text: 'Share how you speak siṭaiṅga' }),
-      h('p', { text: 'The form asks for words and sentences as you say them in siṭaiṅga. There are no wrong answers. If your village says a word differently from others, that difference is what the project needs to record.' }),
+      h('p', { text: 'This form asks for words and sentences as you say them in siṭaiṅga. There are no wrong answers. If your village says a word differently from others, that difference is exactly what the project needs to record.' }),
       h('p', { class: 'mut', text: 'You can stop at any time and still export what you have entered. Your answers stay on this device until you choose to share them.' }),
       h('details', null, h('summary', { text: 'What this page does' }),
         h('ul', null,
           h('li', { text: 'It sends nothing by itself. You decide whether, when and how to share.' }),
-          h('li', { text: 'It shows English prompts only. It does not suggest siṭaiṅga words, correct answers or judge them.' }),
+          h('li', { text: 'It shows English prompts only. It does not suggest siṭaiṅga words or correct answers, and it does not judge what you enter.' }),
           h('li', { text: 'It records exactly what you type, in Latin letters or in the script you normally use. Autocorrect is turned off in the answer boxes.' }),
           h('li', { text: 'Voice recordings are optional. They are made only when you press Record, kept on your device, and shared with the rest of your submission only when you choose. A voice can identify a person, so you decide separately what may happen to recordings.' }),
           h('li', { text: 'It adds a checksum (a SHA-256 fingerprint) to the file so that reviewers can detect damage or changes in transit.' }),
-          h('li', { text: 'People review everything before it is used. Nothing is accepted automatically, and accepting one form does not mean that other forms are wrong.' }))),
+          h('li', { text: 'Nothing is accepted automatically: people review everything before it is used, and accepting one form does not mean that other forms are wrong.' }))),
       h('h2', { text: 'Before you start' }),
       choice('checkbox', 'adult', 'I am 18 or older, or a parent or guardian is helping me and will read the final output.', c.adult, (v) => { c.adult = v; save(); }),
-      choice('checkbox', 'cc0', 'I understand that, if my contribution is published, it is dedicated to the public domain under CC0 1.0. Anyone may use it, including for AI. This cannot be undone once it is published. I am sharing my own speech or material I have the right to share.', c.cc0, (v) => { c.cc0 = v; save(); }),
+      choice('checkbox', 'cc0', 'I understand that, if my contribution is published, it is dedicated to the public domain under CC0 1.0. Anyone may use it, including for AI use. This cannot be undone once it is published. I am sharing my own speech or material I have the right to share.', c.cc0, (v) => { c.cc0 = v; save(); }),
       h('h2', { text: 'What should happen to the contribution?' }),
       choice('radio', 'pub', 'Publish after review (CC0)', c.publish === 'yes', () => { c.publish = 'yes'; save(); }),
       choice('radio', 'pub', 'Discuss with me first. Do not publish yet.', c.publish === 'no', () => { c.publish = 'no'; save(); }),
@@ -174,8 +174,8 @@
       choice('radio', 'cr', 'By name', c.credit === 'name', () => { c.credit = 'name'; save(); }),
       credName,
       h('h2', { text: 'Privacy on this device' }),
-      choice('checkbox', 'save', 'Save my draft and recordings on this device so I can continue later. Clear this box on a shared phone or computer.', c.save, (v) => { c.save = v; if (!v) idbClear(); else Object.entries(audioMem).forEach(([k, val]) => idbPut(k, val)); save(); }),
-      h('p', { class: 'small mut', text: 'Do not enter a full name, phone number, address, email or ID number in the answers.' }),
+      choice('checkbox', 'save', 'Save my draft and recordings on this device so I can continue later. Uncheck this box on a shared phone or computer.', c.save, (v) => { c.save = v; if (!v) idbClear(); else Object.entries(audioMem).forEach(([k, val]) => idbPut(k, val)); save(); }),
+      h('p', { class: 'small mut', text: 'Do not enter a full name, phone number, address, email address or ID number in your answers.' }),
       err,
       h('div', { class: 'row' }, h('button', { class: 'primary', type: 'button', onclick: () => {
         const m = [];
@@ -198,8 +198,8 @@
     age.value = s.age || ''; age.addEventListener('change', () => { s.age = age.value; save(); });
     render(
       h('h1', { text: 'About how you speak' }),
-      h('p', { class: 'mut', text: 'All of this is optional. It helps reviewers understand which variety you speak. Leave any field blank.' }),
-      field('Where do you speak it? (village, union, upazila or district, as much detail as you like)', input(s, 'locality')),
+      h('p', { class: 'mut', text: 'All of this is optional. It helps reviewers understand which variety you speak, and any field may be left blank.' }),
+      field('Where do you speak it? (village, union, upazila or district; give as much detail as you like)', input(s, 'locality')),
       field('Age group', age),
       field('What do you call your language?', input(s, 'languageName', { verbatim: true })),
       field('Other languages you use', input(s, 'otherLanguages')),
@@ -221,7 +221,7 @@
     });
     render(
       h('h1', { text: 'Choose a section' }),
-      h('p', { text: 'Complete as many sections as you like, in any order. You have entered ' + totalCount() + ' answer' + (totalCount() === 1 ? '' : 's') + ' so far.' }),
+      h('p', { text: 'Complete as many sections as you like, in any order. So far you have entered ' + totalCount() + ' answer' + (totalCount() === 1 ? '' : 's') + '.' }),
       rows,
       h('div', { class: 'card' }, h('strong', { text: 'Proverbs, riddles, rhymes, place names, stories' }), ' ', h('span', { class: 'tag', text: state.heritage.length + ' added (optional)' }),
         h('div', { class: 'row' }, h('button', { type: 'button', onclick: screenHeritage }, 'Add an item'))),
@@ -237,7 +237,7 @@
     const answerBox = a.status && a.status !== 'used' ? null : (() => {
       const ta = area(a, 'response', { verbatim: true });
       ta.addEventListener('input', () => { if (!a.status && Core.clean(a.response)) { a.status = 'used'; } });
-      return h('div', null, field('How do you say it? Write it as you would say it.', ta));
+      return h('div', null, field('How do you say it? Write it the way you would say it.', ta));
     })();
     const answering = !a.status || a.status === 'used';
     const variants = answering ? h('div', null,
@@ -272,7 +272,7 @@
     const draft = { type: 'proverb', original: '', literal: '', meaning: '', context: '', conf: '' };
     const type = h('select', null, ...HERITAGE_TYPES.map(([v, t]) => h('option', { value: v, text: t })));
     const note = h('div', { class: 'notice warn small' });
-    const setNote = () => { note.textContent = type.value === 'song_line' ? 'Include traditional oral songs only; they belong to the community. For a song by a known composer, write only the title and the performer. Do not write out the lyrics.' : ''; note.style.display = type.value === 'song_line' ? 'block' : 'none'; };
+    const setNote = () => { note.textContent = type.value === 'song_line' ? 'Include traditional oral songs only, as they belong to the community. For a song by a known composer, give only the title and the performer, not the lyrics.' : ''; note.style.display = type.value === 'song_line' ? 'block' : 'none'; };
     type.addEventListener('change', () => { draft.type = type.value; setNote(); }); setNote();
     const listing = state.heritage.map((x, i) => h('div', { class: 'item' }, h('div', null, h('div', { class: 'a', text: x.original }), h('div', { class: 'tag', text: (HERITAGE_TYPES.find((t) => t[0] === x.type) || [0, 'item'])[1] })),
       h('button', { type: 'button', onclick: () => { state.heritage.splice(i, 1); save(); screenHeritage(); } }, 'Remove')));
@@ -284,11 +284,11 @@
       field('What is it?', type), note,
       field('The original, exactly as it is said', area(draft, 'original', { verbatim: true })),
       field('What it says word for word (optional)', area(draft, 'literal')),
-      field('What it really means (optional)', area(draft, 'meaning')),
+      field('What it means (optional)', area(draft, 'meaning')),
       field('When or where people say it (optional)', input(draft, 'context')), msg,
       h('div', { class: 'row' }, h('button', { type: 'button', onclick: screenHub }, 'Back to list'),
         h('button', { class: 'primary', type: 'button', onclick: () => {
-          if (!Core.clean(draft.original)) { msg.replaceChildren(h('div', { class: 'notice error', text: 'Enter the original first.' })); return; }
+          if (!Core.clean(draft.original)) { msg.replaceChildren(h('div', { class: 'notice error', text: 'Enter the original text first.' })); return; }
           state.heritage.push(Object.assign({}, draft)); save(); screenHeritage();
         } }, 'Add item'))
     );
@@ -314,12 +314,12 @@
       if (rows.length) groups.push(h('div', { class: 'card' }, h('strong', { text: b.title }), rows));
     });
     if (state.heritage.length) groups.push(h('div', { class: 'card' }, h('strong', { text: 'Culture' }), state.heritage.map((x) => h('div', { class: 'item' }, h('div', { class: 'a', text: x.original })))));
-    const errBox = sub.errors.length ? h('div', { class: 'notice error' }, h('strong', { text: 'Fix these items to continue:' }), h('ul', null, sub.errors.map((e) => h('li', { text: e })))) : null;
+    const errBox = sub.errors.length ? h('div', { class: 'notice error' }, h('strong', { text: 'Correct the following to continue:' }), h('ul', null, sub.errors.map((e) => h('li', { text: e })))) : null;
     const piiBox = sub.pii.length ? h('div', { class: 'notice warn' }, h('strong', { text: 'This may contain personal information:' }),
       h('ul', null, sub.pii.map((p) => h('li', { text: p.where + ': ' + p.kind }))),
-      h('p', { class: 'small', text: 'Edit the item if it does. If the items are fine, tick the box below.' }),
-      choice('checkbox', 'piiok', 'I checked, and nothing here needs to be removed as personal information.', state.piiOk, (v) => { state.piiOk = v; save(); go.disabled = !ready(); })) : null;
-    const rb = choice('checkbox', 'rb', 'I read everything above. It is exactly what I said.', state.readBack, (v) => { state.readBack = v; save(); go.disabled = !ready(); });
+      h('p', { class: 'small', text: 'If it does, edit the item. If the items are fine, check the box below.' }),
+      choice('checkbox', 'piiok', 'I have checked, and nothing here needs to be removed as personal information.', state.piiOk, (v) => { state.piiOk = v; save(); go.disabled = !ready(); })) : null;
+    const rb = choice('checkbox', 'rb', 'I have read everything above, and it is exactly what I said.', state.readBack, (v) => { state.readBack = v; save(); go.disabled = !ready(); });
     const ready = () => !sub.errors.length && state.readBack && (!sub.pii.length || state.piiOk);
     const go = h('button', { class: 'primary', type: 'button', disabled: !ready(), onclick: () => screenExport() }, 'Prepare my submission');
     const nAud = sub.audioList.length;
@@ -361,7 +361,7 @@
       } catch (e) { if (e && e.name !== 'AbortError') say('Sharing is not available here. Use Download file or Copy text.'); }
     } }, 'Share with another app'));
     btns.push(h('button', { class: btns.length ? '' : 'primary', type: 'button', onclick: () => { download(); say('Downloaded as ' + name + '. Send that file to the project, or keep it in a safe place.'); } }, 'Download file'));
-    btns.push(h('button', { type: 'button', onclick: async () => say((await copy()) ? (hasAudio ? 'Text copied. The recordings are only in the downloaded file.' : 'Copied. Paste it where you are sending it.') : 'Copying failed. Select the text below and copy it manually.') }, 'Copy text'));
+    btns.push(h('button', { type: 'button', onclick: async () => say((await copy()) ? (hasAudio ? 'Text copied. The recordings are only in the downloaded file.' : 'Copied. Paste it wherever you are sending it.') : 'Copying failed. Select the text below and copy it manually.') }, 'Copy text'));
     if (CFG.contactEmail) btns.push(h('button', { type: 'button', onclick: async () => {
       if (hasAudio) download(); else await copy();
       location.href = 'mailto:' + encodeURIComponent(CFG.contactEmail).replace('%40', '@') + '?subject=' + encodeURIComponent('Sitainge submission ' + sub.id) +
@@ -370,19 +370,19 @@
     } }, 'Send by email'));
     btns.push(h('button', { type: 'button', onclick: async () => {
       await copy(); window.open(CFG.githubIssueUrl, '_blank', 'noopener,noreferrer');
-      say(hasAudio ? 'Text copied. GitHub accepts text only; send the downloaded file with the recordings by email or share.' : 'Copied. On GitHub, paste the text into the large box (a free GitHub account is required).');
-    } }, 'Post on GitHub (account required)'));
+      say(hasAudio ? 'Text copied. GitHub accepts text only; send the downloaded file containing the recordings by email or by sharing it.' : 'Copied. On GitHub, paste the text into the large box (a free GitHub account is required).');
+    } }, 'GitHub (needs account)'));
     render(
       h('h1', { text: 'Your submission is ready' }),
       h('p', { text: 'The submission has not been sent anywhere. Choose how to share it.' }),
-      hasAudio ? h('div', { class: 'notice warn small', text: 'The submission is one file containing ' + sub.audioList.length + ' recording' + (sub.audioList.length === 1 ? '' : 's') + ' (' + mb + ' MB). Send the file itself. Some email services reject files over 20 MB; if so, use Share or send the file in two parts.' }) : null,
+      hasAudio ? h('div', { class: 'notice warn small', text: 'The submission is a single file containing ' + sub.audioList.length + ' recording' + (sub.audioList.length === 1 ? '' : 's') + ' (' + mb + ' MB). Send the file itself. Some email services reject files over 20 MB; if yours does, use Share or send the file in two parts.' }) : null,
       h('div', { class: 'row' }, btns), status,
       h('div', { class: 'card' }, h('strong', { text: 'Receipt code' }), h('p', { text: sub.id + (sub.sha ? '-' + sub.sha.slice(0, 8) : '') }),
-        h('p', { class: 'small mut', text: 'Quote this code if you need to ask about your contribution. The longer fingerprint inside the file lets reviewers confirm that it arrived undamaged.' })),
-      h('div', { class: 'notice warn small', text: 'Reviewers check everything before it is used. Published contributions are CC0 and cannot be withdrawn. If you chose "Discuss with me first", nothing is published until you agree.' + (hasAudio ? ' Recordings follow your choice: ' + (state.consent.audio === 'public' ? 'publish after review.' : 'research only, not published.') : '') }),
+        h('p', { class: 'small mut', text: 'Quote this code if you have a question about your contribution. The longer fingerprint inside the file lets reviewers confirm that it arrived undamaged.' })),
+      h('div', { class: 'notice warn small', text: 'Reviewers check everything before it is used. Published contributions are CC0 and cannot be withdrawn. If you chose "Discuss with me first", nothing is published until you agree.' + (hasAudio ? ' Recordings follow your choice: ' + (state.consent.audio === 'public' ? 'they will be published after review.' : 'research only, not published.') : '') }),
       h('details', null, h('summary', { text: 'See exactly what will be shared' }), h('pre', { class: 'out', text })),
       h('div', { class: 'row' }, h('button', { type: 'button', onclick: screenReview }, 'Back and edit'),
-        h('button', { type: 'button', onclick: async () => { if (confirm('Delete everything on this device, including recordings, and start a new contribution? Share or download your file first.')) { await wipe(); screenConsent(); } } }, 'Delete draft and start new'))
+        h('button', { type: 'button', onclick: async () => { if (confirm('Delete everything on this device, including recordings, and start a new contribution? Share or download your file first.')) { await wipe(); screenConsent(); } } }, 'Delete and start over'))
     );
   }
 
@@ -391,7 +391,7 @@
     if (confirm('Delete your draft and recordings from this device? This cannot be undone.')) { await wipe(); screenConsent(); }
   });
   const net = document.getElementById('net');
-  const setNet = () => { net.textContent = navigator.onLine ? '' : 'Offline. The form still works.'; };
+  const setNet = () => { net.textContent = navigator.onLine ? '' : 'You are offline. The form still works.'; };
   addEventListener('online', setNet); addEventListener('offline', setNet); setNet();
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
     navigator.serviceWorker.register('./sw.js').catch(() => { /* offline cache is optional */ });

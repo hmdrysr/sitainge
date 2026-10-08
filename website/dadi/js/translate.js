@@ -76,14 +76,14 @@
     }
     const bar = doc.createElement('div'); bar.setAttribute('data-dadi-ui', '');
     bar.style.cssText = 'position:fixed;z-index:2147483647;left:8px;right:8px;bottom:8px;max-width:520px;margin:auto;background:#1c1c1e;color:#fff;font:14px/1.35 system-ui,sans-serif;padding:10px 14px;border-radius:14px;display:flex;gap:12px;align-items:center;box-shadow:0 4px 18px rgba(0,0,0,.35)';
-    const t = doc.createElement('span'); t.style.flex = '1'; t.textContent = 'siṭaiṅga draft: ' + hits + ' of ' + words + ' words replaced from the project dictionary. Unverified. The rest stays in English.';
+    const t = doc.createElement('span'); t.style.flex = '1'; t.textContent = 'siṭaiṅga draft: ' + hits + ' of ' + words + ' words replaced from the project dictionary. Unverified. The remaining words are left in English.';
     const b = doc.createElement('button'); b.textContent = 'Undo'; b.style.cssText = 'border:0;border-radius:999px;padding:8px 14px;font:inherit;font-weight:600;background:#fff;color:#000;cursor:pointer';
     b.onclick = () => { saved.forEach(([n, mk]) => { let x = mk.nextSibling; const first = x; const stop = []; while (x && x.nodeType && (x.nodeType === 3 || (x.getAttribute && x.hasAttribute('data-dadi-hit')))) { stop.push(x); x = x.nextSibling; if (stop.length > 400) break; } stop.forEach((y) => y.remove()); mk.parentNode.insertBefore(n, mk); mk.remove(); void first; }); bar.remove(); };
     bar.append(t, b); doc.body.append(bar);
     return { words, hits };
   }
   /* Bookmarklet entry: loads the glossary from the project site and rewrites the page. */
-  async function pageFromUrl(url) { const r = await fetch(url); if (!r.ok) throw new Error('Could not load the dictionary (HTTP ' + r.status + ').'); return page(load(await r.json())); }
+  async function pageFromUrl(url) { const r = await fetch(url); if (!r.ok) throw new Error('The dictionary could not be loaded (HTTP ' + r.status + ').'); return page(load(await r.json())); }
 
   const api = { fold, makeGlossary, load, translate, plain, page, pageFromUrl };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.DadiTranslate = api;

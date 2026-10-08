@@ -5,13 +5,13 @@
   "iso_639_3": "ctg",
   "glottocode": "chit1275",
   "speakers_text": "13 million or more",
-  "speakers_note": "Estimates run from 13 million (2006) to 16 million (2007). Because the sources disagree, the project states \"13 million or more\".",
+  "speakers_note": "Estimates range from 13 million (2006) to 16 million (2007). Because the sources disagree, the project gives the figure as \u201c13 million or more\u201d.",
   "speakers_sources": [
    "https://en.wikipedia.org/wiki/Chittagonian_language",
    "https://www.omniglot.com/writing/chittagonian.htm",
    "https://www.tbsnews.net/node/373636"
   ],
-  "status": "Not classed as endangered (Glottolog). Used in everyday communication, on television and radio, and in songs.",
+  "status": "Glottolog does not classify the language as endangered. It is used in everyday communication, on television and radio, and in song.",
   "status_source": "https://glottolog.org/resource/languoid/iso/ctg"
  },
  "city": {
@@ -23,17 +23,17 @@
  "timeline": [
   {
    "when": "Ancient",
-   "text": "The coast was part of the early kingdoms of Samatata and Harikela. Some accounts place the harbour on a map of the 2nd century; this detail still lacks a reliable source.",
+   "text": "The coast formed part of the early kingdoms of Samatata and Harikela. Some accounts place the harbour on a map from the second century, but this detail lacks a reliable source.",
    "source": "https://en.wikipedia.org/wiki/History_of_Chittagong"
   },
   {
    "when": "800s",
-   "text": "Arab traders were using the port by the 9th century and set up a trading post.",
+   "text": "Arab traders were using the port by the ninth century and had established a trading post there.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   },
   {
    "when": "1340",
-   "text": "Sultan Fakhruddin Mubarak Shah of Sonargaon brought Chittagong into his sultanate. Sources use 1340 for the start of sultanate rule, not for the founding of the city, because the port had already traded for centuries.",
+   "text": "Sultan Fakhruddin Mubarak Shah of Sonargaon brought Chittagong into his sultanate. Sources give 1340 as the start of sultanate rule, not as the founding of the city, since the port had already been trading for centuries.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   },
   {
@@ -43,7 +43,7 @@
   },
   {
    "when": "1666",
-   "text": "The Mughals took the city and called it Islamabad, a name still used for the old town.",
+   "text": "The Mughals captured the city and renamed it Islamabad, a name still used for the old town.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   },
   {
@@ -53,7 +53,7 @@
   },
   {
    "when": "2018",
-   "text": "On April 2, 2018, a government committee decided to change the official English spelling of the city and several other places. Many residents objected, citing loss of tradition, confusion over certificates and harm to trade with partners who know the port by its earlier name. Press reports of the time describe a committee decision and mention no public consultation or vote. This project writes Chittagong, the name its speakers use.",
+   "text": "On April 2, 2018, a government committee decided to change the official English spelling of the city's name and those of several other places. Many residents objected, citing the loss of tradition, confusion over certificates, and harm to trade with partners who know the port by its earlier name. Press reports from the time describe a committee decision and mention no public consultation or vote. This project writes Chittagong, the name its speakers use.",
    "source": [
     "https://www.dhakatribune.com/bangladesh/142256/mixed-reactions-as-govt-changes-english-spellings",
     "https://www.dhakatribune.com/bangladesh/nation/142669/locals-from-5-districts-irked-over-english"
@@ -61,12 +61,12 @@
   },
   {
    "when": "Today",
-   "text": "Chittagong is the country's busiest seaport and, according to the sources used here, its second city. Millions of people in the region are reported to speak siṭaiṅga every day.",
+   "text": "Chittagong is the country's busiest seaport and, according to the sources used here, its second-largest city. Millions of people in the region are reported to speak siṭaiṅga daily.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   }
  ],
  "port": {
-  "text": "The Port of Chittagong handles more than 70 per cent of the country's export and import trade, about 3.1 million containers (TEUs) in 2020–21.",
+  "text": "The Port of Chittagong handles more than 70 per cent of the country's export and import trade, about 3.1 million TEUs (twenty-foot equivalent units) in 2020–21.",
   "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
  },
  "districts": [
@@ -77,7 +77,7 @@
    "population": 9169464,
    "census": 2022,
    "upazilas": 15,
-   "note": "Chittagonian is the main everyday language here.",
+   "note": "Chittagonian is the principal language of daily life here.",
    "sources": [
     "https://en.wikipedia.org/wiki/Chittagong_Division",
     "https://en.wikipedia.org/wiki/Chittagong_District"
@@ -90,7 +90,7 @@
    "population": 2823265,
    "census": 2022,
    "upazilas": 10,
-   "note": "Chittagonian is widely spoken here, with local varieties along the coast.",
+   "note": "Chittagonian is widely spoken here, and local varieties are found along the coast.",
    "sources": [
     "https://en.wikipedia.org/wiki/Chittagong_Division",
     "https://en.wikipedia.org/wiki/Cox%27s_Bazar_District"
@@ -101,26 +101,26 @@
   "tiers": [
    [
     "Division",
-    "8 in the country. Chittagong Division has 11 districts."
+    "Eight in the country. Chittagong Division has 11 districts."
    ],
    [
     "District (zila)",
-    "64 in the country, each led by a Deputy Commissioner."
+    "64 in the country, each headed by a Deputy Commissioner."
    ],
    [
     "Upazila",
-    "About 495, the sub-district level."
+    "About 495, at the sub-district level."
    ],
    [
     "Union parishad",
-    "The smallest rural unit of local government, about 4,500 in the country."
+    "The smallest rural unit of local government; there are about 4,500 in the country."
    ],
    [
     "City corporations and pourashavas",
-    "13 city corporations (including Chittagong) and 330 municipalities."
+    "There are 13 city corporations (including Chittagong) and 330 municipalities."
    ]
   ],
-  "national": "Bangladesh is a unitary parliamentary republic with a single parliament, the Jatiya Sangsad, of 350 members.",
+  "national": "Bangladesh is a unitary parliamentary republic with a single parliament, the Jatiya Sangsad, which has 350 members.",
   "sources": [
    "https://en.wikipedia.org/wiki/Administrative_geography_of_Bangladesh",
    "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts_Peace_Accord",
@@ -129,27 +129,27 @@
  },
  "facts": [
   {
-   "text": "Cox's Bazar has a sea beach described as the longest unbroken natural beach in the world. The source gives its length as about 120 km in one place and 150 km in another.",
+   "text": "Cox's Bazar has a sea beach described as the longest unbroken natural beach in the world. The source gives its length as about 120 km in one place and about 150 km in another.",
    "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar"
   },
   {
-   "text": "Himchari National Park, just south of Cox's Bazar town, was established in 1980 and has forests, grasslands and waterfalls.",
+   "text": "Himchari National Park, immediately south of Cox's Bazar town, was established in 1980. It includes forests, grasslands and waterfalls.",
    "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar"
   },
   {
-   "text": "The Karnaphuli River runs about 270 km from Mizoram to the sea at Chittagong, where the city's port sits at its mouth.",
+   "text": "The Karnaphuli River flows about 270 km from Mizoram to the sea at Chittagong, where the city's port lies at its mouth.",
    "source": "https://en.wikipedia.org/wiki/Karnaphuli_River"
   },
   {
-   "text": "University of Chittagong was established on November 18, 1966. Its campus at Hathazari covers about 936 hectares (2,312 acres).",
+   "text": "The University of Chittagong was established on November 18, 1966. Its campus at Hathazari covers about 936 hectares (2,312 acres).",
    "source": "https://en.wikipedia.org/wiki/University_of_Chittagong"
   },
   {
-   "text": "Mezban is a Chittagong feast and festival, observed as a festival since the late 1960s. The name comes from a Persian word meaning \"host\". The traditional meal centres on rice and beef curry.",
+   "text": "Mezban is a Chittagong feast that has been observed as a festival since the late 1960s. The name comes from a Persian word meaning \u201chost\u201d. The traditional meal centres on rice and beef curry.",
    "source": "https://en.wikipedia.org/wiki/Mezban"
   },
   {
-   "text": "The port handles more than 70 per cent of the country's export-import trade, about 3.1 million TEUs in 2020–21.",
+   "text": "The port handles more than 70 per cent of the country's export and import trade, about 3.1 million TEUs (twenty-foot equivalent units) in 2020–21.",
    "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
   },
   {
@@ -157,10 +157,10 @@
    "source": "https://en.wikipedia.org/wiki/Saint_Martin%27s_Island"
   }
  ],
- "map_credit": "Boundaries: Bangladesh Bureau of Statistics via OCHA ROAP and geoBoundaries (CC BY 3.0 IGO), simplified.",
+ "map_credit": "Boundaries: Bangladesh Bureau of Statistics, via OCHA ROAP and geoBoundaries (CC BY 3.0 IGO); simplified.",
  "checked": "2026-10-08",
  "naming": {
-  "text": "This project writes Chittagong throughout. In April 2018 a government committee changed the official English spelling. The press reports reviewed mention no public consultation or referendum, and many residents objected. As far as these reports show, speakers of siṭaiṅga in the city were not consulted.",
+  "text": "This project writes Chittagong throughout. In April 2018, a government committee changed the official English spelling. The press reports reviewed mention no public consultation or referendum, and many residents objected. As far as these reports show, speakers of siṭaiṅga in the city were not consulted.",
   "sources": [
    "https://www.dhakatribune.com/bangladesh/142256/mixed-reactions-as-govt-changes-english-spellings",
    "https://www.dhakatribune.com/bangladesh/nation/142669/locals-from-5-districts-irked-over-english"

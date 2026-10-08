@@ -24,7 +24,7 @@
   function liveNote() {
     const n = $('live-note'); if (!n) return;
     const on = liveCount > 0; n.classList.toggle('on', on);
-    n.textContent = on ? 'Figures read from the repository on ' + dateLong(Date.now()) + '. The page follows the files there.' : 'The repository could not be reached. This page shows its saved copy.';
+    n.textContent = on ? 'Figures read from the repository on ' + dateLong(Date.now()) + '. They follow the files held there.' : 'The repository could not be reached, so this page shows its saved copy.';
   }
 
   /* ---------- numbers and evidence ---------- */
@@ -59,7 +59,7 @@
     const key = 'site.cache.commits';
     try { const r = await fetch('https://api.github.com/repos/' + REPO + '/commits?per_page=8', { headers: { Accept: 'application/vnd.github+json' } }); if (!r.ok) throw new Error('HTTP ' + r.status); const j = await r.json(); try { localStorage.setItem(key, JSON.stringify(j)); } catch (e) { /* ignore */ } return changes(j); } catch (e) { /* cached */ }
     try { const c = JSON.parse(localStorage.getItem(key) || 'null'); if (c) return changes(c); } catch (e) { /* none */ }
-    $('changes').textContent = ''; $('changes').append(h('li', { class: 'small' }, 'GitHub did not respond. The full history is on GitHub.'));
+    $('changes').textContent = ''; $('changes').append(h('li', { class: 'small' }, 'GitHub did not respond. The full history is available on GitHub.'));
   }
 
   /* ---------- text from facts.json ---------- */
@@ -142,7 +142,7 @@
         put(p, h('h3', null, 'Chittagong and Cox\'s Bazar'), h('p', { class: 'sub' }, 'The two districts that make up the project\'s region.'),
           dl([['Districts', '2'], ['Upazilas', String(adm.regions.reduce((n, r) => n + r.upazilas.length, 0))], ['Unions', String(adm.regions.reduce((n, r) => n + r.upazilas.reduce((m, u) => m + (u.union_count || (u.unions || []).length), 0), 0))], ['Population (2022)', num(adm.regions.reduce((n, r) => n + (r.population_2022 || 0), 0))]]),
           h('h4', null, 'Districts'), h('ul', { class: 'pills' }, adm.regions.map((r) => pill(r.name, () => pick({ level: 'district', name: r.name }), num(r.population_2022)))),
-          h('p', { class: 'small' }, 'Chittagong Division, a government grouping of 11 districts, is wider than the project\'s region and is not shown.'));
+          h('p', { class: 'small' }, 'Chittagong Division, a government grouping of 11 districts, extends beyond the project\'s region and is not shown.'));
         return;
       }
       if (sel.level === 'district') {
@@ -179,12 +179,12 @@
       }
       if (sel.level === 'ward') {
         const w = map.city_corporation_wards.find((x) => x.ward === sel.ward);
-        put(p, h('h3', null, 'Ward ' + sel.ward), h('p', { class: 'sub' }, 'Chittagong City Corporation'), dl([['Police area', (w.thanas || []).join(', ')]]), h('p', { class: 'caveat' }, 'Ward names, populations and areas are not in the open data used. Boundaries follow the 2020 boundary file.'), editNote);
+        put(p, h('h3', null, 'Ward ' + sel.ward), h('p', { class: 'sub' }, 'Chittagong City Corporation'), dl([['Police area', (w.thanas || []).join(', ')]]), h('p', { class: 'caveat' }, 'The open data used does not include ward names, populations or areas. Boundaries follow the 2020 boundary file.'), editNote);
         return;
       }
       if (sel.level === 'thana') {
         const w = map.city_corporation_wards.filter((x) => (x.thanas || []).includes(sel.name)).map((x) => x.ward).sort((a, b) => a - b);
-        put(p, h('h3', null, sel.name), h('p', { class: 'sub' }, 'Metropolitan police area, Chittagong'), dl([['City wards', w.join(', ') || 'none matched']]), editNote);
+        put(p, h('h3', null, sel.name), h('p', { class: 'sub' }, 'Metropolitan police area, Chittagong'), dl([['City wards', w.join(', ') || 'none found']]), editNote);
       }
     }
     function sync() { lbox.querySelectorAll('input').forEach((i, k) => { i.checked = on[LAYERS[k][0]]; }); applyLayers(); }
@@ -238,7 +238,7 @@
   const fail = (id, msg) => (e) => { const n = $(id); if (n && !n.childElementCount) n.textContent = msg; };
   Promise.all([repoJSON('website/dadi/data/seed.json', 'dadi/data/seed.json').then(stats).catch(fail('s-all', '–')),
     repoJSON('website/data/facts.json', 'data/facts.json').then(drawText).catch(() => {}),
-    Promise.all([repoJSON('website/data/admin.json', 'data/admin.json'), repoJSON('website/data/map-admin.json', 'data/map-admin.json')]).then(([a, m]) => atlas(a, m)).catch(fail('panel', 'The map could not be loaded. Check the connection and reload the page.')),
+    Promise.all([repoJSON('website/data/admin.json', 'data/admin.json'), repoJSON('website/data/map-admin.json', 'data/map-admin.json')]).then(([a, m]) => atlas(a, m)).catch(fail('panel', 'The map could not be loaded. Check your connection and reload the page.')),
     repoJSON('website/data/videos.json', 'data/videos.json').then(drawVideos).catch(fail('videos', 'The videos could not be loaded.')),
     repoJSON('website/data/media.json', 'data/media.json').then(drawGallery).catch(() => {})]).then(liveNote);
   loadChanges();
