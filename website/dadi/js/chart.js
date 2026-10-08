@@ -1,4 +1,4 @@
-/* IPA chart (CC0): the consonant and vowel charts built from ipa-data.js. Tap a symbol to hear it and read its name.
+/* IPA chart (CC0): the consonant and vowel charts built from ipa-data.js. Tap a symbol to read its name.
    The charts show the whole IPA, not only the sounds used in siṭaiṅga. Nothing here says which sounds the language uses. */
 (function (root) {
   'use strict';
@@ -16,8 +16,8 @@
     return { height, back, rounded: /\brounded\b/.test(t) && !/unrounded/.test(t) };
   }
   function build(api) {
-    const wrap = el('div', 'chart'), info = el('div', 'chart-info'); info.setAttribute('aria-live', 'polite'); info.textContent = 'Tap a symbol to hear it.';
-    const pick = (sym, name) => { info.textContent = ''; const s = el('b', 'ipa', sym); info.append(s, ' ' + name + (IPA.APPROX[sym] ? ' (played as ' + IPA.APPROX[sym] + ')' : '')); api.play(sym); };
+    const wrap = el('div', 'chart'), info = el('div', 'chart-info'); info.setAttribute('aria-live', 'polite'); info.textContent = 'Tap a symbol to read its name.';
+    const pick = (sym, name) => { info.textContent = ''; const s = el('b', 'ipa', sym); info.append(s, ' ' + name); };
     const sym = (s, name) => { const b = el('button', 'cs', s); b.type = 'button'; b.title = name; b.setAttribute('aria-label', s + ', ' + name); b.addEventListener('click', () => pick(s, name)); return b; };
 
     /* consonants */

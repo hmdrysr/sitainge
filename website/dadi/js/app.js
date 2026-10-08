@@ -6,13 +6,13 @@
   const CFG = Object.assign({ repo: 'hmdrysr/sitainge', branch: 'main', contactEmail: '', creator: 'Hamid Yasir', repoUrl: 'https://github.com/hmdrysr/sitainge' }, window.DADI_CONFIG || {});
   const Store = DadiStore.create();
   const S = () => Store.state;
-  const audio = DadiAudio.create({ settings: () => S().settings });
+  const audio = DadiAudio.create({ config: CFG });
   const gh = DadiGitHub.create({ clientId: CFG.githubClientId, relayUrl: CFG.relayUrl, repo: CFG.repo });
   const Data = DadiData, Srs = DadiSrs, Icons = DadiIcons;
   const pic = (g) => Icons.find(g);
   let index = Data.buildIndex([]), repoInfo = { from: 'none', at: null, errors: [], err: null };
   const main = document.getElementById('app'), layer = document.getElementById('layer'), dock = document.getElementById('kbdock');
-  const kb = DadiKeyboard.create({ audio: { play: (t) => audio.play(t), playSymbol: (t) => audio.playSymbol(t) }, close: () => closeKeyboard(), suggest: (w) => wordSuggestions(w) });
+  const kb = DadiKeyboard.create({ close: () => closeKeyboard(), suggest: (w) => wordSuggestions(w) });
 
 
   /* ---------- small helpers ---------- */
@@ -183,10 +183,10 @@
   let writeMode = 'keys', trText = '';
   function writeView(root) {
     put(root, h('h1', { class: 'title' }, 'Write'),
-      h('p', { class: 'lede' }, writeMode === 'keys' ? 'Build a word from sounds. Each key plays its sound.' : writeMode === 'chart' ? 'International Phonetic Alphabet (IPA) chart. Tap a symbol to hear it.' : 'Replace English words with siṭaiṅga words from the project word list.'),
+      h('p', { class: 'lede' }, writeMode === 'keys' ? 'Build a word from sounds.' : writeMode === 'chart' ? 'International Phonetic Alphabet (IPA) chart. Tap a symbol to read its name.' : 'Replace English words with siṭaiṅga words from the project word list.'),
       h('div', { class: 'segc', role: 'group', 'aria-label': 'Mode' }, [['keys', 'Keyboard'], ['chart', 'Chart'], ['translate', 'Translate']].map(([v, t]) => h('button', { type: 'button', 'aria-pressed': String(writeMode === v), onclick: () => { writeMode = v; route(); } }, t))));
     const body = h('div', { class: 'sec' }); root.append(body);
-    if (writeMode === 'keys') keysPane(body); else if (writeMode === 'chart') body.append(DadiChart.build({ play: (t) => audio.playSymbol(t) })); else translatePane(body);
+    if (writeMode === 'keys') keysPane(body); else if (writeMode === 'chart') body.append(DadiChart.build({})); else translatePane(body);
   }
   function keysPane(body) {
     const field = h('textarea', { class: 'input ipa typebox', rows: '3', placeholder: 'Tap a key to start', 'aria-label': 'Sound input', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false' });
@@ -194,11 +194,10 @@
     field.addEventListener('click', () => { if (dock.hidden) openKeyboard(field); });
     put(body, field,
       h('div', { class: 'row', style: 'margin-top:12px' },
-        h('button', { class: 'btn', type: 'button', onclick: async () => { if (!field.value.trim()) { out.textContent = 'Enter a word first.'; return; } const r = await audio.play(field.value.trim()); out.textContent = r.ok ? (r.how === 'dadi' ? 'Played with the built-in sound. It is an approximation.' : 'Played with a device or clear voice reading a similar-sounding spelling. It is an approximation.') : (r.reason || 'The sound could not be played.'); } }, 'Play word'),
         h('button', { class: 'btn tint', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(field.value); toast('Copied.'); } catch (e) { toast('The text could not be copied. Select it and copy it manually.'); } } }, 'Copy'),
         h('a', { class: 'btn tint', href: '#/teach/new', onclick: (e) => { e.preventDefault(); nav('#/teach/new?ipa=' + encodeURIComponent(field.value.trim())); } }, 'Add as a contribution')),
       out,
-      h('div', { class: 'note' }, 'If you are unsure of a sound, tap the closest key. The strip above the keys offers neighbouring sounds; tap one to swap it in, then play the word. Sounds chosen this way are saved as "chosen by ear". Reviewers treat them as leads, not facts.'));
+      h('div', { class: 'note' }, 'If you are unsure of a sound, tap the closest key. The strip above the keys offers neighbouring sounds; tap one to swap it in, then check the word. Sounds chosen this way are saved as "chosen by ear". Reviewers treat them as leads, not facts.'));
     openKeyboard(field);
   }
   let glossCache = null;
@@ -251,7 +250,7 @@
     ['Words', 'A searchable list of every entry, with its verification status and source.', 'words'],
     ['Write', 'A sound keyboard that suggests whole words, the IPA chart, and a translator that uses only words from the project word list.', 'write'],
     ['Teach', 'Add a word, another form or a correction. Nothing leaves this device until you choose to send it.', 'teach'],
-    ['Me', 'Voice, appearance, backups and data. Everything is stored on this device. Signing in with GitHub is optional.', 'me']
+    ['Me', 'Appearance, backups and data. Everything is stored on this device. Signing in with GitHub is optional.', 'me']
   ];
   function tour(start) {
     let i = start || 0; const box = h('div'); let sh;
@@ -362,7 +361,11 @@
   }
   const videoSub = (v) => v.channel + (v.status === 'approved' ? '' : '. Not yet checked by a moderator');
   function videoRow(v) {
-    return h('button', { class: 'cell go', type: 'button', onclick: () => videoSheet(v) }, h('span', { class: 'vrow-ic' }, ico('play')),
+    const fallback = h('span', { class: 'vrow-ic' }, ico('play'));
+    const img = h('img', { class: 'vimg', src: 'https://i.ytimg.com/vi/' + encodeURIComponent(v.id) + '/mqdefault.jpg', alt: '', width: '112', height: '63', loading: 'lazy', decoding: 'async' });
+    const thumb = h('span', { class: 'vth' }, img, h('span', { class: 'vplay', 'aria-hidden': 'true' }, ico('play', 16)));
+    img.addEventListener('error', () => thumb.replaceWith(fallback));
+    return h('button', { class: 'cell go vcell', type: 'button', onclick: () => videoSheet(v) }, thumb,
       h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, v.label || v.title), h('span', { class: 'cell-s' }, videoSub(v))));
   }
   function learnView(root) {
@@ -576,8 +579,9 @@
     if (!L.canType(e)) return (c && (c.reps || 0) % 2) ? 'build' : 'meaning';
     return (c && (c.reps || 0) % 2) ? 'g2f' : 'meaning';
   }
-  const hearButton = (e) => (S().settings.deviceAudio && e._pron.complete)
-    ? h('button', { class: 'btn small tint', type: 'button', onclick: () => audio.play(e._pron.ipa) }, ico('volume', 20), 'Device voice (may be inaccurate)') : null;
+  /* A sound button appears only when the entry has a public recording by a speaker. */
+  const hearButton = (e) => audio.has(e)
+    ? h('button', { class: 'btn small tint', type: 'button', onclick: () => audio.play(e) }, ico('volume', 20), 'Listen') : null;
   const statusLabel = (e) => h('span', { class: 'vlabel' }, L.verification(e).label);
 
   function previewStep(stage, e, next) {
@@ -737,7 +741,7 @@
       e.spellings.length > 1 ? h('p', { class: 'second', style: 'margin-top:12px' }, 'Also written: ' + e.spellings.slice(1).join(', ')) : null,
       h('p', { style: 'margin-top:12px' }, h('span', { class: 'vlabel' }, DadiLearn.verification(e).label)),
       e.ipa ? h('p', { class: 'ipa' }, '/' + e.ipa + '/') : null, h('p', { class: 'small muted' }, how),
-      can ? h('div', { class: 'row' }, h('button', { class: 'btn small tint', type: 'button', onclick: () => audio.play(p.ipa) }, ico('volume', 20), 'Device voice (may be inaccurate)'), h('button', { class: 'btn small tint', type: 'button', onclick: () => audio.play(p.ipa, { speed: 0.6 }) }, 'Slower')) : null,
+      audio.has(e) ? h('div', { class: 'row' }, h('button', { class: 'btn small tint', type: 'button', onclick: () => audio.play(e) }, ico('volume', 20), 'Listen'), h('button', { class: 'btn small tint', type: 'button', onclick: () => audio.play(e, { speed: 0.7 }) }, 'Slower')) : null,
       facts,
       (card || it.seen) ? h('p', { class: 'second' }, (card ? 'Next review: ' + when(card.due) + '. ' : '') + ((it.days || []).length ? 'Recalled correctly on ' + plural((it.days || []).length, 'day') + '.' : '')) : null,
       it.suspended ? h('div', { class: 'card', style: 'margin:12px 0' }, h('p', { class: 'second' }, 'Reviews of this item are paused after repeated misses.' + (it.note ? ' Your note: ' + it.note : '')),
@@ -802,11 +806,70 @@
     }));
     return out;
   }
+
+  /* Teach: prompts drawn at random from the word list and from the sentences the project still needs. Answers stay on this device. */
+  const disc = { seen: new Set(), mode: 'check', count: 0 };
+  const pickFrom = (a) => a[Math.floor(Math.random() * a.length)];
+  function discoverCheck() {
+    let pool = index.all.filter((e) => !disc.seen.has(e.id) && DadiLearn.display(e).length <= 90);
+    if (!pool.length) { disc.seen.clear(); pool = index.all.filter((e) => DadiLearn.display(e).length <= 90); }
+    if (!pool.length) return null;
+    const sent = pool.filter((e) => e.kind !== 'word'), words = pool.filter((e) => e.kind === 'word');
+    const e = (sent.length && (!words.length || Math.random() < 0.35)) ? pickFrom(sent) : pickFrom(words);
+    disc.seen.add(e.id); return e;
+  }
+  function discoverAdd() {
+    const have = new Set(index.all.map((e) => Data.fold(e.gloss))), out = [];
+    (window.SitaingeItems ? window.SitaingeItems.BLOCKS : []).forEach((b) => b.items.forEach((it) => { if (!have.has(Data.fold(it.en)) && !disc.seen.has('w:' + it.en)) out.push({ en: it.en, ctx: it.ctx || '', kind: b.kind }); }));
+    if (!out.length) { index.all.forEach((e) => disc.seen.delete('w:' + e.gloss)); return null; }
+    const sent = out.filter((x) => x.kind !== 'word'), words = out.filter((x) => x.kind === 'word');
+    const x = (sent.length && (!words.length || Math.random() < 0.3)) ? pickFrom(sent) : pickFrom(words); disc.seen.add('w:' + x.en); return x;
+  }
+  function discoverCard() {
+    const box = h('section', { class: 'disc', 'aria-label': 'Help build the word list' });
+    let cur = null;
+    function draw() {
+      box.textContent = '';
+      const seg = h('div', { class: 'segc', role: 'group', 'aria-label': 'Kind of prompt' },
+        h('button', { type: 'button', 'aria-pressed': String(disc.mode === 'check'), onclick: () => { disc.mode = 'check'; cur = null; draw(); } }, 'Check a word'),
+        h('button', { type: 'button', 'aria-pressed': String(disc.mode === 'add'), onclick: () => { disc.mode = 'add'; cur = null; draw(); } }, 'Add a word'));
+      put(box, h('div', { class: 'sh' }, h('h2', null, 'Help build the word list'), h('button', { class: 'link small', type: 'button', onclick: () => { cur = null; draw(); } }, ico('refresh', 18), ' Another')), seg);
+      if (disc.mode === 'check') {
+        cur = cur || discoverCheck();
+        if (!cur) { put(box, h('p', { class: 'muted' }, 'The word list is empty, so there is nothing to check yet.')); return; }
+        const e = cur, alt = e.spellings.slice(1);
+        put(box, h('p', { class: 'kind' }, e.kind === 'word' ? 'Do you say it this way?' : 'Would you say this sentence this way?'),
+          h('div', { class: 'word' + (DadiLearn.display(e).length > 24 ? ' long' : '') }, DadiLearn.display(e)),
+          h('p', { class: 'meaning' }, e.gloss),
+          h('p', null, h('span', { class: 'vlabel' }, DadiLearn.verification(e).label)),
+          alt.length ? h('p', { class: 'second muted' }, 'Also written: ' + alt.join(', ')) : null,
+          h('div', { class: 'stack' },
+            h('button', { class: 'btn block', type: 'button', onclick: () => {
+              Store.update((st) => { st.learn.notes.push({ id: uid(), entryId: e.id, form: entryName(e), gloss: e.gloss, family: '', note: 'Said this way in my family.', t: new Date().toISOString() }); }, 'learn-note', e.id, e.id);
+              disc.count++; cur = null; toast('Noted on this device.'); draw();
+            } }, 'Yes, we say it this way'),
+            h('a', { class: 'btn block tint', href: '#/teach/new?action=variant&rel=' + encodeURIComponent(e.id), onclick: (ev) => { ev.preventDefault(); nav('#/teach/new?action=variant&rel=' + encodeURIComponent(e.id)); } }, 'We say it differently'),
+            h('button', { class: 'link', type: 'button', onclick: () => { cur = null; draw(); } }, 'Skip')));
+      } else {
+        cur = cur || discoverAdd();
+        if (!cur) { put(box, h('p', { class: 'muted' }, 'Every prompt in the project list has an entry. Use "Add a word or sentence" below for anything else.')); return; }
+        const x = cur, href = '#/teach/new?gloss=' + encodeURIComponent(x.en.replace(/ \(.*\)$/, '')) + (x.ctx ? '&ctx=' + encodeURIComponent(x.ctx) : '');
+        put(box, h('p', { class: 'kind' }, x.kind === 'word' ? 'How do you say this in siṭaiṅga?' : 'How would you say this sentence?'),
+          h('div', { class: 'word' + (x.en.length > 24 ? ' long' : '') }, x.en), x.ctx ? h('p', { class: 'meaning' }, x.ctx) : null,
+          h('div', { class: 'stack' },
+            h('a', { class: 'btn block', href, onclick: (ev) => { ev.preventDefault(); nav(href); } }, 'I know how to say it'),
+            h('button', { class: 'link', type: 'button', onclick: () => { cur = null; draw(); } }, 'Skip')));
+      }
+      put(box, h('p', { class: 'group-foot' }, (disc.count ? plural(disc.count, 'answer') + ' saved on this device this visit. ' : '') + 'Answers are kept as family notes and are not counted as verification. A reviewer checks every contribution.'));
+    }
+    draw(); return box;
+  }
   function teachView(root) {
     const queued = S().queue.filter((q) => q.status === 'queued'), sent = S().queue.filter((q) => q.status === 'sent' || q.status === 'exported');
     const want = wantedWords();
     put(root, h('h1', { class: 'title' }, 'Teach'),
       h('p', { class: 'lede' }, 'If you speak siṭaiṅga, add words and sentences as you say them, in the spelling you would normally use. Reviewers read every contribution. Nothing is accepted automatically.'),
+      discoverCard(),
       h('a', { class: 'btn block', href: '#/teach/new' }, 'Add a word or sentence'),
       h('div', { class: 'group-title' }, 'Saved on this device'));
     if (!queued.length) put(root, h('div', { class: 'card muted' }, 'No contributions are waiting. Contributions are saved on this device until you send them.'));
@@ -847,13 +910,12 @@
     let manual = false; ipaStatus.addEventListener('change', () => { manual = true; });
     ipa.addEventListener('input', () => { if (!manual && ipaStatus.value === 'ai-drafted-unverified') ipaStatus.value = 'speaker-chosen-by-ear'; });
     const ipaBox = h('div', { hidden: action === 'report' },
-      h('label', { class: 'f', for: 'f-ipa' }, 'Pronunciation in IPA', h('span', { class: 'f-hint' }, 'IPA knowledge is not required. Open the keyboard, tap sounds to hear them, then play the whole word to check it.')), ipa,
+      h('label', { class: 'f', for: 'f-ipa' }, 'Pronunciation in IPA', h('span', { class: 'f-hint' }, 'IPA knowledge is not required. Open the keyboard and tap sounds to build the word.')), ipa,
       h('div', { class: 'row', style: 'margin-top:8px' },
         h('button', { class: 'btn small', type: 'button', onclick: () => { openKeyboard(ipa); } }, 'IPA keyboard'),
-        h('button', { class: 'btn small tint', type: 'button', onclick: () => { if (ipa.value.trim()) audio.play(ipa.value); else toast('Enter or build some sounds first.'); } }, 'Play word'),
         h('button', { class: 'btn small tint', type: 'button', onclick: () => {
           const g = DadiG2P.g2p(form.value || ''); if (!g.complete || !g.ipa) { toast('The spelling reader does not recognize these characters: ' + (g.unknown.join(' ') || 'no spelling entered')); return; }
-          ipa.value = g.ipa; manual = false; ipaStatus.value = 'ai-drafted-unverified'; audio.play(g.ipa); toast('Machine reading of your spelling. Adjust it until it matches how you say the word.');
+          ipa.value = g.ipa; manual = false; ipaStatus.value = 'ai-drafted-unverified'; toast('Machine reading of your spelling. Adjust it until it matches how you say the word.');
         } }, 'Suggest from my spelling')),
       h('label', { class: 'f', for: 'f-ipastatus' }, 'Source of this IPA'), ipaStatus);
     const conf = h('select', { class: 'input', id: 'f-conf' }, h('option', { value: '' }, 'Not stated'), h('option', { value: 'sure' }, 'Certain'), h('option', { value: 'fairly' }, 'Fairly certain'), h('option', { value: 'unsure' }, 'Uncertain'));
@@ -1022,42 +1084,9 @@
   const actCell = (t, onclick, danger, icon) => h('button', { class: 'cell', type: 'button', onclick }, icon ? h('span', { class: 'cell-ic', style: danger ? 'color:var(--alert)' : '' }, ico(icon)) : null, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t', style: 'color:' + (danger ? 'var(--alert)' : 'var(--accent)') }, t)));
   const selCell = (label, id, opts, val, on) => { const s = h('select', { id, 'aria-label': label }, opts.map(([v, t]) => h('option', { value: v, selected: String(val) === String(v) }, t))); s.addEventListener('change', () => on(s.value)); return h('label', { class: 'cell', for: id }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, label)), s); };
   const setting = (k, v, note) => Store.update((s2) => { s2.settings[k] = v; }, 'settings', note || (k + ' ' + v));
-  const ENGINES = [['auto', 'Automatic'], ['device', 'Device voice'], ['clear', 'Clear voice'], ['dadi', 'Built-in sound']];
   const ROUTE_TEXT = { some: 'I understand some', zero: 'Starting from zero', '': 'Not set' };
 
 
-  function voiceSheet() {
-    let sh; const box = h('div');
-    function draw() {
-      const info = audio.engineInfo(), st = S().settings; box.textContent = '';
-      const dv = info.deviceVoices;
-      put(box, h('h2', null, 'Voice'),
-        h('p', { class: 'muted small' }, 'No recordings exist yet, so every voice here reads an approximation and can be wrong for siṭaiṅga. Choose the one you find clearest. Recordings will replace these voices as speakers contribute.'),
-        h('div', { class: 'group', style: 'margin-top:16px' },
-          selCell('Word voice', 's-engine', ENGINES, st.engine || 'auto', (v) => { setting('engine', v); draw(); }),
-          selCell('Speed', 's-speed', [[0.8, 'Slower'], [1, 'Normal'], [1.2, 'Faster']], st.speed || 1, (v) => setting('speed', Number(v))),
-          selCell('Pitch', 's-pitch', [['low', 'Lower'], ['mid', 'Middle'], ['high', 'Higher']], st.pitch || 'mid', (v) => setting('pitch', v))),
-        h('p', { class: 'group-foot' }, 'Automatic uses the device voice if a suitable one is installed, then the clear voice if it is turned on, then the built-in sound.'),
-        h('div', { class: 'group-title' }, 'Device voice'),
-        h('div', { class: 'group' }, dv.length
-          ? selCell('Voice', 's-dev', [['', 'Best match']].concat(dv.map((v) => [v.uri, v.name + ' (' + v.lang + ')'])), st.deviceVoice || '', (v) => setting('deviceVoice', v))
-          : h('div', { class: 'cellwrap small muted' }, 'This device has no suitable voice installed. Another voice is used instead.')),
-        h('p', { class: 'group-foot' }, 'The device reads a similar-sounding spelling of each word. Voices installed in the device settings appear here.'),
-        h('div', { class: 'group-title' }, 'Clear voice'),
-        h('div', { class: 'group' },
-          selCell('Voice', 's-clear', DadiEspeak.VOICES, st.clearVoice || 'f3', (v) => setting('clearVoice', v)),
-          h('label', { class: 'cell', for: 's-clearon' }, h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, 'Use automatically')), h('input', { type: 'checkbox', id: 's-clearon', checked: !!st.clearOn, onchange: (e) => setting('clearOn', e.target.checked) })),
-          actCell(st.clearReady ? 'Clear voice is saved on this device' : 'Download the clear voice (18 MB)', async () => {
-            if (st.clearReady) return; toast('Downloading…');
-            try { await audio.prepareClear(); setting('clearReady', true, 'clear voice ready'); toast('Clear voice saved. It now works offline.'); draw(); } catch (e) { toast(e.message); }
-          })),
-        h('p', { class: 'group-foot' }, 'Based on eSpeak NG, free software under the GPL. It runs on this device and works offline after a one-time download.'),
-        h('div', { class: 'stack', style: 'margin-top:24px' },
-          h('button', { class: 'btn block tint', type: 'button', onclick: async () => { const r = await audio.play('hana'); toast(r.ok ? 'Played with: ' + ({ device: 'the device voice', clear: 'the clear voice', dadi: 'the built-in sound' }[r.how] || 'a voice') + '.' : (r.reason || 'The sound could not be played.')); } }, 'Play a test word'),
-          h('button', { class: 'btn block', type: 'button', onclick: () => sh.close() }, 'Close')));
-    }
-    draw(); sh = sheet(box, { label: 'Voice' });
-  }
 
 
   function aiSheet() {
@@ -1095,7 +1124,7 @@
         cur === 'some' ? h('a', { class: 'btn ghost block', href: '#/check', onclick: () => closeSheet() }, 'Take the quick check') : null)), { label: 'Starting point' });
   }
   function meView(root) {
-    const st = S(); const eng = audio.engineInfo();
+    const st = S();
     const file = h('input', { type: 'file', accept: 'application/json,.json', hidden: true });
     file.addEventListener('change', async () => { const f = file.files[0]; if (!f) return; const r = Store.importAll(await f.text()); toast(r.ok ? 'Backup merged with the data on this device.' : r.error); if (r.ok) route(); });
     const aiOn = DadiAI.ready(DadiAI.load());
@@ -1108,11 +1137,9 @@
       h('div', { class: 'group' },
         goCell('Starting point', { icon: 'target', end: ROUTE_TEXT[st.learn.route || ''], onclick: routeSheet }),
         goCell('Progress and history', { icon: 'chart', onclick: () => nav('#/progress') }),
-        goCell('Family notes and suggested spellings', { icon: 'edit', s: plural(st.learn.notes.length, 'note') + ', ' + plural(st.learn.suggestions.length, 'suggested spelling'), onclick: notesExport }),
-        h('label', { class: 'cell', for: 's-dev' }, h('span', { class: 'cell-ic' }, ico('volume')), h('span', { class: 'cell-main' }, h('span', { class: 'cell-t' }, 'Play device voice in lessons'), h('span', { class: 'cell-s' }, 'Device voice (may be inaccurate). Off by default.')), h('input', { type: 'checkbox', id: 's-dev', checked: !!st.settings.deviceAudio, onchange: (e) => setting('deviceAudio', e.target.checked, 'deviceAudio ' + e.target.checked) }))),
-      h('div', { class: 'group-title' }, 'Sound and appearance'),
+        goCell('Family notes and suggested spellings', { icon: 'edit', s: plural(st.learn.notes.length, 'note') + ', ' + plural(st.learn.suggestions.length, 'suggested spelling'), onclick: notesExport })),
+      h('div', { class: 'group-title' }, 'Appearance'),
       h('div', { class: 'group' },
-        goCell('Voice', { icon: 'headphones', end: (ENGINES.find((x) => x[0] === (st.settings.engine || 'auto')) || ENGINES[0])[1], s: eng.device ? 'A device voice is available' : null, onclick: voiceSheet }),
         goCell('Appearance', { icon: 'palette', end: ((st.settings.theme || 'system') === 'system' ? 'Automatic' : st.settings.theme === 'dark' ? 'Dark' : 'Light') + ', ' + (SCHEMES.find((x) => x[0] === (st.settings.scheme || 'indigo')) || SCHEMES[0])[1], onclick: lookSheet })),
       h('div', { class: 'group-title' }, 'Tools'),
       h('div', { class: 'group' }, goCell('AI connection', { icon: 'sparkle', end: aiOn ? 'On' : 'Off', onclick: aiSheet })),
@@ -1138,8 +1165,8 @@
       h('p', null, 'The name is a word for grandmother used by many Chittagonians. It was chosen because many people learn the language from their grandparents.'),
       h('h2', null, 'Where the words come from'),
       h('p', null, 'Entries are read from the project\'s public files on GitHub (', h('a', { href: CFG.repoUrl, target: '_blank', rel: 'noopener noreferrer' }, CFG.repo), '). Contributions are sent back as issues for review. Nothing is accepted automatically, and every entry starts as unverified. The app does not raise an entry\'s status.'),
-      h('h2', null, 'How the sounds are made'),
-      h('p', null, 'There are no recordings yet. Words can be read aloud in three ways: by the device\'s own voice, by an optional clear voice (eSpeak NG, free software) that runs on the device, or by a small built-in synthesizer, which also produces the key sounds. All three read an approximation written for other languages and can be wrong for siṭaiṅga. They are labelled "Device voice (may be inaccurate)" and are off in lessons by default. Listening exercises will be added when recordings from several speakers exist.'),
+      h('h2', null, 'Sound'),
+      h('p', null, 'Dadi plays only recordings of speakers. It has no computer voice, because none can say siṭaiṅga correctly. There are no recordings yet. When a speaker consents to publish a recording, a Listen button appears on that entry. Until then, no sound button is shown.'),
       h('h2', null, 'How sessions work'),
       h('p', null, 'A session takes 8 to 10 minutes. Reviews that are due come first, followed by up to 5 new items from one unit. Each new item is shown, then tested with a meaning match, a second recognition task and a first production task, and is tested again later in the same session. Review timing comes from FSRS, an open scheduler (MIT licence, Open Spaced Repetition project), set to 90% desired retention and a maximum interval of 180 days. The design is described in docs/dadi/LEARNING_DESIGN.md.'),
       h('p', null, 'Dadi has no streaks, points, hearts or leaderboards. Unit order uses a hand-set frequency rank, not a corpus count.'),
@@ -1151,7 +1178,7 @@
 
   /* ---------- start ---------- */
   async function boot() {
-    applyLook(); audio.ready();
+    applyLook();
     Icons.load('data/icons.json').then((ok) => { if (ok && /^#\/(learn|words)?$/.test(location.hash || '#/learn')) route(); });
     const net = document.getElementById('net'); const upd = () => { net.textContent = navigator.onLine ? '' : 'Offline. Changes are saved on this device.'; }; upd(); window.addEventListener('online', upd); window.addEventListener('offline', upd);
     if (Store.restoredFrom) toast('Saved data was restored from ' + Store.restoredFrom + ' because the main copy was damaged.');

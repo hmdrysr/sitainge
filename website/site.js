@@ -215,10 +215,12 @@
     const box = $('videos'); const ok = list.filter((v) => !['rejected', 'flagged', 'unavailable'].includes(v.status));
     if (!ok.length) { box.append(h('p', null, 'No videos have been added.')); return; }
     ok.forEach((v) => {
-      const frame = h('div', { class: 'frame' });
-      const btn = h('button', { class: 'play', type: 'button', 'aria-label': 'Play: ' + v.label }, (() => { const s = h('span', { 'data-icon': 'play' }); return s; })());
-      btn.addEventListener('click', () => { frame.textContent = ''; frame.append(h('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) + '?rel=0', title: v.label, loading: 'lazy', allow: 'encrypted-media; picture-in-picture', allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin' })); });
-      frame.append(btn); if (window.SiteIcons) window.SiteIcons.draw(frame);
+      /* A static thumbnail from YouTube; the link opens the video on YouTube in a new tab. No iframe is embedded. */
+      const watch = 'https://www.youtube.com/watch?v=' + encodeURIComponent(v.id);
+      const img = h('img', { src: 'https://i.ytimg.com/vi/' + encodeURIComponent(v.id) + '/hqdefault.jpg', alt: v.label, loading: 'lazy', decoding: 'async' });
+      const frame = h('a', { class: 'thumb', href: watch, target: '_blank', rel: 'noopener noreferrer' }, img, h('span', { class: 'play' }, h('span', { 'data-icon': 'play', 'aria-hidden': 'true' })), h('span', { class: 'vh' }, ' (opens on YouTube in a new tab)'));
+      img.addEventListener('error', () => { img.remove(); frame.classList.add('nothumb'); frame.append(h('span', { class: 'tt' }, v.label)); });
+      if (window.SiteIcons) window.SiteIcons.draw(frame);
       const rep = 'https://github.com/' + REPO + '/issues/new?labels=video-report&title=' + encodeURIComponent('[Video report] ' + v.id) + '&body=' + encodeURIComponent('Video: https://www.youtube.com/watch?v=' + v.id + '\n\nWhat is wrong (low quality, wrong language, unsuitable, broken)?\n');
       box.append(h('article', { class: 'vid' }, frame, h('div', { class: 'meta' }, h('b', null, v.label), h('span', null, v.channel + (v.status === 'approved' ? '' : ' · awaiting review')), h('br'), h('a', { class: 'rep', href: rep, rel: 'noopener noreferrer' }, 'Report a problem'))));
     });

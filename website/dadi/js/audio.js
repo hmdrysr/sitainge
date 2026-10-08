@@ -1,86 +1,35 @@
-/* Plays Dadi sounds (CC0). Three ways to make a sound, chosen by the "Word voice" setting:
-   - device: the phone's or browser's own text-to-speech, driven by a sound-alike script (native-tts.js). Usually the smoothest.
-   - clear: eSpeak NG in WebAssembly (espeak.js), optional download, works offline once cached.
-   - dadi: the small synthesizer in synth.js, rendered at the device's own sample rate. Always used for single keyboard symbols.
-   Automatic tries them in that order. Needs a tap first (browser rule). Never plays two sounds at once. */
+/* Plays real recordings of speakers (CC0 code). There is no text-to-speech and no synthesized voice.
+   An entry is playable only when it names a recording that is public: entry.recording is an https address, or a path inside the
+   repository (for example audio/public/CTG-REC-00001.mp3). Audio itself is kept out of Git by default (schemas/recording.schema.json),
+   so a recording normally lives at a hosted address. has(entry) is false until one exists, and the interface then shows no sound button. */
 (function (root) {
   'use strict';
-  const req = (p) => (typeof require !== 'undefined' && typeof module !== 'undefined') ? require(p) : null;
-  const Synth = req('./synth.js') || root.DadiSynth, Native = req('./native-tts.js') || root.DadiNativeTTS, Esp = req('./espeak.js') || root.DadiEspeak;
-  const PITCH = { low: 112, mid: 150, high: 205 }, ESP_PITCH = { low: 35, mid: 55, high: 75 };
-
+  const EXT = /\.(mp3|wav|ogg|oga|opus|m4a|aac|flac|webm)(\?.*)?$/i;
   function create(opts) {
     opts = opts || {};
-    let ctx = null, src = null, token = 0; const cache = new Map();
-    const AC = root.AudioContext || root.webkitAudioContext;
-    const supported = !!AC;
-    const settings = () => (typeof opts.settings === 'function' ? opts.settings() : {}) || {};
-
-    function ensure() { if (!ctx && AC) ctx = new AC(); if (ctx && ctx.state === 'suspended') ctx.resume(); return ctx; }
-    const rate = () => (ensure() ? ctx.sampleRate : 44100);
-    const remember = (k, v) => { cache.set(k, v); if (cache.size > 120) cache.delete(cache.keys().next().value); return v; };
-
-    function renderOwn(ipa, o, f0, speed) {
-      const key = ['own', ipa, f0, speed, o && o.symbol ? 's' : 'w', rate()].join('|');
-      if (cache.has(key)) return cache.get(key);
-      const r = (o && o.symbol) ? Synth.previewSymbol(ipa, { f0, speed, sr: rate() }) : Synth.synthesize(ipa, { f0, speed, sr: rate() });
-      return remember(key, r);
+    const cfg = opts.config || (root.DADI_CONFIG || {});
+    let el = null;
+    const supported = typeof root.Audio === 'function';
+    function url(e) {
+      const r = e && e.recording; if (!r || typeof r !== 'string') return null;
+      if (e.consent && e.consent !== 'public') return null;
+      if (/^https:\/\//i.test(r)) return r;
+      if (/^[a-z]+:/i.test(r) || r.indexOf('..') >= 0 || !EXT.test(r)) return null;
+      return 'https://raw.githubusercontent.com/' + (cfg.repo || 'hmdrysr/sitainge') + '/' + (cfg.branch || 'main') + '/' + r.replace(/^\/+/, '');
     }
-    function stop() {
-      token++;
-      try { if (Native) Native.stop(); } catch (e) { /* none */ }
-      try { if (src) { src.onended = null; src.stop(); } } catch (e) { /* already stopped */ } src = null;
-    }
-    function playBuffer(samples, sampleRate, my, meta) {
+    const has = (e) => supported && !!url(e);
+    function stop() { try { if (el) { el.pause(); el.onended = null; } } catch (x) { /* none */ } el = null; }
+    function play(e, o) {
+      const u = url(e); if (!supported || !u) return Promise.resolve({ ok: false, reason: 'No recording is available.' });
+      stop();
       return new Promise((resolve) => {
-        if (my !== token) { resolve({ ok: false, reason: 'Stopped.' }); return; }
-        const c = ensure(); const buf = c.createBuffer(1, samples.length, sampleRate); buf.getChannelData(0).set(samples);
-        const node = c.createBufferSource(); node.buffer = buf; node.connect(c.destination); src = node;
-        node.onended = () => { if (src === node) src = null; resolve(Object.assign({ ok: true }, meta)); };
-        node.start();
+        const a = new root.Audio(u); el = a; a.preload = 'auto'; a.playbackRate = (o && o.speed) || 1;
+        a.onended = () => resolve({ ok: true }); a.onerror = () => { if (el === a) el = null; resolve({ ok: false, reason: 'The recording could not be played.' }); };
+        const p = a.play(); if (p && p.catch) p.catch(() => resolve({ ok: false, reason: 'The recording could not be played.' }));
       });
     }
-    async function viaClear(ipa, o) {
-      const s = settings(), speed = (o && o.speed) || s.speed || 1, pitch = ESP_PITCH[(o && o.pitch) || s.pitch] || 55;
-      const text = Native.toIndic(ipa, 'bn'); if (!text) return null;
-      const key = ['clear', text, s.clearVoice, speed, pitch, rate()].join('|');
-      if (cache.has(key)) return cache.get(key);
-      const r = await Esp.speak(text, { voice: s.clearVoice || 'f3', pitch, speed: 135 * speed, rate: rate() });
-      return remember(key, r);
-    }
-
-    /* Whole words and sentences. Resolves { ok, how:'device'|'clear'|'dadi', approximated } and never throws. */
-    async function play(ipa, o) {
-      if (!supported && !(Native && Native.available())) return { ok: false, reason: 'This browser cannot play sound from the app.' };
-      stop(); const my = token; const s = settings(), eng = s.engine || 'auto';
-      if (Native && (eng === 'auto' || eng === 'device')) { try { await Native.ready(); } catch (e) { /* none */ } if (my !== token) return { ok: false, reason: 'Stopped.' }; }
-      if (o && o.symbol) return playOwnWord(ipa, o, my);
-      if ((eng === 'auto' || eng === 'device') && Native && Native.available()) {
-        const r = await Native.speak(ipa, { speed: (o && o.speed) || s.speed, pitch: (o && o.pitch) || s.pitch, uri: s.deviceVoice });
-        if (r.ok) return { ok: true, how: 'device', approximated: true, voice: r.voice };
-        if (eng === 'device') return r;
-      }
-      if ((eng === 'auto' || eng === 'clear') && Esp && Esp.canRun() && supported && (eng === 'clear' || s.clearOn)) {
-        try { const r = await viaClear(ipa, o); if (r && my === token) { const p = await playBuffer(r.samples, r.sampleRate, my, { how: 'clear', approximated: true }); return p; } }
-        catch (e) { if (eng === 'clear') return { ok: false, reason: e.message }; }
-      }
-      return playOwnWord(ipa, o, my);
-    }
-    async function playOwnWord(ipa, o, my) {
-      if (!supported) return { ok: false, reason: 'This browser cannot play sound from the app.' };
-      const s = settings(), f0 = PITCH[(o && o.pitch) || s.pitch] || 150, speed = (o && o.speed) || s.speed || 1;
-      const r = renderOwn(ipa, o, f0, speed);
-      if (!r.samples.length) return { ok: false, reason: 'Nothing to play.', unsupported: r.unsupported };
-      return playBuffer(r.samples, r.sampleRate, my, { how: 'dadi', unsupported: r.unsupported, approximated: r.approximated });
-    }
-    const playSymbol = (sym, o) => { stop(); return playOwnWord(sym, Object.assign({ symbol: true }, o || {}), token); };
-    /* Download the clear voice now (so it works offline later). */
-    async function prepareClear() { if (!Esp || !Esp.canRun()) throw new Error('This browser cannot run the clear voice.'); await Esp.speak('অ', { rate: rate() }); return true; }
-    return { play, playSymbol, stop, supported, prepareClear,
-      ready: () => (Native ? Native.ready() : Promise.resolve(false)),
-      engineInfo: () => ({ device: !!(Native && Native.available()), deviceName: Native && Native.describe(), deviceVoices: Native ? Native.list() : [], clear: !!(Esp && Esp.canRun()), clearVoices: Esp ? Esp.VOICES : [] }) };
+    return { has, url, play, stop, supported };
   }
-
-  const api = { create, PITCH };
+  const api = { create, EXT };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.DadiAudio = api;
 })(typeof self !== 'undefined' ? self : this);

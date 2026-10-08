@@ -2,7 +2,7 @@
    Scales (from docs/dadi/UX_RESEARCH.md): spacing 4/8/12/16/24/32/48 px; type 34/28/22/20/17/15/13 px; targets at least 44 px;
    one primary accent and one highlight; light by default, dark when the device or the visitor asks. Works from 320 px up. */
 /* Colour tokens. Light is the default; the dark set is used when the device asks for dark (and the visitor has not chosen) or when the visitor
-   chooses it in the footer. Values and contrast ratios: docs/design/site-ia-and-colour.md. */
+   taps the day and night toggle in the header. Values and contrast ratios: docs/design/site-ia-and-colour.md. */
 :root {
   --bg: #ffffff; --alt: #eff6fc; --surface: #ffffff; --text: #0f2236; --muted: #47596b; --line: #cddae7;
   --accent: #0b5fae; --on-accent: #ffffff; --tint: rgba(11,95,174,.09);
@@ -63,10 +63,17 @@ p { margin: 0 0 var(--s4); }
 /* header: one component on every page. Narrow: brand and a Menu button in one row; the links open in a sheet below it (and are always listed when scripts are off).
    Wide (760 px and up): brand at the left, links in one row at the right, equal spacing, 44 px targets, Dadi as the one primary action. */
 .bar { position: sticky; top: 0; z-index: 30; background: var(--bg); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top); }
-.bar-in { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--s3); min-height: var(--bar-h); }
+.bar-in { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; column-gap: var(--s3); min-height: var(--bar-h); }
 .brand { grid-column: 1; grid-row: 1; justify-self: start; display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; font-size: var(--t20); color: var(--text); text-decoration: none; }
-.menu-btn { display: none; grid-column: 2; grid-row: 1; align-items: center; gap: var(--s2); min-height: 44px; padding: 0 var(--s4); border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font: 600 var(--t15) var(--font); cursor: pointer; }
+.menu-btn { display: none; grid-column: 3; grid-row: 1; align-items: center; gap: var(--s2); min-height: 44px; padding: 0 var(--s4); border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font: 600 var(--t15) var(--font); cursor: pointer; }
 .js .menu-btn { display: inline-flex; }
+.theme-btn { display: none; grid-column: 2; grid-row: 1; place-items: center; width: 44px; height: 44px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--text); cursor: pointer; }
+.js .theme-btn { display: inline-grid; }
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+.theme-btn .ti { display: grid; place-items: center; }
+.theme-btn .ti svg { width: 22px; height: 22px; }
+.theme-btn .ti-sun, :root[data-theme="dark"] .theme-btn .ti-moon { display: none; }
+:root[data-theme="dark"] .theme-btn .ti-sun { display: grid; }
 .menu-btn:hover { border-color: var(--accent); }
 .menu-ic, .menu-ic::before, .menu-ic::after { display: block; width: 18px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .15s, opacity .15s; }
 .menu-ic { position: relative; }
@@ -91,6 +98,7 @@ p { margin: 0 0 var(--s4); }
   .nav a[aria-current="page"] { color: var(--accent); background: var(--tint); font-weight: 600; }
   .nav a.cta { margin: 0 0 0 var(--s2); padding: 0 20px; color: var(--on-accent); font-weight: 600; }
   .nav a.cta:hover { color: var(--on-accent); background: var(--accent); }
+  .theme-btn, .js .theme-btn { grid-column: 3; margin-left: var(--s2); }
 }
 
 /* controls */
@@ -110,14 +118,6 @@ select { width: auto; max-width: 100%; }
 .foot { padding: var(--s6) 0 calc(var(--s6) + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); color: var(--muted); font-size: var(--t15); }
 .foot p { max-width: var(--read); }
 .foot a { color: var(--accent); }
-.theme { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); margin: var(--s5) 0 0; }
-.theme:empty { display: none; }
-.theme .lbl { font-size: var(--t15); color: var(--muted); }
-.tseg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--surface); }
-.tseg button { border: 0; background: none; color: var(--text); font: 500 var(--t15) var(--font); padding: 0 var(--s4); min-height: 44px; cursor: pointer; }
-.tseg button + button { border-left: 1px solid var(--line); }
-.tseg button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); font-weight: 600; }
-.tseg button:focus-visible { outline-offset: -3px; }
 main { outline: none; }
 .page { padding-top: var(--s6); padding-bottom: var(--s6); }
 .vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -229,9 +229,12 @@ main { outline: none; }
 .gallery figcaption { padding: var(--s2) var(--s3); font-size: var(--t13); color: var(--muted); }
 .videos { display: grid; gap: var(--s4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
 .vid { background: var(--surface); border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); }
-.vid .frame { position: relative; aspect-ratio: 16 / 9; background: var(--alt); display: grid; place-items: center; }
-.vid iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.vid .play { width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--accent); color: var(--on-accent); cursor: pointer; display: grid; place-items: center; }
+.vid .thumb { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 9; background: var(--alt); overflow: hidden; color: var(--text); text-decoration: none; }
+.vid .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vid .play { position: relative; width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; box-shadow: 0 2px 10px rgba(0,0,0,.35); }
 .vid .play svg { width: 28px; height: 28px; }
+.vid .thumb:hover .play { filter: brightness(1.08); }
+.vid .thumb.nothumb { align-content: center; justify-items: center; gap: var(--s2); padding: var(--s3); text-align: center; }
+.vid .thumb.nothumb .tt { position: relative; font-size: var(--t15); font-weight: 600; }
 .vid .meta { padding: var(--s3) var(--s4); } .vid .meta b { display: block; font-size: var(--t15); } .vid .meta span { color: var(--muted); font-size: var(--t13); }
 .vid .rep { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t13); }

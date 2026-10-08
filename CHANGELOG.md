@@ -1,7 +1,11 @@
 # Changelog
 
 ## Unreleased
-- Project site reorganized: region and map first, one aligned header with a Menu sheet on narrow screens, brighter blue palette, Auto/Light/Dark control (D-049).
+- Dadi no longer produces any computer voice (D-050). Device text-to-speech, the eSpeak NG voice and the built-in synthesizer are removed from lessons, the word sheet, the translator page, the IPA keyboard and chart, and settings. A Listen button appears only on an entry that has a public recording; otherwise no sound button is shown.
+- Dictionary rebuilt with typo-tolerant search, a detail sheet, filters and a browse mode (D-051).
+- Teach tab gains a discovery card with random words and sentences to check or add (D-052). Answers are local family notes, not verification.
+- The site's colour theme is now a day and night button in the header instead of a footer control (D-053). Videos show YouTube thumbnails, with a plain tile when the image cannot load (D-054).
+- Project site reorganized: region and map first, one aligned header with a Menu sheet on narrow screens, brighter blue palette (D-049).
 - Copy rewritten in Canadian academic and professional English across the site, Dadi, extension and documentation (D-045). Project header reads siṭaiṅge.
 - One icon family, Tabler Icons; decorative illustration and `art.js` removed (D-046).
 - Dadi learning path redesigned from teaching research: theme units, retrieval-first lesson flow, honest progress (D-047).

@@ -1,5 +1,5 @@
 /* IPA symbol data for Dadi. Written for this project (symbols and their standard names are facts, not copied layouts).
-   Used by the sound engine (synth.js) and the on-screen keyboard (keyboard.js). CC0. */
+   Used by the on-screen keyboard and the IPA chart (keyboard.js). CC0. */
 (function (root) {
   'use strict';
 

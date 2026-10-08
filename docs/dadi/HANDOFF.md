@@ -36,7 +36,7 @@ website/dadi/
   js/
     ipa-data.js     vowels (F1-F3), consonants (manner/place/voice), approximations, key layout
     synth.js        formant synthesizer, WAV export (pure JS, runs in Node for tests)
-    espeak.js       optional clear offline voice (eSpeak NG, GPL, vendor/espeak-ng/, removable)
+    espeak.js       UNUSED since D-050 (delete); was an optional clear offline voice (eSpeak NG, GPL, vendor/espeak-ng/, removable)
     translate.js    English to siṭaiṅga lookup from the project's words; page bookmarklet
     ai.js           connect your own AI (key stays in the browser, never exported)
     native-tts.js   device voice: IPA to a sound-alike script (Bangla or Devanagari) that a device voice can read

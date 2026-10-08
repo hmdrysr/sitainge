@@ -1,40 +1,41 @@
-/* siṭaiṅge site shell (CC0): colour theme choice and the narrow-width menu. Loaded in <head> on every page so the saved theme is applied before the first paint.
-   The choice (auto, light or dark) is kept in localStorage only; if storage is blocked the page still works and follows the device. No network use. */
+/* siṭaiṅge site shell (CC0): the day and night toggle in the header and the narrow-width menu. Loaded in <head> on every page so the theme is applied before the first paint.
+   First visit: follows the device (prefers-color-scheme). After the visitor taps the toggle, the explicit choice is kept in localStorage only; if storage is blocked the page still works. No network use. */
 (function () {
   'use strict';
   var KEY = 'site.theme', root = document.documentElement, mq = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
   root.classList.add('js');
-  function saved() { try { var v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : 'auto'; } catch (e) { return 'auto'; } }
-  function apply(mode) {
-    if (mode === 'light' || mode === 'dark') root.setAttribute('data-theme', mode); else root.removeAttribute('data-theme');
-    var dark = mode === 'dark' || (mode !== 'light' && mq && mq.matches);
+  function saved() { try { var v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : null; } catch (e) { return null; } }
+  function system() { return mq && mq.matches ? 'dark' : 'light'; }
+  var chosen = saved(), mode = chosen || system();
+  function apply(m) {
+    mode = m; root.setAttribute('data-theme', m);
     var metas = document.querySelectorAll('meta[name="theme-color"]');
-    if (metas.length) { for (var i = 1; i < metas.length; i++) metas[i].remove(); metas[0].removeAttribute('media'); metas[0].setAttribute('content', dark ? '#14243a' : '#ffffff'); }
+    if (metas.length) { for (var i = 1; i < metas.length; i++) metas[i].remove(); metas[0].removeAttribute('media'); metas[0].setAttribute('content', m === 'dark' ? '#14243a' : '#ffffff'); }
   }
-  var mode = saved(); apply(mode);
-  if (mq && mq.addEventListener) mq.addEventListener('change', function () { if (mode === 'auto') apply(mode); });
+  apply(mode);
+  var onToggle = null;
+  /* with no saved choice, a change of the device setting is followed */
+  if (mq && mq.addEventListener) mq.addEventListener('change', function () { if (!chosen) { apply(system()); if (onToggle) onToggle(); } });
 
   function ready() {
-    /* theme control in the footer */
-    var box = document.querySelector('[data-theme-control]');
-    if (box) {
-      var lab = document.createElement('span'); lab.className = 'lbl'; lab.id = 'theme-lbl'; lab.textContent = 'Colour theme';
-      var grp = document.createElement('div'); grp.className = 'tseg'; grp.setAttribute('role', 'group'); grp.setAttribute('aria-labelledby', 'theme-lbl');
-      var btns = {};
-      [['auto', 'Auto'], ['light', 'Light'], ['dark', 'Dark']].forEach(function (p) {
-        var b = document.createElement('button'); b.type = 'button'; b.textContent = p[1]; b.setAttribute('data-mode', p[0]);
-        b.addEventListener('click', function () {
-          mode = p[0]; apply(mode);
-          try { if (mode === 'auto') localStorage.removeItem(KEY); else localStorage.setItem(KEY, mode); } catch (e) { /* storage unavailable */ }
-          mark();
-        });
-        btns[p[0]] = b; grp.appendChild(b);
+    var bar = document.querySelector('.bar'), btn = bar && bar.querySelector('.menu-btn'), nav = bar && bar.querySelector('.nav');
+    /* day and night toggle */
+    var host = bar && bar.querySelector('.bar-in');
+    if (host) {
+      var tg = document.createElement('button'); tg.type = 'button'; tg.className = 'theme-btn';
+      ['moon', 'sun'].forEach(function (n) { var s = document.createElement('span'); s.className = 'ti ti-' + n; s.setAttribute('data-icon', n); s.setAttribute('aria-hidden', 'true'); tg.appendChild(s); });
+      var mark = function () { tg.setAttribute('aria-pressed', String(mode === 'dark')); tg.setAttribute('aria-label', mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'); };
+      onToggle = mark;
+      tg.addEventListener('click', function () {
+        chosen = mode === 'dark' ? 'light' : 'dark'; apply(chosen);
+        try { localStorage.setItem(KEY, chosen); } catch (e) { /* storage unavailable: the choice lasts for this page only */ }
+        mark();
       });
-      var mark = function () { for (var k in btns) btns[k].setAttribute('aria-pressed', String(k === mode)); };
-      mark(); box.appendChild(lab); box.appendChild(grp);
+      mark();
+      var brand = host.querySelector('.brand'); if (brand) brand.after(tg); else host.prepend(tg);
+      if (window.SiteIcons) window.SiteIcons.draw(tg);
     }
     /* menu sheet on narrow screens */
-    var bar = document.querySelector('.bar'), btn = bar && bar.querySelector('.menu-btn'), nav = bar && bar.querySelector('.nav');
     if (!btn || !nav) return;
     var wide = matchMedia('(min-width: 760px)');
     function set(open, focusBtn) {
