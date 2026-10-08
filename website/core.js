@@ -60,16 +60,16 @@
 
   function validate(state, items) {
     const e = [], c = state.consent || {};
-    if (!c.adult) e.push('Please confirm that you are 18 or older, or that a parent or guardian is helping.');
-    if (!c.cc0) e.push('Please confirm the public-domain (CC0) statement.');
-    if (!c.publish) e.push('Please choose what to do with your contribution.');
-    if (!c.credit) e.push('Please choose how you want to be credited.');
-    if (!c.audio) e.push('Please choose what to do about voice recordings.');
-    if (c.audio === 'public' && c.publish !== 'yes') e.push('Recordings cannot be published while the text is set to "Discuss with me first". Change one of them.');
-    if (c.audio === 'none' && items.some((it) => it.audio_file)) e.push('Recordings exist but you chose no recordings.');
-    if (c.credit === 'name' && !clean(c.creditName)) e.push('You chose to be credited by name; please type the name to show.');
+    if (!c.adult) e.push('Confirm that you are 18 or older, or that a parent or guardian is helping.');
+    if (!c.cc0) e.push('Confirm the public-domain (CC0) statement.');
+    if (!c.publish) e.push('Choose what should happen to the contribution.');
+    if (!c.credit) e.push('Choose how you want to be credited.');
+    if (!c.audio) e.push('Choose what to do about voice recordings.');
+    if (c.audio === 'public' && c.publish !== 'yes') e.push('Recordings cannot be published while the text is set to "Discuss with me first". Change one of the two choices.');
+    if (c.audio === 'none' && items.some((it) => it.audio_file)) e.push('Recordings exist, but you chose no recordings.');
+    if (c.credit === 'name' && !clean(c.creditName)) e.push('You chose to be credited by name. Enter the name to show.');
     if (!items.length) e.push('There is nothing to export yet.');
-    if (items.length > LIMITS.items) e.push('Too many items for one submission (limit ' + LIMITS.items + '). Export now and start a second submission.');
+    if (items.length > LIMITS.items) e.push('This submission has too many items (limit ' + LIMITS.items + '). Export now and start a second submission.');
     items.forEach((it) => {
       if (it.status === 'used' && !it.response_as_given) e.push('Item ' + it.n + ' (' + it.prompt_english + '): marked as answered but empty.');
       ['response_as_given', 'speaker_comment', 'usage_note', 'pronunciation_note', 'context_given'].forEach((k) => {

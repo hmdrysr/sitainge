@@ -1,0 +1,288 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chittagonian lexical entry, version 2 (DRAFT, not yet used by validate.py or Dadi)",
+  "description": "Draft for the migration in docs/methodology/STRUCTURE.md. The live schema is schemas/lexical_entry.schema.json and is unchanged. The id pattern accepts the old state-bearing form and the new state-free CTG-LEX-nnnnn.",
+  "type": "object",
+  "required": [
+    "id",
+    "state",
+    "headword_as_heard",
+    "senses",
+    "source",
+    "evidence_level",
+    "ai_assisted",
+    "provenance",
+    "consent"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CTG-LEX-((RAW|REV|ACC|ARC)-)?[0-9]{5}$"
+    },
+    "state": {
+      "enum": [
+        "RAW",
+        "REVIEW",
+        "ACCEPTED",
+        "ARCHIVED"
+      ]
+    },
+    "headword_as_heard": {
+      "type": "string"
+    },
+    "form_as_submitted": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Legacy mirror, kept while Dadi reads it."
+    },
+    "spellings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "register": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "place": {
+      "anyOf": [
+        {
+          "type": "object",
+          "description": "Public place at upazila level only. Finer locality stays private and out of Git.",
+          "required": [
+            "district",
+            "upazila"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "district": {
+              "type": "string"
+            },
+            "upazila": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "senses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "gloss_en"
+        ],
+        "properties": {
+          "gloss_en": {
+            "type": "string"
+          },
+          "pos": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "domain": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "english_gloss": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Derived from senses[0].gloss_en while Dadi's normalize() reads it."
+    },
+    "recording_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CTG-REC-[0-9]{5}$"
+      }
+    },
+    "session_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^CTG-SES-[0-9]{5}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "speaker_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^CTG-SPK-[0-9]{5}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "type": "string"
+    },
+    "evidence_level": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "unassessed"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Level per field where it differs from evidence_level.",
+      "additionalProperties": false,
+      "properties": {
+        "form": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "unassessed"
+          ]
+        },
+        "gloss": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "unassessed"
+          ]
+        },
+        "ipa": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "unassessed"
+          ]
+        },
+        "place": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "unassessed"
+          ]
+        }
+      }
+    },
+    "confirmations": {
+      "type": "array",
+      "description": "Speaker-by-speaker, never a vote.",
+      "items": {
+        "type": "object",
+        "required": [
+          "speaker_id",
+          "date",
+          "outcome"
+        ],
+        "properties": {
+          "speaker_id": {
+            "type": "string",
+            "pattern": "^CTG-SPK-[0-9]{5}$"
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+          },
+          "outcome": {
+            "enum": [
+              "confirmed",
+              "not recognized",
+              "variant offered",
+              "unsure"
+            ]
+          }
+        }
+      }
+    },
+    "ipa": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ipa_status": {
+      "enum": [
+        "none",
+        "speaker-described",
+        "speaker-chosen-by-ear",
+        "audio-transcribed",
+        "phonetician-verified",
+        "ai-drafted-unverified",
+        null
+      ]
+    },
+    "ipa_source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ai_assisted": {
+      "type": "boolean"
+    },
+    "comparative_data": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "submitted_by",
+        "date_submitted",
+        "origin",
+        "decision_history"
+      ]
+    },
+    "consent": {
+      "enum": [
+        "public",
+        "research-only",
+        "restricted",
+        "private",
+        "withdrawn",
+        "permission pending"
+      ],
+      "description": "Inherited from the session until Dadi reads sessions."
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-# Orthographic Decision Log
+# Orthographic decision log
 
 | ID | Date | Decision | Reason | Status |
 |---|---|---|---|---|

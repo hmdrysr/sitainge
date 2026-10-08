@@ -1,2 +1,3 @@
-# Code of Conduct
-Be respectful of every variety and every speaker. No ridicule of regional forms, accents or spelling. Disagree about evidence, not people. Report concerns to the project steward.
+# Code of conduct
+
+Participants respect every variety of the language and every speaker. Ridicule of regional forms, accents or spelling is not accepted. Disagreement should concern evidence, not people. Concerns are reported to the project steward.

@@ -1,6 +1,6 @@
-# AI Use Policy
+# AI use policy
 
-Allowed as assistance: transcription suggestions, duplicate detection, phonetic similarity, translation suggestions, metadata extraction, search, classification, formatting, flagging possible related entries.
+AI is allowed as assistance for transcription suggestions, duplicate detection, phonetic similarity, translation suggestions, metadata extraction, search, classification, formatting, and flagging possible related entries.
 
 Rules:
 1. Every AI-derived field is tagged `ai_assisted: true` and shows `AI-assisted / unverified` until a named human reviewer clears it.

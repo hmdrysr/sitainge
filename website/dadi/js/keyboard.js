@@ -51,7 +51,7 @@
       const base = g.text ? Array.from(g.text)[0] : '', alts = base ? alternatives(base) : [];
       const word = (/(\S*)$/.exec(before) || ['', ''])[1];
       const words = api.suggest && word.length >= 2 ? api.suggest(word) : [];
-      if (!alts.length && !words.length) { strip.append(el('span', 'kb-hint', g.text ? 'No close neighbours for ' + g.text : 'Tap a key. You will hear it.')); return; }
+      if (!alts.length && !words.length) { strip.append(el('span', 'kb-hint', g.text ? 'No close neighbours for ' + g.text : 'Tap a key to hear its sound.')); return; }
       if (words.length) {
         strip.append(el('span', 'kb-hint', 'Words:'));
         words.forEach((w) => {

@@ -1,8 +1,8 @@
-# Web harvest, round 2, 2026-10-08 (RAW, unverified)
+# Web harvest, round 2, October 8, 2026 (RAW, unverified)
 
-Collected by AI tools reading public pages, not by a speaker. Every record is RAW, evidence level unassessed, consent `research-only`. Nothing was invented; forms are copied as the fetch tool returned them, with the source's own gloss. The yield is small (64 records) because most promising sources were blocked or held no Roman-letter Chittagonian. Target of 150 to 400 records was not reachable honestly.
+AI tools collected these records by reading public pages; no speaker was involved. Every record is RAW, with evidence level unassessed and consent `research-only`. Nothing was invented. Forms are copied as the fetch tool returned them, with the source's own gloss. The yield is small (64 records) because most promising sources were blocked or held no Roman-letter Chittagonian. The target of 150 to 400 records could not be reached honestly.
 
-File: `lexicon/raw/2026-10-08-web-harvest-2.jsonl`. Validator (copy of the repo plus this file): 200 records, 0 errors, 2 warnings (the two UDHR sentences in CTG-LEX-RAW-02000/02001 duplicate CTG-LEX-RAW-00102/00103 from the first harvest; kept as instructed, a steward may merge them).
+File: `lexicon/raw/2026-10-08-web-harvest-2.jsonl`. Validator (copy of the repository plus this file): 200 records, 0 errors, 2 warnings. The two UDHR sentences in CTG-LEX-RAW-02000/02001 duplicate CTG-LEX-RAW-00102/00103 from the first harvest. They were kept as instructed, and a steward may merge them.
 
 The `ipa_status` enum has no "published-source-unverified" value, so `ipa` is null everywhere and no IPA was taken in this round.
 
@@ -20,15 +20,15 @@ The `ipa_status` enum has no "published-source-unverified" value, so `ipa` is nu
 
 | Source id | Citation / URL | Licence | Records | Notes |
 |---|---|---|---|---|
-| SRC-WEB-H2-1 | Mirror of an older English Wikipedia "Chittagonian language" revision, https://classicistranieri.com/en/c/h/i/Chittagonian_language.html (retrieved 2026-10-08) | not stated on page; Wikipedia text is normally CC BY-SA; authors unknown | 9 | Seven example phrases (nasal-vowel section) and the ar / ãr pair. Not in the current Wikipedia article. |
+| SRC-WEB-H2-1 | Mirror of an older English Wikipedia "Chittagonian language" revision, https://classicistranieri.com/en/c/h/i/Chittagonian_language.html (retrieved October 8, 2026) | not stated on page; Wikipedia text is normally CC BY-SA; authors unknown | 9 | Seven example phrases (nasal-vowel section) and the ar / ãr pair. Not in the current Wikipedia article. |
 | SRC-WEB-H2-2 | Mirror of another old English Wikipedia revision, https://en-academic.com/dic.nsf/enwiki/2078824 (attribution line "Wikimedia Foundation. 2010.") | not stated; presumed CC BY-SA, unconfirmed | 45 | 13 phrases, 10 word-order words, 22 "Few Chittagonian words" forms. |
 
 Cautions for reviewers:
-- Both pages are mirrors of old, unreviewed wiki revisions. The two revisions disagree (Tũi honde? vs Tũi konde?; Ãi gom asi. vs Ãi gawm asi.), so spellings are unstable, and an unknown editor may have written them.
-- Diacritics are unusual (ì, ĵ, Ğ, á) and were returned by a summarizing fetch tool, so the exact characters are unverified against the pages.
-- The "Few Chittagonian words" forms are noun plus an ending (án, Ğín, wá, gún, lán and so on); the page gives no grammatical explanation and the pattern looks irregular, so the forms are marked "noun with ending as printed" only.
+- Both pages are mirrors of old, unreviewed wiki revisions. The two revisions disagree (Tũi honde? vs Tũi konde?; Ãi gom asi. vs Ãi gawm asi.), so the spellings are unstable, and an unknown editor may have written them.
+- The diacritics are unusual (ì, ĵ, Ğ, á). A summarizing fetch tool returned them, so the exact characters are unverified against the pages.
+- The "Few Chittagonian words" forms are a noun plus an ending (án, Ğín, wá, gún, lán and so on). The page gives no grammatical explanation and the pattern looks irregular, so the forms are marked "noun with ending as printed" only.
 - Glosses such as "I love you" for Ãtte tuãre beshi gom lage are copied as printed and may not be literal.
-- Bangla script lines were skipped, except the one Bangla line for Ítara, stored in comparative_data.
+- Lines in Bangla script were skipped, except the one Bangla line for Ítara, which is stored in comparative_data.
 
 ## Sources tried and not used
 
@@ -36,19 +36,19 @@ Cautions for reviewers:
 |---|---|
 | en.wiktionary.org (category, Swadesh appendix, raw, REST, mobile) | WebFetch: "cache-only domain, cannot be fetched". curl: blocked by the egress proxy (403 on CONNECT). Not retried or routed around. |
 | archive.org via curl | Same proxy 403. archive.org via WebFetch works but truncates each text to about 71,000 characters. |
-| Grierson, LSI Vol. V Pt. I (archive.org id LinguisticSurveyOfIndiaVolVPartIIndoAryanFamilyEasternGroup) | Only the front matter and table of contents were readable (the Chittagong dialect is Section VII); offset reads past 71k fail. DSAL BookReader returns no text. PDF over the 30 MB fetch cap. Not harvested. |
-| en.wikipedia.org (current article, Chittagonian alphabet) | Current article has no word lists (round 1). Alphabet page is cache-only. |
+| Grierson, LSI Vol. V Pt. I (archive.org id LinguisticSurveyOfIndiaVolVPartIIndoAryanFamilyEasternGroup) | Only the front matter and table of contents were readable (the Chittagong dialect is Section VII). Offset reads past 71k fail. DSAL BookReader returns no text. The PDF is over the 30 MB fetch cap. Not harvested. |
+| en.wikipedia.org (current article, Chittagonian alphabet) | The current article has no word lists (round 1). The alphabet page is cache-only. |
 | Wikivoyage mirror (guides.travel.sygic.com) | Phrase list empty; wikitravel.org returned 403. Wikivoyage was harvested in round 1. |
 | Omniglot chart PDF (omniglot.com/charts/chittagonian.pdf) | German-language notes; only language names in Roman letters, no glosses. |
-| CIIL Sanchika items (kinship, body parts, seasons elicitation) | Item pages only; no words shown, rights not stated; recordings/transcripts not reachable from here. |
+| CIIL Sanchika items (kinship, body parts, seasons elicitation) | Item pages only; no words shown, rights not stated; recordings and transcripts not reachable from here. |
 | Glosbe (glosbe.com/en/ctg) | No entries shown; licence not stated. |
 | ASJP (asjp.clld.org) | No Chittagonian wordlist found by search or by guessed URL; not exhaustively checked. |
 | HF Space ChatgaiyyaBridge, universeofmemory.com resource list | Bangla-script rules or links only; no Roman-letter data. |
-| srichinmoybio.co.uk "To Be A Chittagonian" | Song transliterations only (not reproduced; copyrighted creative text); no word glosses. |
+| srichinmoybio.co.uk "To Be A Chittagonian" | Song transliterations only (not reproduced, as copyrighted creative text); no word glosses. |
 | Searches for open papers (Swadesh, numerals, kinship, food, body parts, verb paradigms) | Returned only unrelated languages (Bantawa, Serawai, Sikkim) or journalism; nothing citable. Earlier-listed papers (SRC-WEB-AC-8, 11, 12, 13) remain unread beyond landing pages. |
 | ELAR, Commons, Wikisource | Searches turned up no Chittagonian text pages. |
 
 ## Suggestions
 
-1. Wiktionary and the Linguistic Survey of India are the most likely rich sources. They need a fetch route that allows en.wiktionary.org and full archive.org text (or the PDF split into pages), or a steward-supplied download.
-2. Learner categories asked for (kinship, body parts, food, animals, colours, days, months, common verbs, question words) are covered only by Wikivoyage (round 1) and a few phrases here; nothing new was found for animals, food, body parts or kinship.
+1. Wiktionary and the Linguistic Survey of India are the most likely rich sources. They need a fetch route that allows en.wiktionary.org and full archive.org text (or the PDF split into pages), or a download supplied by a steward.
+2. The learner categories requested (kinship, body parts, food, animals, colours, days, months, common verbs, question words) are covered only by Wikivoyage (round 1) and a few phrases here. Nothing new was found for animals, food, body parts or kinship.

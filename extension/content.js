@@ -20,7 +20,7 @@
       const r = T.translate(n.nodeValue, G); words += r.words; if (!r.hits) continue; hits += r.hits;
       const wrap = document.createElement('span'); wrap.setAttribute('data-sitainga-wrap', '');
       for (const p of r.parts) {
-        if (p.t === 'hit') { const s = document.createElement('span'); s.textContent = p.out; s.setAttribute('data-sitainga-hit', ''); s.title = p.s + ' — evidence level: ' + p.level + ' (unverified draft)'; s.style.cssText = 'text-decoration:underline dotted;text-underline-offset:3px'; wrap.append(s); }
+        if (p.t === 'hit') { const s = document.createElement('span'); s.textContent = p.out; s.setAttribute('data-sitainga-hit', ''); s.title = p.s + ', evidence level: ' + p.level + ' (unverified draft)'; s.style.cssText = 'text-decoration:underline dotted;text-underline-offset:3px'; wrap.append(s); }
         else wrap.append(document.createTextNode(p.s));
       }
       orig.set(wrap, n); wrappers.add(wrap); n.parentNode.replaceChild(wrap, n);
@@ -45,8 +45,8 @@
     text = text || String(window.getSelection() || ''); const r = T.translate(text, T.load(g)); hideBox();
     const box = document.createElement('div'); box.setAttribute('data-sitainga-ui', '');
     box.style.cssText = 'position:fixed;z-index:2147483647;left:8px;right:8px;bottom:8px;max-width:520px;margin:auto;background:#1c1c1e;color:#fff;font:14px/1.4 system-ui,sans-serif;padding:12px 14px;border-radius:14px;box-shadow:0 4px 18px rgba(0,0,0,.35)';
-    const a = document.createElement('div'); a.style.cssText = 'font-size:16px;margin-bottom:6px;white-space:pre-wrap'; a.textContent = T.plain(r) || '(nothing selected)';
-    const b = document.createElement('div'); b.style.cssText = 'opacity:.8;font-size:12px'; b.textContent = 'siṭaiṅga draft, unverified. ' + r.hits + ' of ' + r.words + ' words found; the rest stay in English.';
+    const a = document.createElement('div'); a.style.cssText = 'font-size:16px;margin-bottom:6px;white-space:pre-wrap'; a.textContent = T.plain(r) || '(no text selected)';
+    const b = document.createElement('div'); b.style.cssText = 'opacity:.8;font-size:12px'; b.textContent = 'siṭaiṅga draft (unverified). ' + r.hits + ' of ' + r.words + ' words found; the rest remain in English.';
     const x = document.createElement('button'); x.textContent = 'Close'; x.style.cssText = 'margin-top:8px;border:0;border-radius:999px;padding:6px 14px;font:inherit;font-weight:600;background:#fff;color:#000;cursor:pointer'; x.onclick = hideBox;
     box.append(a, b, x); document.body.append(box); return { words: r.words, hits: r.hits, coverage: r.coverage, text: a.textContent };
   }

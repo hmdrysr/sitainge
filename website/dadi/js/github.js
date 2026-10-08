@@ -36,11 +36,11 @@
         if (j.access_token) return { token: j.access_token, expiresIn: j.expires_in || null };
         if (j.error === 'authorization_pending') continue;
         if (j.error === 'slow_down') { wait = (j.interval || wait + 5); continue; }
-        if (j.error === 'expired_token') throw new Error('The code expired. Please start again.');
+        if (j.error === 'expired_token') throw new Error('The code expired. Start again.');
         if (j.error === 'access_denied') throw new Error('Sign-in was cancelled on GitHub.');
         throw new Error(j.error_description || j.error || 'Sign-in failed.');
       }
-      throw new Error('The code expired. Please start again.');
+      throw new Error('The code expired. Start again.');
     }
 
     const headers = (token) => ({ Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' });

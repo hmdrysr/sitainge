@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Recording record",
+  "description": "One record per audio file. The audio itself stays out of Git.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "session_id",
+    "speaker_id",
+    "file_name",
+    "sha256",
+    "duration_s",
+    "format",
+    "quality",
+    "access_tier",
+    "archive_location"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CTG-REC-[0-9]{5}$"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^CTG-SES-[0-9]{5}$"
+    },
+    "speaker_id": {
+      "type": "string",
+      "pattern": "^CTG-SPK-[0-9]{5}$"
+    },
+    "file_name": {
+      "type": "string",
+      "description": "Original file name as stored in the archive."
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "duration_s": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "format": {
+      "type": "object",
+      "required": [
+        "container"
+      ],
+      "properties": {
+        "container": {
+          "type": "string",
+          "description": "For example wav or flac."
+        },
+        "sample_rate_hz": {
+          "type": "integer",
+          "minimum": 8000
+        },
+        "bit_depth": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "channels": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "quality": {
+      "enum": [
+        "good",
+        "fair",
+        "poor",
+        "unassessed"
+      ]
+    },
+    "quality_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "access_tier": {
+      "enum": [
+        "public",
+        "research-only",
+        "restricted",
+        "private"
+      ],
+      "description": "Who may hear or reuse the file. Follows the session consent."
+    },
+    "archive_location": {
+      "type": "string",
+      "description": "Where the original lives outside Git (archive name and identifier or storage label)."
+    },
+    "recorded_on": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "withdrawn": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

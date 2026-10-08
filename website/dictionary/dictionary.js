@@ -1,11 +1,11 @@
-/* siṭaiṅga Dictionary (CC0). Reads the project's own files live from GitHub; falls back to a saved copy, then the bundled seed.
+/* siṭaiṅge dictionary (CC0). Reads the project's own files from GitHub; falls back to a saved copy, then the bundled seed.
    Nothing is invented here: every word shown comes from a record in the repository, with its evidence level. */
 (function () {
   'use strict';
   const D = window.DadiData, REPO = 'hmdrysr/sitainge', CACHE_KEY = 'sitainge-dictionary-v1', PAGE = 60;
   const view = document.getElementById('view'), statusEl = document.getElementById('status');
   const S = { index: null, q: '', dir: 'en', letter: '', kind: '', level: '', pos: '', source: '', shown: PAGE, built: '', live: false };
-  let audio = null, iconsTried = false;
+  let audio = null;
 
   /* ---------- tiny DOM helper ---------- */
   function h(tag, attrs, kids) {
@@ -20,7 +20,7 @@
   const fold = (s) => D.fold(s);
 
   /* ---------- data ---------- */
-  const when = (iso) => { try { return new Date(iso).toLocaleString('en-CA', { dateStyle: 'medium', timeStyle: 'short' }); } catch (e) { return iso; } };
+  const when = (iso) => { try { return new Date(iso).toLocaleString('en-CA', { dateStyle: 'long', timeStyle: 'short' }); } catch (e) { return iso; } };
   function setStatus(msg) { statusEl.textContent = msg; }
   function load(data, live) {
     const entries = (data.entries || []).filter((e) => e && e.state !== 'ARCHIVED');
@@ -44,11 +44,11 @@
   async function start() {
     let first = readCache(), from = 'saved';
     if (!first) { try { first = await seed(); from = 'seed'; } catch (e) { first = null; } }
-    if (first) { load(first, false); statusFor(from, first); } else { S.index = D.buildIndex([]); setStatus('No data could be loaded yet.'); }
+    if (first) { load(first, false); statusFor(from, first); } else { S.index = D.buildIndex([]); setStatus('No data could be loaded.'); }
     route();
     try {
       const d = await live(); writeCache(d); load(d, true);
-      setStatus('Live from GitHub, updated ' + when(d.fetchedAt) + (d.partial ? ' (some files could not be read)' : '') + '.');
+      setStatus('Read from GitHub on ' + when(d.fetchedAt) + (d.partial ? ' (some files could not be read)' : '') + '.');
       const had = document.activeElement && document.activeElement.id === 'q'; route(true); if (had && document.getElementById('q')) document.getElementById('q').focus();
     } catch (e) {
       if (first) statusFor(from, first, true);
@@ -56,7 +56,7 @@
   }
   function statusFor(from, d, failed) {
     const t = d.fetchedAt || d.builtAt;
-    setStatus('Offline copy from ' + when(t) + (from === 'saved' ? ' (last live read)' : ' (bundled with the site)') + (failed ? '. GitHub could not be reached just now.' : '. Checking GitHub…'));
+    setStatus('Showing ' + (from === 'saved' ? 'a saved copy from ' : 'the copy bundled with the site, dated ') + when(t) + (failed ? '. GitHub could not be reached.' : '. Checking GitHub…'));
   }
 
   /* ---------- helpers ---------- */
@@ -65,15 +65,15 @@
   const head = (e, dir) => (dir === 'en' ? e.gloss : (e.spellings[0] || e.form));
   const letterOf = (e, dir) => { const m = fold(head(e, dir)).match(/[a-z]/); return m ? m[0].toUpperCase() : '#'; };
   const LEVELS = {
-    A: 'Level A: strongest support the project records',
-    B: 'Level B: well supported',
-    C: 'Level C: some support',
-    D: 'Level D: weak support',
-    E: 'Level E: very weak support',
-    unassessed: 'Unassessed: nobody has checked this yet'
+    A: 'Level A: directly documented',
+    B: 'Level B: independently confirmed',
+    C: 'Level C: strongly supported, needs further confirmation',
+    D: 'Level D: proposed',
+    E: 'Level E: unknown',
+    unassessed: 'Unassessed: not yet checked'
   };
   const levelText = (l) => LEVELS[l] || ('Level ' + l);
-  function tier(e) { return e._trust >= 6 ? ['high', 'Better supported, still open to correction'] : e._trust >= 2 ? ['mid', 'Some support'] : ['low', 'Unverified']; }
+  function tier(e) { return e._trust >= 6 ? ['high', 'Higher support; open to correction'] : e._trust >= 2 ? ['mid', 'Some support'] : ['low', 'Unverified']; }
   const kindText = (k) => ({ word: 'word', sentence: 'sentence', text: 'text' }[k] || k);
 
   function facets() {
@@ -95,9 +95,9 @@
   /* ---------- list view ---------- */
   function listView() {
     const f = facets();
-    const input = h('input', { type: 'search', id: 'q', class: 'search', placeholder: 'Search English, siṭaiṅga spelling, or IPA', 'aria-label': 'Search the dictionary by English, siṭaiṅga spelling, or IPA', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'search', value: S.q });
+    const input = h('input', { type: 'search', id: 'q', class: 'search', placeholder: 'Search by English word, spelling or IPA', 'aria-label': 'Search the dictionary by English word, siṭaiṅga spelling or IPA', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', enterkeyhint: 'search', value: S.q });
     input.addEventListener('input', () => { S.q = input.value; S.letter = ''; S.shown = PAGE; results(); });
-    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Direction' }, [['en', 'English → siṭaiṅga'], ['sit', 'siṭaiṅga → English']].map(([d, t]) =>
+    const seg = h('div', { class: 'seg', role: 'group', 'aria-label': 'Search direction' }, [['en', 'English → siṭaiṅga'], ['sit', 'siṭaiṅga → English']].map(([d, t]) =>
       h('button', { type: 'button', 'aria-pressed': S.dir === d ? 'true' : 'false', text: t, onclick: (ev) => { S.dir = d; S.letter = ''; S.shown = PAGE; seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b === ev.currentTarget ? 'true' : 'false')); results(); } })));
     const sel = (key, label, opts, fmt) => {
       const s = h('select', { id: 'f-' + key }, [h('option', { value: '', text: 'All' })].concat(opts.map((o) => h('option', { value: o, text: fmt ? fmt(o) : o }))));
@@ -112,8 +112,8 @@
       f.source.size ? sel('source', 'Source', Array.from(f.source).sort()) : null
     ]);
     view.replaceChildren(
-      h('h1', { text: 'siṭaiṅga Dictionary' }),
-      h('p', { class: 'lede', text: 'Words and sentences of siṭaiṅga (Chittagonian), as people have recorded them. Each entry shows how well supported it is.' }),
+      h('h1', { text: 'Dictionary' }),
+      h('p', { class: 'lede', text: 'Words and sentences of siṭaiṅga (Chittagonian) as recorded by contributors. Each entry shows its level of support.' }),
       h('form', { role: 'search', onsubmit: (e) => e.preventDefault() }, [input]),
       h('div', { class: 'row' }, [seg]), filters,
       h('div', { id: 'az', class: 'az', role: 'group', 'aria-label': 'Jump to letter' }),
@@ -130,11 +130,12 @@
       az.appendChild(h('button', { type: 'button', text: L, disabled: !have.has(L), 'aria-pressed': S.letter === L ? 'true' : 'false', 'aria-label': L === '#' ? 'Other characters' : 'Letter ' + L, onclick: () => { S.letter = S.letter === L ? '' : L; S.shown = PAGE; results(); } }));
     });
     const total = S.index.all.length;
-    document.getElementById('count').textContent = list.length === total ? total + ' entries' : list.length + ' of ' + total + ' entries';
+    const nf = (n) => n.toLocaleString('en-CA'), ent = (n) => nf(n) + (n === 1 ? ' entry' : ' entries');
+    document.getElementById('count').textContent = list.length === total ? ent(total) : nf(list.length) + ' of ' + ent(total);
     if (!list.length) {
       out.replaceChildren(h('div', { class: 'empty' }, [
-        h('p', { text: total ? 'Nothing matches that. The dictionary only holds what people have recorded, so a missing word means it has not been added, not that it does not exist.' : 'There are no entries to show yet.' }),
-        h('p', {}, [h('a', { href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Word request: ' + S.q) + '&body=' + encodeURIComponent('I looked for "' + S.q + '" and did not find it.\n'), rel: 'noopener', text: 'Ask for it on GitHub' })])]));
+        h('p', { text: !total ? 'No entries have been loaded.' : S.q.trim() ? 'No results for "' + S.q.trim() + '". Check the spelling or try a shorter search. The dictionary holds only what contributors have recorded, so a missing word has not been added yet.' : 'No entries match these filters. Clear a filter to see more entries.' }),
+        S.q.trim() ? h('p', {}, [h('a', { href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Word request: ' + S.q) + '&body=' + encodeURIComponent('I looked for "' + S.q + '" and did not find it.\n'), rel: 'noopener', text: 'Request this word on GitHub' })]) : null]));
       return;
     }
     const ul = h('ul', { class: 'list' }, list.slice(0, S.shown).map((e) => {
@@ -144,7 +145,7 @@
       return h('li', {}, [h('a', { href: '#/e/' + encodeURIComponent(e.id) }, [hw, document.createTextNode(' · '), sec, h('span', { class: 'mini', text: e.level === 'unassessed' ? 'unassessed' : 'level ' + e.level }), e.kind !== 'word' ? h('span', { class: 'mini', text: kindText(e.kind) }) : null])]);
     }));
     out.replaceChildren(ul);
-    if (list.length > S.shown) out.appendChild(h('p', { class: 'more' }, [h('button', { type: 'button', class: 'btn alt', text: 'Show more (' + (list.length - S.shown) + ' left)', onclick: () => { S.shown += PAGE; results(); } })]));
+    if (list.length > S.shown) out.appendChild(h('p', { class: 'more' }, [h('button', { type: 'button', class: 'btn alt', text: 'Show more (' + (list.length - S.shown).toLocaleString('en-CA') + ' remaining)', onclick: () => { S.shown += PAGE; results(); } })]));
   }
 
   /* ---------- entry view ---------- */
@@ -152,11 +153,11 @@
   function entryView(id) {
     const e = S.index.byId.get(id);
     const back = h('a', { href: '#/', class: 'back', text: '← All entries' });
-    if (!e) { view.replaceChildren(back, h('div', { class: 'empty' }, [h('h1', { text: 'Entry not found' }), h('p', { text: 'No entry has the id ' + id + ' in the data loaded now. It may have been renamed, archived, or not yet published.' })])); return; }
+    if (!e) { view.replaceChildren(back, h('div', { class: 'empty' }, [h('h1', { text: 'Entry not found' }), h('p', { text: 'No entry with the identifier ' + id + ' is in the data currently loaded. It may have been renamed, archived or not yet published.' })])); return; }
     const [tcls, ttxt] = tier(e), p = e._pron;
-    const dl = h('dl');
+    const dl = h('dl', { class: 'facts' });
     row(dl, 'Spellings', e.spellings.length > 1 ? e.spellings.join(' · ') : e.spellings[0]);
-    row(dl, 'IPA', e.ipa ? [h('span', { class: 'ipa', text: e.ipa }), ' (' + (e.ipaStatus || 'status unknown') + (e.ipaSource ? '; source: ' + e.ipaSource : '') + ')'] : 'None recorded yet.');
+    row(dl, 'IPA', e.ipa ? [h('span', { class: 'ipa', text: e.ipa }), ' (' + (e.ipaStatus || 'status unknown') + (e.ipaSource ? '; source: ' + e.ipaSource : '') + ')'] : 'None recorded.');
     row(dl, 'Meaning', e.gloss);
     row(dl, 'Part of speech', e.pos);
     row(dl, 'Form note', e.formNote);
@@ -167,51 +168,42 @@
     row(dl, 'Source', e.source || 'Not recorded.');
     row(dl, 'Record', e.id + ' (' + e.state.toLowerCase() + ', ' + kindText(e.kind) + ')');
     row(dl, 'Notes', e.notes);
-    if (e.ai) row(dl, 'AI help', 'AI was involved in preparing this record. That is not evidence for it.');
+    if (e.ai) row(dl, 'AI help', 'AI assisted in preparing this record. AI output is not counted as evidence.');
 
     const hearMsg = h('p', { class: 'note', role: 'status', 'aria-live': 'polite' });
     let hearNote;
-    if (e.recording) hearNote = 'A recording is listed for this record, but this page cannot play it yet.';
-    else if (p.how === 'ipa') hearNote = 'No recording of a speaker exists yet. This plays a computer voice reading the supplied IPA. It is an approximation and may sound wrong.';
-    else if (p.how === 'reading') hearNote = 'No recording and no IPA exist yet. This plays a computer reading of the spelling, with the usual sounds of Latin letters. It is only a rough guide and is not evidence of how a speaker says it.';
-    else hearNote = 'This cannot be played: ' + p.status + '.';
+    if (e.recording) hearNote = 'A recording is listed for this record. This page cannot yet play it.';
+    else if (p.how === 'ipa') hearNote = 'No speaker recording exists for this entry. The button plays a computer voice reading the IPA. It is an approximation and may sound incorrect.';
+    else if (p.how === 'reading') hearNote = 'No recording or IPA exists for this entry. The button plays a computer voice reading the spelling with the usual sounds of Latin letters. It is a rough guide, not evidence of how a speaker says the word.';
+    else hearNote = 'Audio is unavailable: ' + p.status + '.';
     hearMsg.textContent = hearNote;
-    const hear = h('button', { type: 'button', class: 'btn', disabled: p.how === 'none' || !window.DadiAudio, text: 'Hear it (approximate)', onclick: async () => {
+    const hear = h('button', { type: 'button', class: 'btn primary', disabled: p.how === 'none' || !window.DadiAudio, text: 'Play approximate sound', onclick: async () => {
       if (!audio) audio = window.DadiAudio.create({ settings: () => ({ engine: 'auto' }) });
       hear.disabled = true; const r = await audio.play(p.ipa); hear.disabled = false;
-      hearMsg.textContent = hearNote + (r && r.ok ? ' Played with ' + (r.how === 'device' ? 'your device voice' : 'the built-in synthesizer') + '.' : ' Could not play: ' + ((r && r.reason) || 'unknown reason') + '.');
+      hearMsg.textContent = hearNote + (r && r.ok ? ' Played with ' + (r.how === 'device' ? 'the device voice' : 'the built-in synthesizer') + '.' : ' Playback failed: ' + ((r && r.reason) || 'unknown reason') + '.');
     } });
 
-    const pic = h('div', { class: 'pic', 'aria-hidden': 'true' });
     const hd = e.spellings[0] || e.form;
     const body = 'Entry: ' + e.id + '\nRecord file: ' + (e.path || 'unknown') + '\nShown as: ' + hd + ' = ' + e.gloss + '\n\nWhat should change, and how do you know (for example, you speak it, or a source says so)?\n';
     const related = relatedTo(e);
     view.replaceChildren(back, h('article', { class: 'entry' }, [
-      pic, h('h1', { text: hd }), h('p', { class: 'lede', text: e.gloss }), dl,
+      h('h1', { text: hd }), h('p', { class: 'lede', text: e.gloss }), dl,
       h('div', { class: 'actions' }, [hear,
         h('a', { class: 'btn alt', rel: 'noopener', href: 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Correction: ' + e.id + ' ' + hd) + '&body=' + encodeURIComponent(body), text: 'Suggest a correction' }),
         e.path ? h('a', { class: 'btn alt', rel: 'noopener', href: 'https://github.com/' + REPO + '/edit/main/' + e.path, text: 'Edit this record on GitHub' }) : null]),
       hearMsg,
       related.length ? h('section', {}, [h('h2', { text: 'Related entries' }), h('ul', { class: 'list' }, related.map((r) => h('li', {}, [h('a', { href: '#/e/' + encodeURIComponent(r.id) }, [h('span', { class: 'hw', text: r.spellings[0] || r.form }), document.createTextNode(' · '), h('span', { class: 'gl', text: r.gloss })])])))]) : null]));
-    document.title = hd + ' · siṭaiṅga Dictionary';
-    addPicture(pic, e.gloss);
+    document.title = hd + ' · Dictionary · siṭaiṅge';
   }
   function relatedTo(e) {
     if (!e._gk.length) return [];
     return S.index.all.filter((o) => o.id !== e.id && o._gk.some((k) => e._gk.indexOf(k) >= 0)).slice(0, 8);
   }
-  async function addPicture(box, gloss) {
-    const DI = window.DadiIcons; if (!DI) return;
-    if (!DI.ready && !iconsTried) { iconsTried = true; await DI.load('../dadi/data/icons.json'); }
-    const svg = /^[A-Za-z]+$/.test(gloss.trim()) ? DI.find(gloss) : null; /* only single-word glosses: looser matches mislead */
-    if (svg && box.isConnected) box.innerHTML = svg; /* bundled Fluent Emoji (MIT); a loose keyword match, so it is decorative only */
-  }
-
   /* ---------- router ---------- */
   function route(keepScroll) {
     if (!S.index) return;
     const m = location.hash.match(/^#\/e\/(.+)$/);
-    document.title = 'siṭaiṅga Dictionary';
+    document.title = 'Dictionary · siṭaiṅge';
     if (audio) audio.stop();
     if (m) { let id; try { id = decodeURIComponent(m[1]); } catch (e) { id = m[1]; } entryView(id); if (!keepScroll) window.scrollTo(0, 0); }
     else listView();

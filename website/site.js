@@ -1,5 +1,5 @@
-/* siṭaiṅga project site script (CC0). Everything shown is read from the repository's files (raw.githubusercontent.com), with a saved copy and a bundled copy as fallbacks.
-   Fix a record by editing the file in the repository; this page does not need to change. No tracking, no third-party scripts. */
+/* siṭaiṅge project site script (CC0). Everything shown is read from the repository's files (raw.githubusercontent.com), with a saved copy and a bundled copy as fallbacks.
+   A record is corrected by editing its file in the repository; this page does not need to change. No tracking, no third-party scripts. */
 (function () {
   'use strict';
   const REPO = 'hmdrysr/sitainge', BRANCH = 'main';
@@ -8,6 +8,7 @@
   const NS = 'http://www.w3.org/2000/svg';
   const sv = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
   const num = (n) => (n == null ? 'not known' : new Intl.NumberFormat('en-CA').format(n));
+  const dateLong = (d) => new Date(d).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
   const srcLinks = (s) => [].concat(s || []).map((u, i) => h('a', { href: u, rel: 'noopener noreferrer' }, '[' + (i + 1) + ']'));
   let liveCount = 0, totalCount = 0;
 
@@ -23,7 +24,7 @@
   function liveNote() {
     const n = $('live-note'); if (!n) return;
     const on = liveCount > 0; n.classList.toggle('on', on);
-    n.textContent = on ? 'Read live from the repository on ' + new Date().toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' }) + '. Edit a file there and this page follows.' : 'The repository could not be reached, so this page shows its saved copy.';
+    n.textContent = on ? 'Figures read from the repository on ' + dateLong(Date.now()) + '. The page follows the files there.' : 'The repository could not be reached. This page shows its saved copy.';
   }
 
   /* ---------- numbers and evidence ---------- */
@@ -50,22 +51,22 @@
     const ol = $('changes'); ol.textContent = '';
     list.slice(0, 8).forEach((c) => {
       const msg = (c.commit.message || '').split('\n')[0].slice(0, 110);
-      ol.append(h('li', null, h('a', { href: c.html_url, rel: 'noopener noreferrer' }, msg), h('span', { class: 'when' }, new Date(c.commit.author.date).toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' }))));
+      ol.append(h('li', null, h('a', { href: c.html_url, rel: 'noopener noreferrer' }, msg), h('span', { class: 'when' }, dateLong(c.commit.author.date))));
     });
-    if (!list.length) ol.append(h('li', { class: 'small' }, 'No commits yet.'));
+    if (!list.length) ol.append(h('li', { class: 'small' }, 'No commits have been recorded.'));
   }
   async function loadChanges() {
     const key = 'site.cache.commits';
     try { const r = await fetch('https://api.github.com/repos/' + REPO + '/commits?per_page=8', { headers: { Accept: 'application/vnd.github+json' } }); if (!r.ok) throw new Error('HTTP ' + r.status); const j = await r.json(); try { localStorage.setItem(key, JSON.stringify(j)); } catch (e) { /* ignore */ } return changes(j); } catch (e) { /* cached */ }
     try { const c = JSON.parse(localStorage.getItem(key) || 'null'); if (c) return changes(c); } catch (e) { /* none */ }
-    $('changes').textContent = ''; $('changes').append(h('li', { class: 'small' }, 'GitHub did not answer. See the history on GitHub.'));
+    $('changes').textContent = ''; $('changes').append(h('li', { class: 'small' }, 'GitHub did not respond. The full history is on GitHub.'));
   }
 
   /* ---------- text from facts.json ---------- */
   function drawText(f) {
     $('timeline').append(...f.timeline.map((t) => h('li', null, h('b', null, t.when), t.text + ' ', srcLinks(t.source))));
     $('facts').append(...f.facts.map((x) => h('li', null, x.text + ' ', srcLinks(x.source))));
-    $('naming').append(h('p', null, h('b', null, 'A note on the name')), h('p', null, f.naming.text + ' '), h('p', { class: 'small' }, 'Sources ', srcLinks(f.naming.sources)));
+    $('naming').append(h('p', null, h('b', null, 'Note on the spelling Chittagong')), h('p', null, f.naming.text + ' '), h('p', { class: 'small' }, 'Sources: ', srcLinks(f.naming.sources)));
   }
 
   /* ---------- map ---------- */
@@ -122,7 +123,7 @@
     const dl = (rows) => h('dl', null, rows.filter((r) => r[1] != null && r[1] !== '').map(([a, b]) => [h('dt', null, a), h('dd', null, b)]));
     const sources = (ids) => h('p', { class: 'small' }, 'Sources: ', (ids || []).map((id, i) => srcById[id] ? [i ? ', ' : '', h('a', { href: srcById[id].url, rel: 'noopener noreferrer' }, srcById[id].title)] : null));
     const caveats = (arr) => (arr && arr.length ? arr.map((t) => h('p', { class: 'caveat' }, t)) : null);
-    const editNote = h('p', { class: 'small' }, 'Something wrong? Correct ', h('a', { href: 'https://github.com/' + REPO + '/blob/' + BRANCH + '/website/data/admin.json', rel: 'noopener noreferrer' }, 'the data file'), ' on GitHub, or open an issue.');
+    const editNote = h('p', { class: 'small' }, 'To report an error, edit ', h('a', { href: 'https://github.com/' + REPO + '/blob/' + BRANCH + '/website/data/admin.json', rel: 'noopener noreferrer' }, 'the data file'), ' on GitHub or open an issue.');
 
     function crumbs() {
       const c = $('crumbs'); c.textContent = '';
@@ -138,10 +139,10 @@
     function panel() {
       const p = $('panel'); p.textContent = ''; p.scrollTop = 0;
       if (sel.level === 'home') {
-        put(p, h('h3', null, 'Chittagong and Cox\'s Bazar'), h('p', { class: 'sub' }, 'The two districts where siṭaiṅga is the everyday language.'),
+        put(p, h('h3', null, 'Chittagong and Cox\'s Bazar'), h('p', { class: 'sub' }, 'The two districts that make up the project\'s region.'),
           dl([['Districts', '2'], ['Upazilas', String(adm.regions.reduce((n, r) => n + r.upazilas.length, 0))], ['Unions', String(adm.regions.reduce((n, r) => n + r.upazilas.reduce((m, u) => m + (u.union_count || (u.unions || []).length), 0), 0))], ['Population (2022)', num(adm.regions.reduce((n, r) => n + (r.population_2022 || 0), 0))]]),
-          h('h4', null, 'Choose a district'), h('ul', { class: 'pills' }, adm.regions.map((r) => pill(r.name, () => pick({ level: 'district', name: r.name }), num(r.population_2022)))),
-          h('p', { class: 'small' }, 'The wider Chittagong Division is a government grouping of eleven districts. It is not the language\'s home region, so it is not shown.'));
+          h('h4', null, 'Districts'), h('ul', { class: 'pills' }, adm.regions.map((r) => pill(r.name, () => pick({ level: 'district', name: r.name }), num(r.population_2022)))),
+          h('p', { class: 'small' }, 'Chittagong Division, a government grouping of 11 districts, is wider than the project\'s region and is not shown.'));
         return;
       }
       if (sel.level === 'district') {
@@ -161,14 +162,14 @@
           dl([['Population (2022)', num(u.population_2022)], ['Area', u.area_km2 ? num(Math.round(u.area_km2)) + ' km²' : (u.area_km2_candidates ? 'sources disagree: ' + u.area_km2_candidates.join(' or ') + ' km²' : null)], ['Unions', String(u.union_count || (u.unions || []).length)]]),
           (u.municipalities || []).length ? [h('h4', null, 'Municipalities'), h('ul', { class: 'pills' }, u.municipalities.map((m) => pill(m.name, null, m.wards ? m.wards + ' wards' : '')))] : null,
           h('h4', null, 'Unions'), h('ul', { class: 'pills' }, (u.unions || []).map((n) => pill(n, mkp['n:' + u.name + '/' + n] ? () => { pick({ level: 'union', name: n, upazila: u.name }); } : null))),
-          (u.police_stations || []).length ? [h('h4', null, 'Police stations'), h('ul', { class: 'pills' }, u.police_stations.map((s) => pill(s.name, null, s.basis === 'stated_current' ? '' : 'earlier record')))] : h('p', { class: 'small' }, 'No police station named in the sources used.'),
-          (u.post_offices || []).length ? [h('h4', null, 'Post offices (' + u.post_offices.length + ')'), h('ul', { class: 'pills' }, u.post_offices.map((o) => pill(o.name, null, o.postcode)))] : h('p', { class: 'small' }, 'No post offices listed in the dataset used.'),
+          (u.police_stations || []).length ? [h('h4', null, 'Police stations'), h('ul', { class: 'pills' }, u.police_stations.map((s) => pill(s.name, null, s.basis === 'stated_current' ? '' : 'earlier record')))] : h('p', { class: 'small' }, 'No police station is named in the sources used.'),
+          (u.post_offices || []).length ? [h('h4', null, 'Post offices (' + u.post_offices.length + ')'), h('ul', { class: 'pills' }, u.post_offices.map((o) => pill(o.name, null, o.postcode)))] : h('p', { class: 'small' }, 'No post offices are listed in the dataset used.'),
           caveats(u.notes), sources(u.sources), editNote);
         return;
       }
       if (sel.level === 'union') {
         const u = upz[sel.upazila];
-        put(p, h('h3', null, sel.name + ' Union'), h('p', { class: 'sub' }, sel.upazila + ' upazila, ' + u.district + ' District'), h('p', null, 'A union is the smallest rural unit of local government. Names follow English Wikipedia and the boundary file, so spellings can differ from local usage.'), editNote);
+        put(p, h('h3', null, sel.name + ' Union'), h('p', { class: 'sub' }, sel.upazila + ' upazila, ' + u.district + ' District'), h('p', null, 'A union is the smallest rural unit of local government. Names follow English Wikipedia and the boundary file, so spellings may differ from local usage.'), editNote);
         return;
       }
       if (sel.level === 'municipality') {
@@ -212,12 +213,12 @@
   /* ---------- videos, photos ---------- */
   function drawVideos(list) {
     const box = $('videos'); const ok = list.filter((v) => !['rejected', 'flagged', 'unavailable'].includes(v.status));
-    if (!ok.length) { box.append(h('p', null, 'No videos yet.')); return; }
+    if (!ok.length) { box.append(h('p', null, 'No videos have been added.')); return; }
     ok.forEach((v) => {
       const frame = h('div', { class: 'frame' });
-      const btn = h('button', { class: 'play', type: 'button', 'aria-label': 'Play: ' + v.label }, (() => { const s = sv('svg', { viewBox: '0 0 24 24', 'aria-hidden': 'true' }); s.append(sv('path', { d: 'M6 4l14 8-14 8z' })); return s; })());
+      const btn = h('button', { class: 'play', type: 'button', 'aria-label': 'Play: ' + v.label }, (() => { const s = h('span', { 'data-icon': 'play' }); return s; })());
       btn.addEventListener('click', () => { frame.textContent = ''; frame.append(h('iframe', { src: 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(v.id) + '?rel=0', title: v.label, loading: 'lazy', allow: 'encrypted-media; picture-in-picture', allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin' })); });
-      frame.append(btn);
+      frame.append(btn); if (window.SiteIcons) window.SiteIcons.draw(frame);
       const rep = 'https://github.com/' + REPO + '/issues/new?labels=video-report&title=' + encodeURIComponent('[Video report] ' + v.id) + '&body=' + encodeURIComponent('Video: https://www.youtube.com/watch?v=' + v.id + '\n\nWhat is wrong (low quality, wrong language, unsuitable, broken)?\n');
       box.append(h('article', { class: 'vid' }, frame, h('div', { class: 'meta' }, h('b', null, v.label), h('span', null, v.channel + (v.status === 'approved' ? '' : ' · awaiting review')), h('br'), h('a', { class: 'rep', href: rep, rel: 'noopener noreferrer' }, 'Report a problem'))));
     });
@@ -235,8 +236,8 @@
   const fail = (id, msg) => (e) => { const n = $(id); if (n && !n.childElementCount) n.textContent = msg; };
   Promise.all([repoJSON('website/dadi/data/seed.json', 'dadi/data/seed.json').then(stats).catch(fail('s-all', '–')),
     repoJSON('website/data/facts.json', 'data/facts.json').then(drawText).catch(() => {}),
-    Promise.all([repoJSON('website/data/admin.json', 'data/admin.json'), repoJSON('website/data/map-admin.json', 'data/map-admin.json')]).then(([a, m]) => atlas(a, m)).catch(fail('panel', 'The map could not load. Check your connection and refresh.')),
-    repoJSON('website/data/videos.json', 'data/videos.json').then(drawVideos).catch(fail('videos', 'Videos could not load.')),
+    Promise.all([repoJSON('website/data/admin.json', 'data/admin.json'), repoJSON('website/data/map-admin.json', 'data/map-admin.json')]).then(([a, m]) => atlas(a, m)).catch(fail('panel', 'The map could not be loaded. Check the connection and reload the page.')),
+    repoJSON('website/data/videos.json', 'data/videos.json').then(drawVideos).catch(fail('videos', 'The videos could not be loaded.')),
     repoJSON('website/data/media.json', 'data/media.json').then(drawGallery).catch(() => {})]).then(liveNote);
   loadChanges();
 })();

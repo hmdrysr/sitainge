@@ -50,7 +50,7 @@
       w('I am sorry.'),
       w('Thank you very much.'),
       w('Be quiet.', 'Telling a child'),
-      w('Tell us about an ordinary morning at home.', 'Write it exactly as you would say it. Several sentences are welcome.')] },
+      w('Describe an ordinary morning at home.', 'Write it exactly as you would say it. Several sentences are welcome.')] },
     { id: 'udhr', title: 'Optional: Article 1, Universal Declaration of Human Rights', kind: 'sentence', optional: true, items: [
       w('All human beings are born free and equal in dignity and rights.', 'Optional. Say it in your own way.'),
       w('They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.', 'Optional. Say it in your own way.')] }

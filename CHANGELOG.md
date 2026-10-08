@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unreleased
+- Copy rewritten in Canadian academic and professional English across the site, Dadi, extension and documentation (D-045). Project header reads siṭaiṅge.
+- One icon family, Tabler Icons; decorative illustration and `art.js` removed (D-046).
+- Dadi learning path redesigned from teaching research: theme units, retrieval-first lesson flow, honest progress (D-047).
+- Research documents added: teaching, documentation methodology, interface design, style guide, icon coverage.
+- Additive repository structure for sessions, recordings, speakers, sources, prompts and reports, with schemas, protocols and a coverage report (D-048).
 - Site redesign (D-039, D-040): journal-style landing page; live data from the repository; map of Chittagong and Cox's Bazar districts with unions, municipalities, City Corporation wards and metropolitan police areas.
 - Dictionary site, translator page and Chrome/Firefox extension (D-044).
 - Dadi: videos first, IPA chart, whole-word keyboard suggestions, picture icons, smoother device voice (D-041 to D-043).

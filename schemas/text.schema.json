@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Text record (sentence, narrative, proverb, song, place name, history)",
+  "description": "Field names original and english match what Dadi reads today. original holds the transcript, english the translation.",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "state",
+    "original",
+    "english",
+    "source",
+    "evidence_level",
+    "consent"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CTG-TXT-((RAW|REV|ACC|ARC)-)?[0-9]{5}$"
+    },
+    "kind": {
+      "enum": [
+        "word list",
+        "sentence",
+        "narrative",
+        "proverb",
+        "song",
+        "place name",
+        "history"
+      ]
+    },
+    "type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Legacy field Dadi reads; keep equal to kind until Dadi reads kind."
+    },
+    "state": {
+      "enum": [
+        "RAW",
+        "REVIEW",
+        "ACCEPTED",
+        "ARCHIVED"
+      ]
+    },
+    "original": {
+      "type": "string"
+    },
+    "english": {
+      "type": "string"
+    },
+    "gloss": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Interlinear gloss following the Leipzig Glossing Rules."
+    },
+    "recording_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^CTG-REC-[0-9]{5}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "speaker_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^CTG-SPK-[0-9]{5}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "session_id": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^CTG-SES-[0-9]{5}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source": {
+      "type": "string"
+    },
+    "evidence_level": {
+      "enum": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "unassessed"
+      ]
+    },
+    "consent": {
+      "enum": [
+        "public",
+        "research-only",
+        "restricted",
+        "private",
+        "withdrawn",
+        "permission pending"
+      ]
+    },
+    "ai_assisted": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

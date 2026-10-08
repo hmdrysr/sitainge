@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Documentation session record",
+  "description": "One record per session. Consent lives here and entries inherit it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "date",
+    "interviewer",
+    "place",
+    "style",
+    "device",
+    "consent",
+    "entry_consent",
+    "prompt_sets"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CTG-SES-[0-9]{5}$"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "interviewer": {
+      "type": "string",
+      "description": "Pseudonymous id or role, never a full name unless the person has agreed."
+    },
+    "place": {
+      "type": "object",
+      "description": "Public place at upazila level only. Finer locality stays private and out of Git.",
+      "required": [
+        "district",
+        "upazila"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "district": {
+          "type": "string"
+        },
+        "upazila": {
+          "type": "string"
+        }
+      }
+    },
+    "style": {
+      "enum": [
+        "wordlist",
+        "conversation",
+        "narrative",
+        "verification",
+        "other"
+      ]
+    },
+    "device": {
+      "type": "string",
+      "description": "For example: phone model class and microphone."
+    },
+    "speaker_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CTG-SPK-[0-9]{5}$"
+      }
+    },
+    "recording_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^CTG-REC-[0-9]{5}$"
+      }
+    },
+    "prompt_sets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Names of sets in prompts/, for example leipzig-jakarta-100."
+    },
+    "consent": {
+      "type": "object",
+      "description": "The five separate choices. See docs/protocols/consent-form.md.",
+      "additionalProperties": false,
+      "required": [
+        "record",
+        "research_archive",
+        "publish_cc0",
+        "credit",
+        "ai_processing"
+      ],
+      "properties": {
+        "record": {
+          "type": "boolean"
+        },
+        "research_archive": {
+          "type": "boolean"
+        },
+        "publish_cc0": {
+          "type": "boolean"
+        },
+        "credit": {
+          "enum": [
+            "named",
+            "pseudonymous"
+          ]
+        },
+        "ai_processing": {
+          "type": "boolean"
+        },
+        "oral_consent_recorded": {
+          "type": "boolean"
+        },
+        "guardian_consent_and_assent": {
+          "type": "boolean",
+          "description": "Required when the speaker is under 18."
+        }
+      }
+    },
+    "entry_consent": {
+      "enum": [
+        "public",
+        "research-only",
+        "restricted",
+        "private",
+        "withdrawn",
+        "permission pending"
+      ],
+      "description": "The consent value every record from this session inherits."
+    },
+    "withdrawn": {
+      "type": "boolean"
+    },
+    "withdrawn_on": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -48,6 +48,16 @@ for path in glob.glob("audio/catalogue/*.jsonl"):
         if r.get("consent") not in CONSENT | {"research-only"}: errors.append(f"{where} bad audio consent")
         if r.get("consent") != "public" and not str(r.get("file","")).startswith(("audio/staging/","audio/private/")):
             errors.append(f"{where} non-public audio must not be stored outside audio/staging or audio/private")
+# Additive checks (added 2026-10): newer record types, only when their files exist; folder/state mismatch is a warning.
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+try:
+    import newrecords
+    _e, _w, _counts, _ = newrecords.check_new_records(".")
+    errors += _e; warnings += _w + newrecords.folder_state_warnings(".")
+    for _k, _n in _counts.items(): print(f"{_n} {_k} records checked")
+except FileNotFoundError as _x:
+    errors.append(f"schema file missing for a new record type: {_x}")
 print(f"{len(aud_ids)} audio catalogue entries")
 print(f"{len(ids)} records checked; {len(errors)} errors; {len(warnings)} warnings")
 for m in errors: print("ERROR  ", m)

@@ -1,4 +1,4 @@
-/* Translator page logic (CC0). No inline script, no tracking. Text never leaves the browser. */
+/* Translator page logic (CC0). No inline script, no tracking. Typed text never leaves the browser. */
 (function () {
   'use strict';
   const D = window.DadiData, T = window.DadiTranslate, N = window.DadiNativeTTS, $ = (id) => document.getElementById(id);
@@ -18,11 +18,11 @@
   }
   async function init() {
     const c = store.get();
-    if (c && valid(c.g)) { setG(c.g, 'saved copy from ' + new Date(c.at).toLocaleDateString('en-CA')); }
+    if (c && valid(c.g)) { setG(c.g, 'saved copy from ' + new Date(c.at).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })); }
     else { try { const r = await tfetch(LOCAL); setG(await r.json(), 'bundled copy'); } catch (e) { setG({ items: [] }, 'no dictionary available'); } }
     if (c && Date.now() - c.at < HOUR) return;
     try { const g = await live(); store.set({ g, at: Date.now() }); setG(g, 'live from GitHub'); }
-    catch (e) { if (!c) { /* already on the bundled copy */ } $('src').textContent = $('src').textContent + ' (GitHub not reachable just now.)'; }
+    catch (e) { if (!c) { /* already on the bundled copy */ } $('src').textContent = $('src').textContent + ' GitHub could not be reached.'; }
   }
   function setG(g, from) { G = T.load(g); $('src').textContent = 'Dictionary: ' + G.size + ' meanings, ' + from + '.'; render(); }
 
@@ -37,30 +37,30 @@
       else { b.textContent = p.s; b.disabled = true; b.title = 'Not in the dictionary; stays in English'; }
       out.append(b);
     }
-    $('cov').textContent = r.words ? r.hits + ' of ' + r.words + ' words found (' + Math.round(r.coverage * 100) + '%), the rest stay in English' : 'Type something to begin.';
+    $('cov').textContent = r.words ? r.hits + ' of ' + r.words + ' words found (' + Math.round(r.coverage * 100) + '%). The rest remain in English.' : 'Enter text to see a draft.';
     $('detail').hidden = true;
     const miss = Array.from(new Set(r.parts.filter((p) => p.t === 'miss').map((p) => p.s.toLowerCase())));
     $('suggest').href = 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('Missing word' + (miss.length > 1 ? 's' : '') + ': ' + (miss.slice(0, 3).join(', ') || '')) +
-      '&body=' + encodeURIComponent('English words the translator page did not find:\n\n' + miss.map((w) => '- ' + w).join('\n') + '\n\nIf you know the siṭaiṅga word, please add how you say it, your region, and whether you are a native speaker. Do not paste anything private.');
+      '&body=' + encodeURIComponent('English words that the translator did not find:\n\n' + miss.map((w) => '- ' + w).join('\n') + '\n\nIf you know the word in siṭaiṅga, add how you say it, where you are from, and whether siṭaiṅga is your first language. Do not include private information.');
   }
   function show(b) {
     const d = $('detail'); d.textContent = ''; d.hidden = false;
     const s = document.createElement('strong'); s.textContent = b.textContent;
-    d.append(s, document.createTextNode(' ← English "' + b.dataset.o + '". Source entry ' + b.dataset.id + '. Evidence level: ' + b.dataset.l + (b.dataset.l === 'unassessed' ? ' (not yet assessed; treat as unverified).' : '.')));
+    d.append(s, document.createTextNode(' · English original: "' + b.dataset.o + '". Source entry: ' + b.dataset.id + '. Evidence level: ' + b.dataset.l + (b.dataset.l === 'unassessed' ? ' (not yet assessed; treat as unverified).' : '.')));
   }
   $('out').addEventListener('click', (e) => { const b = e.target.closest && e.target.closest('button.hit'); if (b) show(b); });
-  $('out').addEventListener('mouseover', (e) => { const b = e.target.closest && e.target.closest('button.hit'); if (b) b.title = 'English: ' + b.dataset.o + ' — evidence level ' + b.dataset.l; });
+  $('out').addEventListener('mouseover', (e) => { const b = e.target.closest && e.target.closest('button.hit'); if (b) b.title = 'English: ' + b.dataset.o + ', evidence level ' + b.dataset.l; });
   $('in').addEventListener('input', render);
 
   $('copy').onclick = async () => {
     if (!last) return; const t = T.plain(last);
-    try { await navigator.clipboard.writeText(t); $('copy').textContent = 'Copied'; } catch (e) { const r = document.createRange(); r.selectNodeContents($('out')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $('copy').textContent = 'Selected: press copy'; }
+    try { await navigator.clipboard.writeText(t); $('copy').textContent = 'Copied'; } catch (e) { const r = document.createRange(); r.selectNodeContents($('out')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); $('copy').textContent = 'Text selected; copy it manually'; }
     setTimeout(() => { $('copy').textContent = 'Copy'; }, 1800);
   };
   $('listen').onclick = async () => {
     const t = $('tts'); if (!last) return;
-    if (!N.supported() || !(await N.ready(1500))) { t.textContent = 'This device has no usable voice. Nothing was played.'; return; }
-    t.textContent = 'Playing through your device voice. It reads the spelling approximately; no device voice knows siṭaiṅga, so this is not a speaker.';
+    if (!N.supported() || !(await N.ready(1500))) { t.hidden = false; t.textContent = 'No voice is available on this device. Nothing was played.'; return; }
+    t.hidden = false; t.textContent = 'Playing with the device voice. As far as the project knows, no device voice supports siṭaiṅga, so the sound is an approximation and not a speaker\'s pronunciation.';
     for (const p of last.parts) { if (p.t !== 'hit') continue; const pr = D.pronunciation({ spellings: [p.out], form: p.out }); if (pr.complete && pr.ipa) { const r = await N.speak(pr.ipa, {}); if (!r.ok) { t.textContent = r.reason || 'Playback stopped.'; return; } } }
   };
 

@@ -1,13 +1,13 @@
-# Starter sources for Sitainge, in Source Submission issue format
+# Starter sources for siṭaiṅge, in Source Submission issue format
 
-Checked on 2026-10-07. Each block below matches the three fields of the repository's **Source Submission** form (`citation`, `supports`, `read`). Open Issues > New issue > Source Submission and paste each line into its field. The "Title" line is for the issue title.
+Checked on October 7, 2026. Each block below matches the three fields of the repository's **Source Submission** form (`citation`, `supports`, `read`). To submit a block, open Issues > New issue > Source Submission and paste each line into its field. The "Title" line is for the issue title.
 
-**How "read" was set:** it states what I actually opened.
-- **Yes** means I read the page itself.
-- **Partly** means I read an abstract, catalogue record or landing page, not the full work.
-- **No** means I only saw the bibliographic details through another source. Do not cite these until someone reads them.
+**How "read" was set:** it states what the compiler actually opened.
+- **Yes** means that the compiler read the page itself.
+- **Partly** means that the compiler read an abstract, catalogue record or landing page, not the full work.
+- **No** means that the compiler only saw the bibliographic details through another source. These sources are not to be cited until someone has read them.
 
-**Licensing warning (the repository is CC0):** do not copy text, word lists or datasets from CC BY, CC BY-SA or copyrighted sources into the repository. Cite them, use them as leads for elicitation, and ask permission before reusing content. Facts about a source (that it exists, what it covers) are fine to record.
+**Licensing warning (the repository is CC0):** text, word lists and datasets from CC BY, CC BY-SA or copyrighted sources must not be copied into the repository. They may be cited and used as leads for elicitation, and permission must be requested before any content is reused. Facts about a source (that it exists, what it covers) may be recorded.
 
 ---
 
@@ -17,15 +17,15 @@ Checked on 2026-10-07. Each block below matches the three fields of the reposito
 ```
 Title: Source: Ucida (Uchida) 1970, Der Bengali-Dialekt von Chittagong
 Citation: Ucida, Norihiko. 1970. Der Bengali-Dialekt von Chittagong: Grammatik, Texte, Wörterbuch. Wiesbaden: Harrassowitz. Bibliographic record: https://wals.info/refdb/record/Ucida-1970 (Wikipedia spells the surname "Učida".)
-What does it support?: Title says it contains a grammar, texts and a dictionary of the Chittagong dialect, in German. It is the only source WALS lists for Chittagonian. WALS uses it for two case-related datapoints. Candidate for the best single published description; not found online in my searches. Book not read; needs a library or archive copy.
+What does it support?: Title says it contains a grammar, texts and a dictionary of the Chittagong dialect, in German. It is the only source WALS lists for Chittagonian. WALS uses it for two case-related datapoints. It is a candidate for the best single published description, but searches did not find it online. The book was not read and needs a library or archive copy.
 Have you read it yourself?: No
 ```
 
 ### 2. Hoque 2015
 ```
 Title: Source: Hoque 2015, Chittagonian Variety: Dialect, Language, or Semi-Language?
-Citation: Hoque, Muhammad Azizul. 2015. Chittagonian Variety: Dialect, Language, or Semi-Language? CRP (International Islamic University Chittagong), vol. 12 (December), pp. 41-62, Article 3. ISSN 1813-7733. Handle: http://dspace.iiuc.ac.bd:8080/xmlui/handle/88203/58 (this link returned a 404 when I fetched it; the same record's metadata was visible at https://dspace.iiuc.ac.bd/signposting/describedby/9ae2a6be-a39c-48cb-bcff-a653985aed5b ; mirrors exist on ResearchGate and Academia.edu.)
-What does it support?: Argues Chittagonian is a language, not a Bangla dialect, citing a different sound system and mutual unintelligibility. Per mirror summaries it describes seven vowels and fricatives such as [x] and [f]. Its method is random sampling of newspapers, books and internet sources, so it is secondary, not fieldwork. Update the project's source register: the old handle URL is dead.
+Citation: Hoque, Muhammad Azizul. 2015. Chittagonian Variety: Dialect, Language, or Semi-Language? CRP (International Islamic University Chittagong), vol. 12 (December), pp. 41-62, Article 3. ISSN 1813-7733. Handle: http://dspace.iiuc.ac.bd:8080/xmlui/handle/88203/58 (this link returned a 404 when fetched; the same record's metadata was visible at https://dspace.iiuc.ac.bd/signposting/describedby/9ae2a6be-a39c-48cb-bcff-a653985aed5b ; mirrors exist on ResearchGate and Academia.edu.)
+What does it support?: Argues Chittagonian is a language, not a Bangla dialect, citing a different sound system and mutual unintelligibility. According to mirror summaries, it describes seven vowels and fricatives such as [x] and [f]. Its method is random sampling of newspapers, books and internet sources, so it is secondary, not fieldwork. The project's source register needs updating, because the old handle URL is dead.
 Have you read it yourself?: Partly
 ```
 
@@ -33,7 +33,7 @@ Have you read it yourself?: Partly
 ```
 Title: Source: Grierson 1903, Linguistic Survey of India, Vol. V (Chittagong)
 Citation: Grierson, G. A., ed. 1903. Linguistic Survey of India: Indo-Aryan Family, Eastern Group, Vol. V. Calcutta. Digital copy (DSAL, University of Chicago): https://dsal.uchicago.edu/books/lsi/lsi.php?volume=5-1&pages=463
-What does it support?: Early dialect survey. Glottolog cites it for comments on subclassification; Wikipedia says Grierson grouped the Chittagong dialects with Noakhali and Akyab under "Southeastern Bengali". Likely contains early specimens, which would be a primary-period source. Not confirmed: the viewer did not load for me.
+What does it support?: Early dialect survey. Glottolog cites it for comments on subclassification; Wikipedia says Grierson grouped the Chittagong dialects with Noakhali and Akyab under "Southeastern Bengali". Likely contains early specimens, which would be a primary-period source. Not confirmed: the viewer did not load.
 Have you read it yourself?: No
 ```
 
@@ -49,7 +49,7 @@ Have you read it yourself?: No
 ```
 Title: Source: Hai 1965, A study of Chittagong dialect
 Citation: Hai, Muhammad A. 1965. A study of Chittagong dialect. In Dil, Anwar S. (ed.), Studies in Pakistani Linguistics, pp. 17-38. Lahore: Linguistic Research Group of Pakistan.
-What does it support?: Cited by Wikipedia for Chittagonian phonetic and morphological properties absent from standard Bengali. Contents unknown to me; no online copy found. Needs a library search.
+What does it support?: Cited by Wikipedia for Chittagonian phonetic and morphological properties absent from standard Bengali. The contents are unknown, and no online copy was found. A library search is needed.
 Have you read it yourself?: No
 ```
 
@@ -100,8 +100,8 @@ Have you read it yourself?: Yes
 ### 11. Wikipedia (as a map to sources, not an authority)
 ```
 Title: Source note: Wikipedia, Chittagonian language
-Citation: "Chittagonian language." Wikipedia. https://en.wikipedia.org/wiki/Chittagonian_language (retrieved 2026-10-07)
-What does it support?: Not citable as evidence. Useful as a map: attributes its phoneme tables to Hai 1965 and Moniruzzaman 2007; lists seven oral and seven nasal vowels; gives 13 million speakers (2006) citing Ethnologue 25th ed., which I did not read; states broad mutual intelligibility with Rohingya; and carries the Omniglot UDHR sample. Every claim must be checked against its original.
+Citation: "Chittagonian language." Wikipedia. https://en.wikipedia.org/wiki/Chittagonian_language (retrieved October 7, 2026)
+What does it support?: Not citable as evidence. Useful as a map: attributes its phoneme tables to Hai 1965 and Moniruzzaman 2007; lists seven oral and seven nasal vowels; gives 13 million speakers (2006) citing Ethnologue 25th ed., which was not read; states broad mutual intelligibility with Rohingya; and carries the Omniglot UDHR sample. Every claim must be checked against its original.
 Have you read it yourself?: Yes
 ```
 
@@ -121,22 +121,22 @@ Have you read it yourself?: Partly
 ```
 Title: Source: Living Dictionaries, Chittagonian
 Citation: Living Tongues Institute for Endangered Languages. 2026. Chittagonian Living Dictionary. https://livingdictionaries.app/chittagonian
-What does it support?: Community dictionary with 32 entries when I checked (words with English and Bengali translations, audio from speakers, photos), for Chittagong. Lists names Chatgaiya, Chittainga, saṭgãia, siʈaiŋga. Small, but it has speaker audio, which is the project's priority. The site says to ask the dictionary's team before reusing content; attribution alone is not permission. Contributors and Grammar pages not read. The site uses Bengali glosses, which the project keeps to the Rosetta layer.
+What does it support?: Community dictionary with 32 entries when checked (words with English and Bengali translations, audio from speakers, photos), for Chittagong. Lists names Chatgaiya, Chittainga, saṭgãia, siʈaiŋga. Small, but it has speaker audio, which is the project's priority. The site says to ask the dictionary's team before reusing content; attribution alone is not permission. The Contributors and Grammar pages were not read. The site uses Bengali glosses, which the project keeps to the Rosetta layer.
 Have you read it yourself?: Partly
 ```
 
 ### 14. Omniglot
 ```
 Title: Source: Omniglot, Chittagonian language and alphabet
-Citation: Omniglot. Chittagonian (চিটাইঙ্গা) language and alphabet. https://omniglot.com/writing/chittagonian.htm (retrieved 2026-10-07; the site is copyrighted). Details supplied by Biswajit Mandal; recording of the sample by Syed Mohammad Moin Uddin; the current version credits alphabet details to Wolfram Siegel (PDF) and Biswajit Mandel.
-What does it support?: Alphabet charts for Bengali, and in the current version Latin and Arabic scripts, used for Chittagonian. These are a direct lead for Hamidian Script, since they show Latin conventions already in use. Also an Article 1 sample with a Latin transcription and a recording. Background claims on speakers and borrowing (Sanskrit, Arabic, Persian, Turkish, English, Portuguese) are unsourced there. Do not copy the charts or text into a CC0 repository.
+Citation: Omniglot. Chittagonian (চিটাইঙ্গা) language and alphabet. https://omniglot.com/writing/chittagonian.htm (retrieved October 7, 2026; the site is copyrighted). Details supplied by Biswajit Mandal; recording of the sample by Syed Mohammad Moin Uddin; the current version credits alphabet details to Wolfram Siegel (PDF) and Biswajit Mandel.
+What does it support?: Alphabet charts for Bengali, and in the current version Latin and Arabic scripts, used for Chittagonian. These are a direct lead for Hamidian Script, since they show Latin conventions already in use. Also an Article 1 sample with a Latin transcription and a recording. Background claims on speakers and borrowing (Sanskrit, Arabic, Persian, Turkish, English, Portuguese) are unsourced there. The charts and text must not be copied into a CC0 repository.
 Have you read it yourself?: Yes
 ```
 
 ### 15. Wikivoyage phrasebook
 ```
 Title: Source: Wikivoyage, Chittagonian phrasebook (lead only)
-Citation: Wikivoyage contributors. Chittagonian phrasebook. https://en.wikivoyage.org/wiki/Chittagonian_phrasebook (retrieved 2026-10-07; CC BY-SA, so it cannot be copied into a CC0 repository)
+Citation: Wikivoyage contributors. Chittagonian phrasebook. https://en.wikivoyage.org/wiki/Chittagonian_phrasebook (retrieved October 7, 2026; CC BY-SA, so it cannot be copied into a CC0 repository)
 What does it support?: Large unreviewed wiki phrasebook: greetings, numbers to crore, days, months, colours, directions, lodging, money, a word-by-word gloss of UDHR Article 1, a preverbal negation example and a nasalization example. Spelling is inconsistent within the page (for example Tñui / Tui / Tur for "you"). Similar forms appear there for several 2019 list items (I, you, your, name, good, forgive, brother-address). That is a cross-reference, not independent confirmation; the origin of its entries is unknown. Use its topic coverage to extend elicitation lists, not its forms.
 Have you read it yourself?: Yes
 ```
@@ -144,7 +144,7 @@ Have you read it yourself?: Yes
 ### 16. Global Recordings Network
 ```
 Title: Source: Global Recordings Network, Chittagonian audio
-Citation: Global Recordings Network. Chittagonian (ctg): https://globalrecordings.net/en/language/ctg ; "Bangla: Chittagonian" (GRN 3259): https://globalrecordings.net/en/language/3259 (retrieved 2026-10-07)
+Citation: Global Recordings Network. Chittagonian (ctg): https://globalrecordings.net/en/language/ctg ; "Bangla: Chittagonian" (GRN 3259): https://globalrecordings.net/en/language/3259 (retrieved October 7, 2026)
 What does it support?: Downloadable audio (Bible stories, "Good News", "Words of Life") and an audio drama titled "Jesus Story" listed in চাঁটগাঁইয়া বুলি. Jesus Film versions are listed as Chatgaya Chittagonian "Hindu", "Muslim" and "Common", which suggests community-labelled versions worth asking speakers about. Useful for listening checks. These are scripted religious translations, not conversation, and the reuse terms were not checked.
 Have you read it yourself?: Partly
 ```
@@ -153,7 +153,7 @@ Have you read it yourself?: Partly
 ```
 Title: Source: Meta-Wiki, Wikipedia Chittagonian language request
 Citation: Requests for new languages/Wikipedia Chittagonian. Meta-Wiki. https://meta.wikimedia.org/wiki/Requests_for_new_languages/Wikipedia_Chittagonian
-What does it support?: Records that a Chittagonian Wikipedia was judged eligible but did not meet approval criteria (a 2022 comment), that a test project existed on the Wikimedia Incubator, and that Chittagonian-speaking Wikimedia users exist. Possible community to invite as contributors. I could not open the Incubator project itself.
+What does it support?: Records that a Chittagonian Wikipedia was judged eligible but did not meet approval criteria (a 2022 comment), that a test project existed on the Wikimedia Incubator, and that Chittagonian-speaking Wikimedia users exist. Possible community to invite as contributors. The Incubator project itself could not be opened.
 Have you read it yourself?: Partly
 ```
 
@@ -165,14 +165,14 @@ Have you read it yourself?: Partly
 ```
 Title: Source: ChatgaiyyaAlap dataset (Data in Brief 2025)
 Citation: Remal, Deawan Rakin Ahamed; Noori, Sheak Rashed Haider; et al. (full author list not captured). 2025. ChatgaiyyaAlap: A dataset for conversion from Chittagonian dialect to standard Bangla. Data in Brief. Data: https://data.mendeley.com/datasets/wtms9xbkkw (two different ScienceDirect article links appear on the university page; confirm the correct one).
-What does it support?: 4,012 standard-Bangla and Chittagonian sentence pairs and a 1,500-word dictionary. Five native speakers translated Bangla sentences gathered from social media. Because it is built from Bangla prompts, forms may lean toward Bangla, which the project's Bangla-exclusion policy treats as a risk. Written in Bengali script. A third-party dataset card lists CC BY 4.0; confirm on the Mendeley page. Use for comparison and elicitation leads; do not bulk-import.
+What does it support?: 4,012 standard-Bangla and Chittagonian sentence pairs and a 1,500-word dictionary. Five native speakers translated Bangla sentences gathered from social media. Because it is built from Bangla prompts, forms may lean toward Bangla, which the project's Bangla-exclusion policy treats as a risk. Written in Bengali script. A third-party dataset card lists CC BY 4.0; confirm on the Mendeley page. Use for comparison and elicitation leads; do not import in bulk.
 Have you read it yourself?: Partly
 ```
 
 ### 19. Kothon
 ```
 Title: Source: Kothon dataset (Mendeley Data, 2026)
-Citation: Kothon: A Large-Scale Dataset for Machine Translation of the Chittagonian and Sylheti Dialects into Standard Bangla. Mendeley Data, version 4, 8 May 2026. DOI 10.17632/2fv6vf9v2z.4. https://data.mendeley.com/datasets/2fv6vf9v2z/4 (authors not captured)
+Citation: Kothon: A Large-Scale Dataset for Machine Translation of the Chittagonian and Sylheti Dialects into Standard Bangla. Mendeley Data, version 4, May 8, 2026. DOI 10.17632/2fv6vf9v2z.4. https://data.mendeley.com/datasets/2fv6vf9v2z/4 (authors not captured)
 What does it support?: 8,000 Chittagonian sentences annotated by five native dialect speakers, with Standard Bangla sources taken from open resources, novels and existing datasets. Also includes a machine-translated English column, which is not evidence. Bangla-first method. Licence not checked.
 Have you read it yourself?: Partly
 ```
@@ -201,7 +201,7 @@ Have you read it yourself?: Partly
 ```
 Title: Source: OHCHR, UDHR in Rohingya (comparative, R0)
 Citation: Office of the United Nations High Commissioner for Human Rights. Universal Declaration of Human Rights in Rohingya language (PDF, Hanifi script). https://www.ohchr.org/sites/default/files/UDHR/Documents/UDHR_Translations/rhg.pdf
-What does it support?: A full Rohingya text of the UDHR for the comparative layer. This is R0 evidence (Rohingya only). It must not be treated as Chittagonian, and resemblance is not proof of a cognate. My searches did not find an OHCHR Chittagonian translation, though I did not browse the full OHCHR index.
+What does it support?: A full Rohingya text of the UDHR for the comparative layer. This is R0 evidence (Rohingya only). It must not be treated as Chittagonian, and resemblance is not proof of a cognate. Searches did not find an OHCHR Chittagonian translation, though the full OHCHR index was not browsed.
 Have you read it yourself?: Partly
 ```
 
@@ -217,7 +217,7 @@ Have you read it yourself?: Partly
 ```
 Title: Source: OLAC resources for Chittagonian (not yet opened)
 Citation: Open Language Archives Community. Resources in and about Chittagonian [ctg]. https://www.language-archives.org/language/ctg
-What does it support?: The central catalogue of deposited recordings, texts and lexicons for Chittagonian across archives. I could not open it (the site blocks automated access), so I do not know what it lists. Please open it in a browser and report what is there: it could reveal archived recordings.
+What does it support?: The central catalogue of deposited recordings, texts and lexicons for Chittagonian across archives. It could not be opened (the site blocks automated access), so its contents are unknown. Someone should open it in a browser and report what is there, because it could reveal archived recordings.
 Have you read it yourself?: No
 ```
 
@@ -229,10 +229,10 @@ Have you read it yourself?: No
 - **ChatgaiyyaBridge** (a Bangla-to-Chittagonian rule converter on Hugging Face): generates output from rules mined from other datasets. Its output is not independent evidence.
 - **Machine-translated English columns** in Kothon and similar datasets.
 
-## What I could not open
+## Pages that could not be opened
 
 OLAC page (blocked), the MCU thesis PDF (blocked), the DSAL Linguistic Survey viewer (did not render), the Wiktionary Chittagonian category and the Wikimedia Incubator test project (unreachable), and the IIUC handle URL (404).
 
-## One finding worth its own issue
+## A finding that warrants its own issue
 
-Three renderings of UDHR Article 1 now exist. Omniglot and Wikivoyage give versions that look closely related to each other (probably the same origin, so not independent). Your 2019 rendering shares only a few words with them (for example manush, azad, ar, bibek, ase) and differs in most of its wording. That makes the 2019 version potentially an independent rendering. Do not conclude anything; give all three to speakers and record which words and forms they recognize, region by region.
+Three renderings of UDHR Article 1 now exist. Omniglot and Wikivoyage give versions that look closely related to each other (probably the same origin, so not independent). The 2019 rendering shares only a few words with them (for example manush, azad, ar, bibek, ase) and differs in most of its wording. That makes the 2019 version potentially an independent rendering. No conclusion follows yet. All three renderings should go to speakers, and the words and forms that each speaker recognizes should be recorded, region by region.

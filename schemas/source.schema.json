@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Source register record",
+  "type": "object",
+  "required": [
+    "id",
+    "citation",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^SRC-[A-Z0-9-]+$"
+    },
+    "register_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Older register id such as S001."
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "citation": {
+      "type": "string"
+    },
+    "supports": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "read": {
+      "enum": [
+        "Yes",
+        "Partly",
+        "No",
+        null
+      ],
+      "description": "What was opened, as the original note states it."
+    },
+    "status": {
+      "enum": [
+        "checked",
+        "pointer, unchecked"
+      ],
+      "description": "A source is cited only when someone has actually checked it."
+    },
+    "checked_on": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "licence_note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "origin": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "File the record was seeded from."
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

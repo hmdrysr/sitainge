@@ -5,13 +5,13 @@
   "iso_639_3": "ctg",
   "glottocode": "chit1275",
   "speakers_text": "13 million or more",
-  "speakers_note": "Estimates run from 13 million (2006) to 16 million (2007); the sources do not agree, so the project says \"13 million or more\".",
+  "speakers_note": "Estimates run from 13 million (2006) to 16 million (2007). Because the sources disagree, the project states \"13 million or more\".",
   "speakers_sources": [
    "https://en.wikipedia.org/wiki/Chittagonian_language",
    "https://www.omniglot.com/writing/chittagonian.htm",
    "https://www.tbsnews.net/node/373636"
   ],
-  "status": "Not endangered; used for everyday communication, and on TV, radio and in songs.",
+  "status": "Not classed as endangered (Glottolog). Used in everyday communication, on television and radio, and in songs.",
   "status_source": "https://glottolog.org/resource/languoid/iso/ctg"
  },
  "city": {
@@ -23,7 +23,7 @@
  "timeline": [
   {
    "when": "Ancient",
-   "text": "The coast was part of the early kingdoms of Samatata and Harikela. Some accounts place the harbour on a 2nd-century map; that detail still needs a better source.",
+   "text": "The coast was part of the early kingdoms of Samatata and Harikela. Some accounts place the harbour on a map of the 2nd century; this detail still lacks a reliable source.",
    "source": "https://en.wikipedia.org/wiki/History_of_Chittagong"
   },
   {
@@ -33,12 +33,12 @@
   },
   {
    "when": "1340",
-   "text": "Sultan Fakhruddin Mubarak Shah of Sonargaon brought Chittagong into his sultanate. Sources use 1340 for the start of sultanate rule, not for the city's founding: the port was already trading for centuries.",
+   "text": "Sultan Fakhruddin Mubarak Shah of Sonargaon brought Chittagong into his sultanate. Sources use 1340 for the start of sultanate rule, not for the founding of the city, because the port had already traded for centuries.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   },
   {
    "when": "1500s",
-   "text": "A Portuguese settlement was allowed in 1528, the first European enclave in the region, and the port was known as Porto Grande.",
+   "text": "A Portuguese settlement was permitted in 1528, the first European enclave in the region. The port was known as Porto Grande.",
    "source": "https://en.wikipedia.org/wiki/History_of_Chittagong"
   },
   {
@@ -48,12 +48,12 @@
   },
   {
    "when": "1793 to 1947",
-   "text": "The East India Company took control in 1793. The railway arrived in 1865, and in 1928 the port was made a Major Port of British India.",
+   "text": "The East India Company took control in 1793. The railway arrived in 1865, and in 1928 the port became a Major Port of British India.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   },
   {
    "when": "2018",
-   "text": "On 2 April 2018 a government committee decided to change the official English spelling of the city and several other places. Many people in Chittagong objected: they spoke of lost tradition, confusion over certificates, and harm to trade with partners who know the port by its old name. The press reports of the time describe a committee decision and mention no public consultation or vote. This project writes Chittagong, the name its speakers use.",
+   "text": "On April 2, 2018, a government committee decided to change the official English spelling of the city and several other places. Many residents objected, citing loss of tradition, confusion over certificates and harm to trade with partners who know the port by its earlier name. Press reports of the time describe a committee decision and mention no public consultation or vote. This project writes Chittagong, the name its speakers use.",
    "source": [
     "https://www.dhakatribune.com/bangladesh/142256/mixed-reactions-as-govt-changes-english-spellings",
     "https://www.dhakatribune.com/bangladesh/nation/142669/locals-from-5-districts-irked-over-english"
@@ -61,12 +61,12 @@
   },
   {
    "when": "Today",
-   "text": "Chittagong is the country's busiest seaport and its second city, home to millions of people who speak siṭaiṅga every day.",
+   "text": "Chittagong is the country's busiest seaport and, according to the sources used here, its second city. Millions of people in the region are reported to speak siṭaiṅga every day.",
    "source": "https://en.wikipedia.org/wiki/Chittagong"
   }
  ],
  "port": {
-  "text": "The Port of Chittagong handles over 70 percent of the country's export and import trade, about 3.1 million containers (TEUs) in 2020-21.",
+  "text": "The Port of Chittagong handles more than 70 per cent of the country's export and import trade, about 3.1 million containers (TEUs) in 2020–21.",
   "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
  },
  "districts": [
@@ -237,7 +237,7 @@
     "13 city corporations (including Chittagong) and 330 municipalities."
    ]
   ],
-  "hill": "Rangamati, Bandarban and Khagrachhari have their own district councils, and a Regional Council made up of those councils was set up under the peace accord of 2 December 1997.",
+  "hill": "Rangamati, Bandarban and Khagrachhari have their own district councils. A Regional Council made up of those councils was set up under the peace accord of December 2, 1997.",
   "national": "Bangladesh is a unitary parliamentary republic with a single parliament, the Jatiya Sangsad, of 350 members.",
   "sources": [
    "https://en.wikipedia.org/wiki/Administrative_geography_of_Bangladesh",
@@ -247,7 +247,7 @@
  },
  "facts": [
   {
-   "text": "Cox's Bazar has a sea beach described as the longest natural unbroken one in the world; the same page gives its length as about 120 km in one place and 150 km in another.",
+   "text": "Cox's Bazar has a sea beach described as the longest unbroken natural beach in the world. The source gives its length as about 120 km in one place and 150 km in another.",
    "source": "https://en.wikipedia.org/wiki/Cox%27s_Bazar"
   },
   {
@@ -259,41 +259,41 @@
    "source": "https://en.wikipedia.org/wiki/Karnaphuli_River"
   },
   {
-   "text": "Kaptai Dam (1962) created Kaptai Lake, the largest artificial lake in Bangladesh; its hydroelectric station produces 230 MW.",
+   "text": "Kaptai Dam (1962) created Kaptai Lake, described as the largest artificial lake in Bangladesh. Its hydroelectric station has an output of 230 MW.",
    "source": [
     "https://en.wikipedia.org/wiki/Karnaphuli_River",
     "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
    ]
   },
   {
-   "text": "University of Chittagong was established on 18 November 1966 and its campus covers about 2,312 acres at Hathazari.",
+   "text": "University of Chittagong was established on November 18, 1966. Its campus at Hathazari covers about 936 hectares (2,312 acres).",
    "source": "https://en.wikipedia.org/wiki/University_of_Chittagong"
   },
   {
-   "text": "Mezban is a Chittagong feast and festival, celebrated as a festival since the late 1960s; the name comes from a Persian word meaning host; the traditional meal centres on rice and beef curry.",
+   "text": "Mezban is a Chittagong feast and festival, observed as a festival since the late 1960s. The name comes from a Persian word meaning \"host\". The traditional meal centres on rice and beef curry.",
    "source": "https://en.wikipedia.org/wiki/Mezban"
   },
   {
-   "text": "The port handles over 70 percent of the country's export-import trade, with about 3.1 million TEUs in 2020-21.",
+   "text": "The port handles more than 70 per cent of the country's export-import trade, about 3.1 million TEUs in 2020–21.",
    "source": "https://en.wikipedia.org/wiki/Port_of_Chittagong"
   },
   {
-   "text": "Keokradong in Bandarban District, at 986 m, is described as a highest peak of Bangladesh (the same page also names other claimants, so say 'among the highest').",
+   "text": "Keokradong, in Bandarban District, is 986 m high and is described as one of the highest peaks in Bangladesh. The source names other claimants for the highest point.",
    "source": "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
   },
   {
-   "text": "Saint Martin's Island, the country's southernmost part, is known locally as Narkel Dweep (Coconut Island) and is described as Bangladesh's only coral island.",
+   "text": "Saint Martin's Island, the southernmost part of the country, is known locally as Narkel Dweep (Coconut Island). It is described as Bangladesh's only coral island.",
    "source": "https://en.wikipedia.org/wiki/Saint_Martin%27s_Island"
   },
   {
-   "text": "The 2022 census lists 11 ethnic groups in the Chittagong Hill Tracts, including Chakma, Marma, Tripura, Mro and Tanchangya, and at least 11 distinct indigenous languages are cited.",
+   "text": "The 2022 census lists 11 ethnic groups in the Chittagong Hill Tracts, including Chakma, Marma, Tripura, Mro and Tanchangya. The source cites at least 11 distinct Indigenous languages.",
    "source": "https://en.wikipedia.org/wiki/Chittagong_Hill_Tracts"
   }
  ],
  "map_credit": "Boundaries: Bangladesh Bureau of Statistics via OCHA ROAP and geoBoundaries (CC BY 3.0 IGO), simplified.",
  "checked": "2026-10-08",
  "naming": {
-  "text": "The name Chittagong is used throughout this project. In April 2018 a government committee changed the official English spelling without, as far as the reports show, any public consultation or referendum, and many residents were unhappy about it. The people who live there, and who speak siṭaiṅga, were not asked.",
+  "text": "This project writes Chittagong throughout. In April 2018 a government committee changed the official English spelling. The press reports reviewed mention no public consultation or referendum, and many residents objected. As far as these reports show, speakers of siṭaiṅga in the city were not consulted.",
   "sources": [
    "https://www.dhakatribune.com/bangladesh/142256/mixed-reactions-as-govt-changes-english-spellings",
    "https://www.dhakatribune.com/bangladesh/nation/142669/locals-from-5-districts-irked-over-english"

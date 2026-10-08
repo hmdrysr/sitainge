@@ -1,7 +1,7 @@
-# Evidence Policy
+# Evidence policy
 
 ## Never invent
-Vocabulary, grammar, phonology, pronunciation, etymology, history, speaker numbers, dialect boundaries, quotations, citations, page numbers, recordings, testimony, translations, examples or community consensus.
+The project does not invent any of the following: vocabulary, grammar, phonology, pronunciation, etymology, history, speaker numbers, dialect boundaries, quotations, citations, page numbers, recordings, testimony, translations, examples or community consensus.
 
 Status words: **Unknown.** / **Proposed.** / **Needs native-speaker verification.**
 
@@ -15,7 +15,7 @@ Status words: **Unknown.** / **Proposed.** / **Needs native-speaker verification
 | D | Proposed: hypothesis, reconstruction or analytical proposal |
 | E | Unknown: insufficient evidence |
 
-D and E are never presented as established fact. RAW records carry `unassessed` until they enter review.
+Levels D and E are never presented as established fact. RAW records carry `unassessed` until they enter review.
 
 ## Source hierarchy
 1. Direct native-speaker recordings
@@ -29,16 +29,16 @@ D and E are never presented as established fact. RAW records carry `unassessed` 
 9. General linguistic theory (never overrides Chittagonian evidence)
 
 ## Citation rule
-No source is cited unless someone has actually checked it. Unchecked pointers go in the source register marked `pointer, unchecked`.
+No source is cited unless someone has checked it. Unchecked pointers go in the source register, marked `pointer, unchecked`.
 
 ## Rohingya comparison levels
-R0 Rohingya only; R1 possible Chittagonian counterpart; R2 Chittagonian corpus evidence; R3 native-speaker confirmation; R4 repeated independent confirmation. Classify each relationship as cognate, shared inheritance, borrowing, regional sharing, parallel development, accidental resemblance or uncertain.
+The levels are R0 (Rohingya only), R1 (possible Chittagonian counterpart), R2 (Chittagonian corpus evidence), R3 (native-speaker confirmation) and R4 (repeated independent confirmation). Each relationship is classified as cognate, shared inheritance, borrowing, regional sharing, parallel development, accidental resemblance or uncertain.
 
 ## Bangla and Rohingya
-Neither is an authority over Chittagonian. A Bangla equivalent is never recorded as a Chittagonian form. Resemblance to a Rohingya word is never sufficient.
+Neither language is an authority over Chittagonian. A Bangla equivalent is never recorded as a Chittagonian form. Resemblance to a Rohingya word is never sufficient evidence.
 
 ## AI
-AI may suggest (transcription, duplicates, similarity, formatting, search). All AI output is `AI-assisted / unverified` until human review. An AI cannot turn its own output into a source. Absolute.
+AI may suggest transcriptions, duplicates, similarities, formatting and search results. All AI output is `AI-assisted / unverified` until a human reviews it. An AI cannot turn its own output into a source. This rule has no exceptions.
 
 ## No popularity voting
-Stars, likes and majority clicks are not evidence. Record speaker-by-speaker confirmation instead (A confirmed, B confirmed, C not recognized).
+Stars, likes and majority clicks are not evidence. The project records confirmation speaker by speaker instead (A confirmed, B confirmed, C not recognized).

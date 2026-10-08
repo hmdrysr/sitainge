@@ -1,0 +1,1143 @@
+{
+ "_note": "Theme units for Dadi lessons. Each item points to an existing entry by id (gloss is repeated only for readability). frequency_rank is hand-set by the developers from a judgement of everyday use, in the order shown; it is not taken from a corpus count and should be replaced when real frequency data exists. Entries are left out when they are long texts, blank templates, or near-duplicates of an entry already placed. No unit exists for body parts or family terms beyond those listed, because the word list has no such entries yet. Stage numbers follow docs/dadi/LEARNING_DESIGN.md section 2.",
+ "version": 1,
+ "frequency_rank_source": "hand-set",
+ "stages": {
+  "1": "Recognize words",
+  "2": "Recall words",
+  "3": "Use phrases",
+  "4": "Extend"
+ },
+ "units": [
+  {
+   "id": "greetings",
+   "title": "Greetings",
+   "stage": 1,
+   "icon": "mood-smile",
+   "pictures": false,
+   "summary": "Hello and how are you.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00114",
+     "gloss": "Hello.",
+     "frequency_rank": 1
+    },
+    {
+     "id": "CTG-LEX-RAW-00115",
+     "gloss": "How are you? (formal)",
+     "frequency_rank": 2
+    },
+    {
+     "id": "CTG-LEX-RAW-00116",
+     "gloss": "How are you? (informal)",
+     "frequency_rank": 3
+    },
+    {
+     "id": "CTG-LEX-RAW-00117",
+     "gloss": "How are you? (close friends, younger relatives)",
+     "frequency_rank": 4
+    },
+    {
+     "id": "CTG-LEX-RAW-00118",
+     "gloss": "(I'm) fine.",
+     "frequency_rank": 5
+    },
+    {
+     "id": "CTG-LEX-RAW-00119",
+     "gloss": "Good morning. (formal)",
+     "frequency_rank": 6
+    },
+    {
+     "id": "CTG-LEX-RAW-00120",
+     "gloss": "Good evening. (formal)",
+     "frequency_rank": 7
+    },
+    {
+     "id": "CTG-LEX-RAW-00121",
+     "gloss": "Good night. (highly formal)",
+     "frequency_rank": 8
+    }
+   ]
+  },
+  {
+   "id": "politeness",
+   "title": "Thanks and politeness",
+   "stage": 1,
+   "icon": "mood-happy",
+   "pictures": false,
+   "summary": "Thanks, apology, please and yes.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00025",
+     "gloss": "thank you",
+     "frequency_rank": 9
+    },
+    {
+     "id": "CTG-LEX-RAW-00129",
+     "gloss": "Thank you. (formal)",
+     "frequency_rank": 10
+    },
+    {
+     "id": "CTG-LEX-RAW-00026",
+     "gloss": "thanks",
+     "frequency_rank": 11
+    },
+    {
+     "id": "CTG-LEX-RAW-03021",
+     "gloss": "Thank You",
+     "frequency_rank": 12
+    },
+    {
+     "id": "CTG-LEX-RAW-00130",
+     "gloss": "You're welcome.",
+     "frequency_rank": 13
+    },
+    {
+     "id": "CTG-LEX-RAW-00024",
+     "gloss": "sorry",
+     "frequency_rank": 14
+    },
+    {
+     "id": "CTG-LEX-RAW-00022",
+     "gloss": "forgive",
+     "frequency_rank": 15
+    },
+    {
+     "id": "CTG-LEX-RAW-00128",
+     "gloss": "Please. (formal)",
+     "frequency_rank": 16
+    },
+    {
+     "id": "CTG-LEX-RAW-00131",
+     "gloss": "Yes.",
+     "frequency_rank": 17
+    }
+   ]
+  },
+  {
+   "id": "pronouns",
+   "title": "Pronouns",
+   "stage": 1,
+   "icon": "users",
+   "pictures": false,
+   "summary": "I, you, he, she, they and this.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00001",
+     "gloss": "I",
+     "frequency_rank": 18
+    },
+    {
+     "id": "CTG-LEX-RAW-00002",
+     "gloss": "me",
+     "frequency_rank": 19
+    },
+    {
+     "id": "CTG-LEX-RAW-00003",
+     "gloss": "my/mine",
+     "frequency_rank": 20
+    },
+    {
+     "id": "CTG-LEX-RAW-00006",
+     "gloss": "you",
+     "frequency_rank": 21
+    },
+    {
+     "id": "CTG-LEX-RAW-00007",
+     "gloss": "your",
+     "frequency_rank": 22
+    },
+    {
+     "id": "CTG-LEX-RAW-03027",
+     "gloss": "He",
+     "frequency_rank": 23
+    },
+    {
+     "id": "CTG-LEX-RAW-03029",
+     "gloss": "She",
+     "frequency_rank": 24
+    },
+    {
+     "id": "CTG-LEX-RAW-03022",
+     "gloss": "They",
+     "frequency_rank": 25
+    },
+    {
+     "id": "CTG-LEX-RAW-00032",
+     "gloss": "this (person or object)",
+     "frequency_rank": 26
+    },
+    {
+     "id": "CTG-LEX-RAW-00031",
+     "gloss": "I",
+     "frequency_rank": 27
+    }
+   ]
+  },
+  {
+   "id": "introductions",
+   "title": "Names and introductions",
+   "stage": 1,
+   "icon": "user",
+   "pictures": false,
+   "summary": "Asking and giving a name.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00008",
+     "gloss": "name",
+     "frequency_rank": 28
+    },
+    {
+     "id": "CTG-LEX-RAW-00122",
+     "gloss": "What is your name? (formal)",
+     "frequency_rank": 29
+    },
+    {
+     "id": "CTG-LEX-RAW-00123",
+     "gloss": "What is your name? (informal)",
+     "frequency_rank": 30
+    },
+    {
+     "id": "CTG-LEX-RAW-00124",
+     "gloss": "What is your name? (to a child)",
+     "frequency_rank": 31
+    },
+    {
+     "id": "CTG-LEX-RAW-03003",
+     "gloss": "What's your name",
+     "frequency_rank": 32
+    },
+    {
+     "id": "CTG-LEX-RAW-03004",
+     "gloss": "My name is Abul",
+     "frequency_rank": 33
+    },
+    {
+     "id": "CTG-LEX-RAW-00127",
+     "gloss": "Nice to meet you. (formal)",
+     "frequency_rank": 34
+    },
+    {
+     "id": "CTG-TXT-RAW-00002",
+     "gloss": "My name is Hamid.",
+     "frequency_rank": 35
+    }
+   ]
+  },
+  {
+   "id": "people",
+   "title": "People",
+   "stage": 1,
+   "icon": "users-group",
+   "pictures": true,
+   "summary": "Man, woman, boy, girl and brother.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00021",
+     "gloss": "person/human",
+     "frequency_rank": 36
+    },
+    {
+     "id": "CTG-LEX-RAW-00019",
+     "gloss": "man",
+     "frequency_rank": 37
+    },
+    {
+     "id": "CTG-LEX-RAW-00020",
+     "gloss": "woman",
+     "frequency_rank": 38
+    },
+    {
+     "id": "CTG-LEX-RAW-00017",
+     "gloss": "boy",
+     "frequency_rank": 39
+    },
+    {
+     "id": "CTG-LEX-RAW-00018",
+     "gloss": "girl",
+     "frequency_rank": 40
+    },
+    {
+     "id": "CTG-LEX-RAW-00028",
+     "gloss": "brother",
+     "frequency_rank": 41
+    },
+    {
+     "id": "CTG-LEX-RAW-00111",
+     "gloss": "MEN",
+     "frequency_rank": 42
+    },
+    {
+     "id": "CTG-LEX-RAW-00112",
+     "gloss": "WOMEN",
+     "frequency_rank": 43
+    }
+   ]
+  },
+  {
+   "id": "home",
+   "title": "Home and everyday things",
+   "stage": 1,
+   "icon": "home",
+   "pictures": true,
+   "summary": "House, door, table, chair and shop.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00010",
+     "gloss": "house/home",
+     "frequency_rank": 44
+    },
+    {
+     "id": "CTG-LEX-RAW-00011",
+     "gloss": "door",
+     "frequency_rank": 45
+    },
+    {
+     "id": "CTG-LEX-RAW-00013",
+     "gloss": "table",
+     "frequency_rank": 46
+    },
+    {
+     "id": "CTG-LEX-RAW-00014",
+     "gloss": "chair",
+     "frequency_rank": 47
+    },
+    {
+     "id": "CTG-LEX-RAW-00009",
+     "gloss": "shop/store",
+     "frequency_rank": 48
+    },
+    {
+     "id": "CTG-LEX-RAW-00012",
+     "gloss": "soil/earth",
+     "frequency_rank": 49
+    },
+    {
+     "id": "CTG-LEX-RAW-03030",
+     "gloss": "bicycle",
+     "frequency_rank": 50
+    },
+    {
+     "id": "CTG-LEX-RAW-00023",
+     "gloss": "job/work",
+     "frequency_rank": 51
+    }
+   ]
+  },
+  {
+   "id": "food",
+   "title": "Food and eating",
+   "stage": 1,
+   "icon": "bowl-spoon",
+   "pictures": true,
+   "summary": "Food, rice and eating.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00034",
+     "gloss": "food",
+     "frequency_rank": 52
+    },
+    {
+     "id": "CTG-LEX-RAW-03025",
+     "gloss": "rice",
+     "frequency_rank": 53
+    },
+    {
+     "id": "CTG-LEX-RAW-03026",
+     "gloss": "eat",
+     "frequency_rank": 54
+    },
+    {
+     "id": "CTG-LEX-RAW-00036",
+     "gloss": "let's eat",
+     "frequency_rank": 55
+    },
+    {
+     "id": "CTG-LEX-RAW-00037",
+     "gloss": "let's eat (full, natural form)",
+     "frequency_rank": 56
+    }
+   ]
+  },
+  {
+   "id": "numbers-0-10",
+   "title": "Numbers 0 to 10",
+   "stage": 1,
+   "icon": "number-1",
+   "pictures": false,
+   "summary": "Counting from zero to ten.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00132",
+     "gloss": "0",
+     "frequency_rank": 57
+    },
+    {
+     "id": "CTG-LEX-RAW-00133",
+     "gloss": "1",
+     "frequency_rank": 58
+    },
+    {
+     "id": "CTG-LEX-RAW-00134",
+     "gloss": "2",
+     "frequency_rank": 59
+    },
+    {
+     "id": "CTG-LEX-RAW-00135",
+     "gloss": "3",
+     "frequency_rank": 60
+    },
+    {
+     "id": "CTG-LEX-RAW-00136",
+     "gloss": "4",
+     "frequency_rank": 61
+    },
+    {
+     "id": "CTG-LEX-RAW-00137",
+     "gloss": "5",
+     "frequency_rank": 62
+    },
+    {
+     "id": "CTG-LEX-RAW-00138",
+     "gloss": "6",
+     "frequency_rank": 63
+    },
+    {
+     "id": "CTG-LEX-RAW-00139",
+     "gloss": "7",
+     "frequency_rank": 64
+    },
+    {
+     "id": "CTG-LEX-RAW-00140",
+     "gloss": "8",
+     "frequency_rank": 65
+    },
+    {
+     "id": "CTG-LEX-RAW-00141",
+     "gloss": "9",
+     "frequency_rank": 66
+    },
+    {
+     "id": "CTG-LEX-RAW-00142",
+     "gloss": "10",
+     "frequency_rank": 67
+    }
+   ]
+  },
+  {
+   "id": "colours",
+   "title": "Colours",
+   "stage": 2,
+   "icon": "palette",
+   "pictures": false,
+   "summary": "Nine colour words.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00160",
+     "gloss": "black",
+     "frequency_rank": 68
+    },
+    {
+     "id": "CTG-LEX-RAW-00161",
+     "gloss": "white",
+     "frequency_rank": 69
+    },
+    {
+     "id": "CTG-LEX-RAW-00162",
+     "gloss": "red",
+     "frequency_rank": 70
+    },
+    {
+     "id": "CTG-LEX-RAW-00167",
+     "gloss": "blue",
+     "frequency_rank": 71
+    },
+    {
+     "id": "CTG-LEX-RAW-00166",
+     "gloss": "green",
+     "frequency_rank": 72
+    },
+    {
+     "id": "CTG-LEX-RAW-00165",
+     "gloss": "yellow",
+     "frequency_rank": 73
+    },
+    {
+     "id": "CTG-LEX-RAW-00164",
+     "gloss": "orange",
+     "frequency_rank": 74
+    },
+    {
+     "id": "CTG-LEX-RAW-00163",
+     "gloss": "pink",
+     "frequency_rank": 75
+    },
+    {
+     "id": "CTG-LEX-RAW-00168",
+     "gloss": "purple",
+     "frequency_rank": 76
+    }
+   ]
+  },
+  {
+   "id": "days",
+   "title": "Days of the week",
+   "stage": 2,
+   "icon": "calendar",
+   "pictures": false,
+   "summary": "Monday to Sunday.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00169",
+     "gloss": "Monday",
+     "frequency_rank": 77
+    },
+    {
+     "id": "CTG-LEX-RAW-00170",
+     "gloss": "Tuesday",
+     "frequency_rank": 78
+    },
+    {
+     "id": "CTG-LEX-RAW-00171",
+     "gloss": "Wednesday",
+     "frequency_rank": 79
+    },
+    {
+     "id": "CTG-LEX-RAW-00172",
+     "gloss": "Thursday",
+     "frequency_rank": 80
+    },
+    {
+     "id": "CTG-LEX-RAW-00173",
+     "gloss": "Friday",
+     "frequency_rank": 81
+    },
+    {
+     "id": "CTG-LEX-RAW-00174",
+     "gloss": "Saturday",
+     "frequency_rank": 82
+    },
+    {
+     "id": "CTG-LEX-RAW-00175",
+     "gloss": "Sunday",
+     "frequency_rank": 83
+    }
+   ]
+  },
+  {
+   "id": "directions",
+   "title": "Places and directions",
+   "stage": 2,
+   "icon": "compass",
+   "pictures": false,
+   "summary": "Here, there, left, right and compass points.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00176",
+     "gloss": "here",
+     "frequency_rank": 84
+    },
+    {
+     "id": "CTG-LEX-RAW-00177",
+     "gloss": "there",
+     "frequency_rank": 85
+    },
+    {
+     "id": "CTG-LEX-RAW-00178",
+     "gloss": "(on/to the) right",
+     "frequency_rank": 86
+    },
+    {
+     "id": "CTG-LEX-RAW-00179",
+     "gloss": "(on/to the) left",
+     "frequency_rank": 87
+    },
+    {
+     "id": "CTG-LEX-RAW-00184",
+     "gloss": "straight",
+     "frequency_rank": 88
+    },
+    {
+     "id": "CTG-LEX-RAW-00185",
+     "gloss": "in front",
+     "frequency_rank": 89
+    },
+    {
+     "id": "CTG-LEX-RAW-00186",
+     "gloss": "behind",
+     "frequency_rank": 90
+    },
+    {
+     "id": "CTG-LEX-RAW-00180",
+     "gloss": "(on/to the) north",
+     "frequency_rank": 91
+    },
+    {
+     "id": "CTG-LEX-RAW-00181",
+     "gloss": "(on/to the) south",
+     "frequency_rank": 92
+    },
+    {
+     "id": "CTG-LEX-RAW-00182",
+     "gloss": "(on/to the) east",
+     "frequency_rank": 93
+    },
+    {
+     "id": "CTG-LEX-RAW-00183",
+     "gloss": "(on/to the) west",
+     "frequency_rank": 94
+    }
+   ]
+  },
+  {
+   "id": "signs",
+   "title": "Signs and public places",
+   "stage": 2,
+   "icon": "door-enter",
+   "pictures": false,
+   "summary": "Words seen on signs.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00104",
+     "gloss": "OPEN",
+     "frequency_rank": 95
+    },
+    {
+     "id": "CTG-LEX-RAW-00105",
+     "gloss": "CLOSED",
+     "frequency_rank": 96
+    },
+    {
+     "id": "CTG-LEX-RAW-00106",
+     "gloss": "ENTRANCE",
+     "frequency_rank": 97
+    },
+    {
+     "id": "CTG-LEX-RAW-00107",
+     "gloss": "EXIT",
+     "frequency_rank": 98
+    },
+    {
+     "id": "CTG-LEX-RAW-00108",
+     "gloss": "PUSH",
+     "frequency_rank": 99
+    },
+    {
+     "id": "CTG-LEX-RAW-00109",
+     "gloss": "PULL",
+     "frequency_rank": 100
+    },
+    {
+     "id": "CTG-LEX-RAW-00110",
+     "gloss": "TOILET",
+     "frequency_rank": 101
+    },
+    {
+     "id": "CTG-LEX-RAW-00113",
+     "gloss": "FORBIDDEN",
+     "frequency_rank": 102
+    }
+   ]
+  },
+  {
+   "id": "verbs",
+   "title": "Common verbs",
+   "stage": 2,
+   "icon": "walk",
+   "pictures": false,
+   "summary": "Come, take, go and watch.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00004",
+     "gloss": "come",
+     "frequency_rank": 103
+    },
+    {
+     "id": "CTG-LEX-RAW-00005",
+     "gloss": "come",
+     "frequency_rank": 104
+    },
+    {
+     "id": "CTG-LEX-RAW-00033",
+     "gloss": "take / taking",
+     "frequency_rank": 105
+    },
+    {
+     "id": "CTG-LEX-RAW-00035",
+     "gloss": "let's go",
+     "frequency_rank": 106
+    },
+    {
+     "id": "CTG-LEX-RAW-02007",
+     "gloss": "he came",
+     "frequency_rank": 107
+    },
+    {
+     "id": "CTG-LEX-RAW-03028",
+     "gloss": "watches",
+     "frequency_rank": 108
+    },
+    {
+     "id": "CTG-LEX-RAW-03031",
+     "gloss": "is riding",
+     "frequency_rank": 109
+    },
+    {
+     "id": "CTG-LEX-RAW-03023",
+     "gloss": "to work",
+     "frequency_rank": 110
+    },
+    {
+     "id": "CTG-TXT-RAW-00003",
+     "gloss": "Come to the store.",
+     "frequency_rank": 111
+    }
+   ]
+  },
+  {
+   "id": "small-words",
+   "title": "Questions and small words",
+   "stage": 2,
+   "icon": "help-circle",
+   "pictures": false,
+   "summary": "What, how, who, and, good, bad.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00030",
+     "gloss": "what",
+     "frequency_rank": 112
+    },
+    {
+     "id": "CTG-LEX-RAW-00029",
+     "gloss": "how",
+     "frequency_rank": 113
+    },
+    {
+     "id": "CTG-LEX-RAW-02003",
+     "gloss": "who",
+     "frequency_rank": 114
+    },
+    {
+     "id": "CTG-LEX-RAW-02002",
+     "gloss": "whither?",
+     "frequency_rank": 115
+    },
+    {
+     "id": "CTG-LEX-RAW-03007",
+     "gloss": "and",
+     "frequency_rank": 116
+    },
+    {
+     "id": "CTG-LEX-RAW-02005",
+     "gloss": "all",
+     "frequency_rank": 117
+    },
+    {
+     "id": "CTG-LEX-RAW-00027",
+     "gloss": "to/at",
+     "frequency_rank": 118
+    },
+    {
+     "id": "CTG-LEX-RAW-00015",
+     "gloss": "good",
+     "frequency_rank": 119
+    },
+    {
+     "id": "CTG-LEX-RAW-00016",
+     "gloss": "bad",
+     "frequency_rank": 120
+    },
+    {
+     "id": "CTG-LEX-RAW-00100",
+     "gloss": "Chittagonian (language name)",
+     "frequency_rank": 121
+    },
+    {
+     "id": "CTG-LEX-RAW-00101",
+     "gloss": "Chittagonian (language name, alternate name)",
+     "frequency_rank": 122
+    }
+   ]
+  },
+  {
+   "id": "numbers-11-20",
+   "title": "Numbers 11 to 20",
+   "stage": 2,
+   "icon": "number-1",
+   "pictures": false,
+   "summary": "Eleven to twenty.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00143",
+     "gloss": "11",
+     "frequency_rank": 123
+    },
+    {
+     "id": "CTG-LEX-RAW-00144",
+     "gloss": "12",
+     "frequency_rank": 124
+    },
+    {
+     "id": "CTG-LEX-RAW-00145",
+     "gloss": "13",
+     "frequency_rank": 125
+    },
+    {
+     "id": "CTG-LEX-RAW-00146",
+     "gloss": "14",
+     "frequency_rank": 126
+    },
+    {
+     "id": "CTG-LEX-RAW-00147",
+     "gloss": "15",
+     "frequency_rank": 127
+    },
+    {
+     "id": "CTG-LEX-RAW-00148",
+     "gloss": "16",
+     "frequency_rank": 128
+    },
+    {
+     "id": "CTG-LEX-RAW-00149",
+     "gloss": "17",
+     "frequency_rank": 129
+    },
+    {
+     "id": "CTG-LEX-RAW-00150",
+     "gloss": "18",
+     "frequency_rank": 130
+    },
+    {
+     "id": "CTG-LEX-RAW-00151",
+     "gloss": "19",
+     "frequency_rank": 131
+    },
+    {
+     "id": "CTG-LEX-RAW-00152",
+     "gloss": "20",
+     "frequency_rank": 132
+    }
+   ]
+  },
+  {
+   "id": "tens",
+   "title": "Tens from 30 to 90",
+   "stage": 2,
+   "icon": "number-1",
+   "pictures": false,
+   "summary": "Thirty to ninety.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00153",
+     "gloss": "30",
+     "frequency_rank": 133
+    },
+    {
+     "id": "CTG-LEX-RAW-00154",
+     "gloss": "40",
+     "frequency_rank": 134
+    },
+    {
+     "id": "CTG-LEX-RAW-00155",
+     "gloss": "50",
+     "frequency_rank": 135
+    },
+    {
+     "id": "CTG-LEX-RAW-00156",
+     "gloss": "60",
+     "frequency_rank": 136
+    },
+    {
+     "id": "CTG-LEX-RAW-00157",
+     "gloss": "70",
+     "frequency_rank": 137
+    },
+    {
+     "id": "CTG-LEX-RAW-00158",
+     "gloss": "80",
+     "frequency_rank": 138
+    },
+    {
+     "id": "CTG-LEX-RAW-00159",
+     "gloss": "90",
+     "frequency_rank": 139
+    }
+   ]
+  },
+  {
+   "id": "feelings",
+   "title": "How are you feeling",
+   "stage": 3,
+   "icon": "mood-happy",
+   "pictures": false,
+   "summary": "Short phrases about how someone is.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-03000",
+     "gloss": "How are you",
+     "frequency_rank": 140
+    },
+    {
+     "id": "CTG-LEX-RAW-03001",
+     "gloss": "I am fine",
+     "frequency_rank": 141
+    },
+    {
+     "id": "CTG-LEX-RAW-03009",
+     "gloss": "I am fine",
+     "frequency_rank": 142
+    },
+    {
+     "id": "CTG-LEX-RAW-03010",
+     "gloss": "I am not fine",
+     "frequency_rank": 143
+    },
+    {
+     "id": "CTG-LEX-RAW-03011",
+     "gloss": "I am not feeling well.",
+     "frequency_rank": 144
+    },
+    {
+     "id": "CTG-LEX-RAW-03019",
+     "gloss": "I'm sad.",
+     "frequency_rank": 145
+    },
+    {
+     "id": "CTG-LEX-RAW-03005",
+     "gloss": "I miss you",
+     "frequency_rank": 146
+    },
+    {
+     "id": "CTG-LEX-RAW-03014",
+     "gloss": "I miss you too.",
+     "frequency_rank": 147
+    },
+    {
+     "id": "CTG-LEX-RAW-03006",
+     "gloss": "I love you",
+     "frequency_rank": 148
+    },
+    {
+     "id": "CTG-LEX-RAW-03015",
+     "gloss": "I love you",
+     "frequency_rank": 149
+    }
+   ]
+  },
+  {
+   "id": "where",
+   "title": "Where questions",
+   "stage": 3,
+   "icon": "compass",
+   "pictures": false,
+   "summary": "Where are you, where from, where is.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-03002",
+     "gloss": "Where are you",
+     "frequency_rank": 150
+    },
+    {
+     "id": "CTG-LEX-RAW-03013",
+     "gloss": "Where are you",
+     "frequency_rank": 151
+    },
+    {
+     "id": "CTG-LEX-RAW-03016",
+     "gloss": "Where are you going",
+     "frequency_rank": 152
+    },
+    {
+     "id": "CTG-LEX-RAW-03017",
+     "gloss": "Where are you from?",
+     "frequency_rank": 153
+    },
+    {
+     "id": "CTG-LEX-RAW-03018",
+     "gloss": "Where do you live?",
+     "frequency_rank": 154
+    },
+    {
+     "id": "CTG-LEX-RAW-00195",
+     "gloss": "Where is the toilet?",
+     "frequency_rank": 155
+    }
+   ]
+  },
+  {
+   "id": "help",
+   "title": "Getting help",
+   "stage": 3,
+   "icon": "hand-stop",
+   "pictures": false,
+   "summary": "Phrases for asking for help.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-00188",
+     "gloss": "I can't speak Chittagonian (that well).",
+     "frequency_rank": 156
+    },
+    {
+     "id": "CTG-LEX-RAW-00189",
+     "gloss": "Do you speak English? (formal)",
+     "frequency_rank": 157
+    },
+    {
+     "id": "CTG-LEX-RAW-00190",
+     "gloss": "Is there someone here who speaks English?",
+     "frequency_rank": 158
+    },
+    {
+     "id": "CTG-LEX-RAW-00191",
+     "gloss": "Help!",
+     "frequency_rank": 159
+    },
+    {
+     "id": "CTG-LEX-RAW-00192",
+     "gloss": "Can you help me?",
+     "frequency_rank": 160
+    },
+    {
+     "id": "CTG-LEX-RAW-00193",
+     "gloss": "Look out!",
+     "frequency_rank": 161
+    },
+    {
+     "id": "CTG-LEX-RAW-00194",
+     "gloss": "I don't understand.",
+     "frequency_rank": 162
+    }
+   ]
+  },
+  {
+   "id": "forms-1",
+   "title": "One and many, set 1",
+   "stage": 4,
+   "icon": "book",
+   "pictures": false,
+   "summary": "The same word in its singular and plural form.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-03032",
+     "gloss": "the farm",
+     "frequency_rank": 163
+    },
+    {
+     "id": "CTG-LEX-RAW-03033",
+     "gloss": "the farms",
+     "frequency_rank": 164
+    },
+    {
+     "id": "CTG-LEX-RAW-03034",
+     "gloss": "the picture",
+     "frequency_rank": 165
+    },
+    {
+     "id": "CTG-LEX-RAW-03035",
+     "gloss": "the pictures",
+     "frequency_rank": 166
+    },
+    {
+     "id": "CTG-LEX-RAW-03036",
+     "gloss": "the leaf",
+     "frequency_rank": 167
+    },
+    {
+     "id": "CTG-LEX-RAW-03037",
+     "gloss": "the leaves",
+     "frequency_rank": 168
+    },
+    {
+     "id": "CTG-LEX-RAW-03038",
+     "gloss": "the wire",
+     "frequency_rank": 169
+    },
+    {
+     "id": "CTG-LEX-RAW-03039",
+     "gloss": "the wires",
+     "frequency_rank": 170
+    },
+    {
+     "id": "CTG-LEX-RAW-03040",
+     "gloss": "the door",
+     "frequency_rank": 171
+    },
+    {
+     "id": "CTG-LEX-RAW-03041",
+     "gloss": "the doors",
+     "frequency_rank": 172
+    }
+   ]
+  },
+  {
+   "id": "forms-2",
+   "title": "One and many, set 2",
+   "stage": 4,
+   "icon": "book",
+   "pictures": false,
+   "summary": "More singular and plural forms.",
+   "items": [
+    {
+     "id": "CTG-LEX-RAW-03042",
+     "gloss": "the mountain",
+     "frequency_rank": 173
+    },
+    {
+     "id": "CTG-LEX-RAW-03043",
+     "gloss": "the mountains",
+     "frequency_rank": 174
+    },
+    {
+     "id": "CTG-LEX-RAW-03044",
+     "gloss": "the wall",
+     "frequency_rank": 175
+    },
+    {
+     "id": "CTG-LEX-RAW-03045",
+     "gloss": "the walls",
+     "frequency_rank": 176
+    },
+    {
+     "id": "CTG-LEX-RAW-03046",
+     "gloss": "the book",
+     "frequency_rank": 177
+    },
+    {
+     "id": "CTG-LEX-RAW-03047",
+     "gloss": "the books",
+     "frequency_rank": 178
+    },
+    {
+     "id": "CTG-LEX-RAW-03048",
+     "gloss": "the man",
+     "frequency_rank": 179
+    },
+    {
+     "id": "CTG-LEX-RAW-03049",
+     "gloss": "the men",
+     "frequency_rank": 180
+    },
+    {
+     "id": "CTG-LEX-RAW-03050",
+     "gloss": "a leaf",
+     "frequency_rank": 181
+    },
+    {
+     "id": "CTG-LEX-RAW-03051",
+     "gloss": "some leaves",
+     "frequency_rank": 182
+    },
+    {
+     "id": "CTG-LEX-RAW-03052",
+     "gloss": "a picture",
+     "frequency_rank": 183
+    },
+    {
+     "id": "CTG-LEX-RAW-03053",
+     "gloss": "some pictures",
+     "frequency_rank": 184
+    }
+   ]
+  }
+ ]
+}

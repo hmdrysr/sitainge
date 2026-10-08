@@ -1,30 +1,37 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src blob:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#0b5d4b">
-<title>Contribute: siṭaiṅga (form)</title>
-<meta name="description" content="Help document Sitainge (Chittagonian). Works offline. Nothing is sent until you choose.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0a6c74">
+<title>Contribute · siṭaiṅge</title>
+<meta name="description" content="Contribute words and sentences in siṭaiṅga (Chittagonian) on a form that works offline. Nothing is sent until you choose to share it.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div class="brand"><strong>Sitainge</strong> <span>contribution page</span></div>
-  <div class="top-actions">
-    <span id="net" class="net" aria-live="polite"></span>
-    <button id="menu-clear" class="link" type="button">Delete my draft</button>
+<a class="skip" href="#app">Skip to content</a>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="./">siṭaiṅge</a>
+    <nav class="nav" aria-label="Site">
+      <a href="dictionary/">Dictionary</a><a href="translate/">Translator</a><a href="contribute.html" aria-current="page">Contribute</a><a href="dadi/">Dadi</a>
+    </nav>
   </div>
 </header>
-<main id="app" tabindex="-1"><noscript><p>This page needs JavaScript to run. Nothing is sent anywhere. Alternatively, use the chatbot interview in the project repository.</p></noscript></main>
-<footer class="foot">
-  <p>Nothing leaves your device until you choose to share. No sign-up, no tracking, no cookies. Everything you give is reviewed by people before it is used, and nothing is accepted automatically.</p>
+<div class="wrap page form">
+  <div class="tools-row"><span id="net" class="small" aria-live="polite"></span><button id="menu-clear" class="btn quiet" type="button">Delete my draft</button></div>
+  <main id="app" tabindex="-1"><noscript><p>This page needs JavaScript. Nothing is sent anywhere. The chatbot interview in the project repository is an alternative.</p></noscript></main>
+</div>
+<footer class="foot"><div class="wrap">
+  <p>Nothing leaves your device until you choose to share it. The page uses no sign-up, no tracking and no cookies. People review everything contributed before it is used, and nothing is accepted automatically.</p>
   <p><a href="https://github.com/hmdrysr/sitainge" rel="noopener noreferrer">Project on GitHub</a> · Public domain (CC0 1.0) if published</p>
-</footer>
+</div></footer>
 <script src="config.js"></script>
 <script src="items.js"></script>
 <script src="core.js"></script>

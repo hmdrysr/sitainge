@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,38 +7,39 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b1115" media="(prefers-color-scheme: dark)">
-<title>siṭaiṅga: tools and research for the Chittagonian language</title>
-<meta name="description" content="Open tools and evidence-based research for siṭaiṅga, the Chittagonian language (ISO 639-3 ctg): a learning app, a dictionary, a translator and a browser extension, all built from one public repository.">
+<title>siṭaiṅge: documenting the Chittagonian language</title>
+<meta name="description" content="siṭaiṅge is an open project that documents siṭaiṅga, the language called Chittagonian in English (ISO 639-3 ctg). It publishes a learning app, a dictionary, a translator and a browser extension, all built from one public repository.">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
+<a class="skip" href="#top">Skip to content</a>
 <header class="bar">
   <div class="bar-in">
-    <a class="brand" href="#top" aria-label="siṭaiṅga, home">siṭaiṅga</a>
-    <nav class="links" aria-label="Sections">
-      <a href="#tools">Tools</a><a href="#research">Research</a><a href="#region">Region</a><a href="#contribute">Contribute</a><a href="#watch">Watch</a>
+    <a class="brand" href="./" aria-current="page">siṭaiṅge</a>
+    <nav class="nav" aria-label="Site">
+      <a href="dictionary/">Dictionary</a><a href="translate/">Translator</a><a href="contribute.html">Contribute</a><a href="dadi/">Dadi</a>
     </nav>
-    <a class="pill" href="dadi/">Open Dadi</a>
   </div>
 </header>
 
-<main id="top">
+<main id="top" tabindex="-1">
   <section class="hero">
     <div class="wrap">
-      <p class="kicker">Chittagonian · ISO 639-3 ctg</p>
-      <h1>siṭaiṅga</h1>
-      <p class="lead">Open tools and careful research for a language that is spoken by millions and written down by almost no one.</p>
+      <p class="kicker">Language documentation project</p>
+      <h1>siṭaiṅge</h1>
+      <p class="lead">This project documents siṭaiṅga, the language known in English as Chittagonian. It publishes open tools and a public record of sources.</p>
+      <p class="small">ISO 639-3 code: ctg. On this site, siṭaiṅga is the language and siṭaiṅge is the project.</p>
       <div class="actions">
         <a class="btn primary" href="dadi/">Learn with Dadi</a>
         <a class="btn" href="dictionary/">Search the dictionary</a>
       </div>
-      <dl class="stats" id="stats" aria-label="The project in numbers, read live from the repository">
+      <dl class="stats" id="stats" aria-label="The project in numbers, read from the repository">
         <div><dt>Entries</dt><dd id="s-all">–</dd></div>
         <div><dt>Words</dt><dd id="s-words">–</dd></div>
         <div><dt>Sentences</dt><dd id="s-sent">–</dd></div>
         <div><dt>Sources</dt><dd id="s-ipa">–</dd></div>
-        <div><dt>Verified by speakers</dt><dd id="s-ver">–</dd></div>
+        <div><dt>Entries at level A or B</dt><dd id="s-ver">–</dd></div>
       </dl>
       <p class="small live" id="live-note">Reading the repository…</p>
     </div>
@@ -46,39 +47,43 @@
 
   <section id="tools" class="sec">
     <div class="wrap">
-      <div class="head"><h2>Tools</h2><p class="lede">Four tools, one source. Each reads the same public files, so a correction made once appears in all of them.</p></div>
+      <div class="head"><h2>Tools</h2><p class="lede">Four tools read the same public files, so a correction made once appears in all of them.</p></div>
       <div class="tools">
-        <a class="tool" href="dadi/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5A2.5 2.5 0 0 1 5.5 3H11v16H5.5A2.5 2.5 0 0 0 3 21.5zM21 5.5A2.5 2.5 0 0 0 18.5 3H13v16h5.5a2.5 2.5 0 0 1 2.5 2.5z"/></svg><h3>Dadi</h3><p>A free app for learning. Videos first, then short lessons, an IPA keyboard that speaks each sound, and a chart of every symbol. Installs on a phone and works offline.</p><span class="go">Open the app</span></a>
-        <a class="tool" href="dictionary/"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/></svg><h3>Dictionary</h3><p>Search by English, spelling or IPA. Every entry shows its spellings, evidence level, source and a link to correct it.</p><span class="go">Open the dictionary</span></a>
-        <a class="tool" href="translate/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h9M8.5 3v2M6 5c.5 4 3 7 6.5 9M12 5c-.5 4-3.500 7.500-8 9.500M13 21l4-10 4 10M14.500 18h5"/></svg><h3>Translator</h3><p>Type English and see siṭaiṅga as you go. It uses only words the project holds and shows how sure each one is.</p><span class="go">Open the translator</span></a>
-        <a class="tool" href="translate/#extension"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M7 6.500h.01M10 6.500h.01"/></svg><h3>Browser extension</h3><p>Translate a whole web page in Chrome or Firefox with one click, and undo it. Page text never leaves your device.</p><span class="go">Get the extension</span></a>
+        <a class="tool" href="dadi/"><span class="ic" data-icon="book"></span><h3>Dadi</h3><p>A learning app. Videos come first, followed by short lessons, an IPA keyboard that plays each sound, and a chart of every symbol. It installs on a phone and works offline.</p><span class="go">Open Dadi <span data-icon="next"></span></span></a>
+        <a class="tool" href="dictionary/"><span class="ic" data-icon="search"></span><h3>Dictionary</h3><p>Search by English word, siṭaiṅga spelling or IPA. Each entry lists its spellings, evidence level and source, with a link to suggest a correction.</p><span class="go">Open the dictionary <span data-icon="next"></span></span></a>
+        <a class="tool" href="translate/"><span class="ic" data-icon="language"></span><h3>Translator</h3><p>Enter English text to see a word-for-word draft in siṭaiṅga. It uses only words the project holds and shows the evidence level of each.</p><span class="go">Open the translator <span data-icon="next"></span></span></a>
+        <a class="tool" href="translate/#extension"><span class="ic" data-icon="puzzle"></span><h3>Browser extension</h3><p>Replaces the English words on a web page in Chrome, Edge or Firefox with dictionary matches, and can undo the change. Page text stays on the device.</p><span class="go">Get the extension <span data-icon="next"></span></span></a>
       </div>
     </div>
   </section>
 
   <section id="research" class="sec alt">
     <div class="wrap">
-      <div class="head"><h2>Research</h2><p class="lede">Nothing here is called correct until speakers and reviewers have checked it. Every record says who supplied it and how sure we are.</p></div>
+      <div class="head"><h2>Research</h2><p class="lede">No record is called correct until speakers and reviewers have checked it. Each record states who supplied it and how well it is supported.</p></div>
       <div class="cols">
         <div>
           <h3>Evidence in the repository</h3>
-          <p class="small">Read live from the project's files. Most records are still unverified leads, and that is stated plainly.</p>
+          <p class="small">Counts are read from the project's files. Most records are still unverified leads.</p>
           <div id="ev" class="ev" role="img" aria-label="Entries by evidence level"></div>
           <ul id="ev-key" class="ev-key"></ul>
-          <h3>How we work</h3>
+          <h3>Method in brief</h3>
           <ul class="plain">
-            <li>Every spelling is kept side by side. There is no single "right" one yet.</li>
-            <li>Records start as unverified leads and move up evidence levels only through speaker and reviewer checks.</li>
-            <li>AI helps with chores such as formatting. Its output is never treated as evidence.</li>
-            <li>Everything is public domain (CC0). Every change and deletion is recorded in the open.</li>
+            <li><b>Evidence levels.</b> Each record is graded A to E or marked unassessed. Levels D and E are never presented as established fact.</li>
+            <li><b>Recordings first.</b> The documentation plan treats recordings of speakers as the primary data, and written entries as derived from them. According to the learning-design notes of October 8, 2026, the repository then held about 200 unverified entries and no recordings.</li>
+            <li><b>Consent.</b> Contributors choose whether their words and recordings are published and how they are credited. Published text is dedicated to the public domain (CC0 1.0).</li>
+            <li><b>Speaker authority.</b> Speakers keep authority over their contributions, and consent is to be recorded for each session and can be withdrawn. A word from another language is never recorded as a siṭaiṅga form.</li>
+            <li><b>Spellings.</b> Variant spellings are kept side by side. No single spelling has been designated correct.</li>
+            <li><b>AI.</b> AI assists with routine tasks such as formatting. Its output is not treated as evidence.</li>
+            <li><b>Records.</b> Every change and deletion is recorded in public.</li>
           </ul>
-          <p class="links-row"><a href="https://github.com/hmdrysr/sitainge/blob/main/EVIDENCE_POLICY.md">Evidence policy</a><a href="https://github.com/hmdrysr/sitainge/blob/main/RESEARCH_STANDARDS.md">Research standards</a><a href="https://github.com/hmdrysr/sitainge/tree/main/docs/research-gaps">Open questions</a></p>
+          <p class="small">The documentation plan is a proposal dated October 8, 2026, and parts of it are not yet implemented. Dadi's lesson design is described separately in the learning design notes.</p>
+          <p class="links-row"><a href="https://github.com/hmdrysr/sitainge/blob/main/docs/methodology/documentation-plan.md">Documentation plan</a><a href="https://github.com/hmdrysr/sitainge/blob/main/docs/methodology/teaching-research.md">Teaching research</a><a href="https://github.com/hmdrysr/sitainge/blob/main/docs/dadi/LEARNING_DESIGN.md">Learning design</a><a href="https://github.com/hmdrysr/sitainge/blob/main/EVIDENCE_POLICY.md">Evidence policy</a><a href="https://github.com/hmdrysr/sitainge/blob/main/RESEARCH_STANDARDS.md">Research standards</a><a href="https://github.com/hmdrysr/sitainge/tree/main/docs/research-gaps">Open questions</a></p>
         </div>
         <div>
           <h3>Recent changes</h3>
           <p class="small">The latest commits to the repository.</p>
           <ol class="changes" id="changes"><li class="small">Loading…</li></ol>
-          <p><a href="https://github.com/hmdrysr/sitainge/commits/main">Full history on GitHub</a></p>
+          <p class="links-row"><a href="https://github.com/hmdrysr/sitainge/commits/main">Full history on GitHub</a></p>
         </div>
       </div>
     </div>
@@ -86,7 +91,7 @@
 
   <section id="region" class="sec">
     <div class="wrap">
-      <div class="head"><h2>Where it is spoken</h2><p class="lede">siṭaiṅga is the everyday language of Chittagong District and Cox's Bazar District, on the south-east coast of Bangladesh. The map shows how both districts are governed, down to unions and city wards. Choose a place, or turn layers on and off.</p></div>
+      <div class="head"><h2>Where it is spoken</h2><p class="lede">According to the sources used here, siṭaiṅga is the main everyday language of Chittagong District and Cox's Bazar District, on the south-east coast of Bangladesh. The map shows how both districts are governed, down to unions and city wards. Select an area for details, or switch layers on and off.</p></div>
       <div class="atlas">
         <figure class="map-fig">
           <svg id="map" role="group" aria-label="Map of Chittagong District and Cox's Bazar District. Areas are buttons."></svg>
@@ -94,14 +99,14 @@
         </figure>
         <div>
           <div class="layers" role="group" aria-label="Map layers" id="layers"></div>
-          <nav class="crumbs" id="crumbs" aria-label="Where you are"></nav>
+          <nav class="crumbs" id="crumbs" aria-label="Current area"></nav>
           <div class="panel" id="panel" aria-live="polite">Loading the map…</div>
         </div>
       </div>
-      <div class="note" id="naming"></div>
+      <div class="note naming" id="naming"></div>
       <div class="cols two">
         <div><h3>A short history</h3><ol class="timeline" id="timeline"></ol></div>
-        <div><h3>Good things to know</h3><ul class="plain" id="facts"></ul></div>
+        <div><h3>Further facts</h3><ul class="plain" id="facts"></ul></div>
       </div>
       <div id="gallery-wrap" hidden><h3>Places</h3><div class="gallery" id="gallery"></div></div>
     </div>
@@ -109,14 +114,14 @@
 
   <section id="contribute" class="sec alt">
     <div class="wrap">
-      <div class="head"><h2>Contribute</h2><p class="lede">You do not need to be a linguist. Fixing a record means editing a file in the repository, and every tool above updates by itself.</p></div>
+      <div class="head"><h2>Contribute</h2><p class="lede">No linguistic training is needed. Correcting a record means editing a file in the repository, and all of the tools update from it.</p></div>
       <div class="cards">
-        <article class="card"><h3>Speak</h3><p>Add words and sentences in Dadi, in any spelling you would use with a friend.</p></article>
-        <article class="card"><h3>Check</h3><p>Tell us when an entry is wrong or you say it differently. Speakers from every area are needed.</p></article>
-        <article class="card"><h3>Be interviewed by an AI</h3><p>Use any chatbot with the project's interview prompt, then send the result.</p></article>
-        <article class="card"><h3>Lend some AI time</h3><p>Spare tokens on your own AI account can do careful, checked work in small chunks.</p></article>
-        <article class="card"><h3>Moderate</h3><p>Review learning videos and photos so learners only see good material.</p></article>
-        <article class="card"><h3>Build</h3><p>The code, data and notes are open. A hand-off guide explains how it all fits.</p></article>
+        <article class="card"><h3>Record words</h3><p>Add words and sentences in Dadi, in the spelling you would normally use.</p></article>
+        <article class="card"><h3>Check entries</h3><p>Report an entry that is wrong or that you say differently. Speakers from every area are needed.</p></article>
+        <article class="card"><h3>Take part in an AI interview</h3><p>Answer questions from any chatbot that uses the project's interview prompt, then send the result.</p></article>
+        <article class="card"><h3>Contribute AI capacity</h3><p>Unused allowance on a personal AI account can be put to checked work, done in small portions.</p></article>
+        <article class="card"><h3>Moderate</h3><p>Moderators review learning videos and photos so that learners see only suitable material.</p></article>
+        <article class="card"><h3>Build</h3><p>The code, data and notes are open. A hand-off guide explains how the parts fit together.</p></article>
       </div>
       <p class="links-row"><a href="https://github.com/hmdrysr/sitainge/blob/main/CONTRIBUTING.md">Contributor guide</a><a href="https://github.com/hmdrysr/sitainge/blob/main/docs/contribute/ai-tokens.md">Contributing with AI</a><a href="https://github.com/hmdrysr/sitainge/blob/main/docs/contribute/moderators.md">Moderators' guide</a><a href="contribute.html">Contribution form</a><a href="https://github.com/hmdrysr/sitainge">Repository</a></p>
     </div>
@@ -124,7 +129,7 @@
 
   <section id="watch" class="sec">
     <div class="wrap">
-      <div class="head"><h2>Watch and listen</h2><p class="lede">Speakers explaining and teaching. A video loads from YouTube only when you press play. Moderators vet this list, and anything marked "awaiting review" has not been vetted yet.</p></div>
+      <div class="head"><h2>Watch and listen</h2><p class="lede">Videos about the language from community channels. A video loads from YouTube only when played. Moderators review this list, and a video marked "awaiting review" has not yet been reviewed.</p></div>
       <div class="videos" id="videos"></div>
     </div>
   </section>
@@ -132,12 +137,14 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p><b>siṭaiṅga</b> is the native name of the language. <b>Sitainge</b> is the name of this project, a widely used variant.</p>
-    <p>Created by <b>Hamid Yasir</b>. Public domain (CC0 1.0). <a href="https://github.com/hmdrysr/sitainge">GitHub</a> · <a href="https://github.com/hmdrysr/sitainge/blob/main/PRIVACY.md">Privacy</a> · <a href="https://github.com/hmdrysr/sitainge/blob/main/ETHICS.md">Ethics</a></p>
-    <p class="small" id="credits">Figures from sources that disagree are given as ranges. Population figures follow Wikipedia's reading of the 2022 census and have not been checked against the census tables.</p>
+    <p>siṭaiṅge is the name of this project. siṭaiṅga is the name of the language in its own written form, and Chittagonian is its English name. The repository and web address use the plain spelling Sitainge.</p>
+    <p>Created by Hamid Yasir. Public domain (CC0 1.0). <a href="https://github.com/hmdrysr/sitainge">GitHub</a> · <a href="https://github.com/hmdrysr/sitainge/blob/main/PRIVACY.md">Privacy</a> · <a href="https://github.com/hmdrysr/sitainge/blob/main/ETHICS.md">Ethics</a></p>
+    <p class="small" id="credits">Where sources disagree, figures are given as ranges. Population figures follow Wikipedia's reading of the 2022 census and have not been checked against the census tables.</p>
   </div>
 </footer>
-<noscript><p class="wrap">The map, statistics and videos need JavaScript. Everything else on this page works without it.</p></noscript>
+<noscript><p class="wrap">The map, statistics and videos need JavaScript. The rest of this page works without it.</p></noscript>
+<script src="dadi/js/icons.js"></script>
+<script src="ui-icons.js"></script>
 <script src="site.js"></script>
 </body>
 </html>

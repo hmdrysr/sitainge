@@ -1,22 +1,70 @@
-/* Pictures for words (CC0 wrapper). The pictures are Fluent Emoji (Flat) by Microsoft, MIT licence, and the word index comes from
-   the Unicode CLDR names and keywords. Both are built into data/icons.json by scripts/build_icons.js. Nothing is fetched from other sites. */
+/* Pictures for words and interface icons (CC0 wrapper). The icons are Tabler Icons (outline set), MIT licence, Paweł Kuna and contributors:
+   monochrome line icons that take the text colour (currentColor). The word index and the hand-checked word list are built into data/icons.json by
+   scripts/build_icons.js. Nothing is fetched from other sites.
+
+   API (unchanged from the earlier version):
+     DadiIcons.find(gloss)   -> SVG string for a word's picture, or null. Matching is strict: exact word or exact tag only, never function words,
+                                never sentences. No picture is better than a wrong picture.
+     DadiIcons.get(slug)     -> SVG string for a named icon from icons.json, or null.
+     DadiIcons.slugFor(gloss), use(data), load(url), ready
+   New:
+     DadiIcons.ui(name, opts) -> SVG string for interface chrome (tab bar, buttons), or null. Works without icons.json: the interface icons are built in.
+                                opts.label adds an accessible name; without it the icon is hidden from screen readers (pair it with visible text).
+   Every icon is <svg class="dicon" viewBox="0 0 24 24" ...> with stroke="currentColor", stroke width 1.75, round caps and joins, no fill.
+   Size it with CSS (.dicon { width: 1.25em; height: 1.25em }); the width and height attributes (24) are only a fallback. */
 (function (root) {
   'use strict';
+  /*UI-BEGIN (written by scripts/build_icons.js; do not edit by hand)*/
+  const UI_NAMES = {"learn":"book","words":"list","write":"keyboard","teach":"pencil","me":"user","play":"player-play","pause":"player-pause","stop":"player-stop","check":"check","x":"x","close":"x","search":"search","settings":"settings","chevron":"chevron-right","chevron-right":"chevron-right","chevron-left":"chevron-left","chevron-up":"chevron-up","chevron-down":"chevron-down","back":"arrow-left","next":"arrow-right","volume":"volume","mute":"volume-off","mic":"microphone","mic-off":"microphone-off","headphones":"headphones","plus":"plus","minus":"minus","trash":"trash","edit":"edit","star":"star","bookmark":"bookmark","home":"home","info":"info-circle","warning":"alert-triangle","error":"alert-circle","success":"circle-check","refresh":"refresh","repeat":"repeat","download":"download","upload":"upload","share":"share","copy":"copy","eye":"eye","eye-off":"eye-off","lock":"lock","moon":"moon","sun":"sun","offline":"wifi-off","online":"wifi","streak":"flame","trophy":"trophy","calendar":"calendar","clock":"clock","bell":"bell","filter":"filter","more":"dots","menu":"menu-2","undo":"arrow-back-up","redo":"arrow-forward-up","help":"help-circle","heart":"heart","list":"list","keyboard":"keyboard","pencil":"pencil","user":"user","book":"book","cards":"cards","target":"target","link":"link","external":"external-link","language":"language","text":"text-size","save":"device-floppy","history":"history","chart":"chart-bar","palette":"palette","camera":"camera","flag":"flag","send":"send","message":"message","users":"users","sparkle":"sparkles"};
+  const UI_PATHS = {"alert-circle":"M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-4v4m0 4h.01","alert-triangle":"M12 9v4m-1.637-9.409L2.257 17.125a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636-2.87L13.637 3.59a1.914 1.914 0 0 0-3.274 0M12 16h.01","arrow-back-up":"m9 14l-4-4l4-4|M5 10h11a4 4 0 1 1 0 8h-1","arrow-forward-up":"m15 14l4-4l-4-4|M19 10H8a4 4 0 1 0 0 8h1","arrow-left":"M5 12h14M5 12l6 6m-6-6l6-6","arrow-right":"M5 12h14m-6 6l6-6m-6-6l6 6","bell":"M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3H4a4 4 0 0 0 2-3v-3a7 7 0 0 1 4-6M9 17v1a3 3 0 0 0 6 0v-1","book":"M3 19a9 9 0 0 1 9 0a9 9 0 0 1 9 0M3 6a9 9 0 0 1 9 0a9 9 0 0 1 9 0M3 6v13m9-13v13m9-13v13","bookmark":"M18 7v14l-6-4l-6 4V7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4","calendar":"M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm12-4v4M8 3v4m-4 4h16m-9 4h1m0 0v3","camera":"M5 7h1a2 2 0 0 0 2-2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2|M9 13a3 3 0 1 0 6 0a3 3 0 0 0-6 0","cards":"m3.604 7.197l7.138-3.109a.96.96 0 0 1 1.27.527l4.924 11.902a1 1 0 0 1-.514 1.304L9.285 20.93a.96.96 0 0 1-1.271-.527L3.09 8.5a1 1 0 0 1 .514-1.304zM15 4h1a1 1 0 0 1 1 1v3.5M20 6q.396.168.768.315a1 1 0 0 1 .53 1.311L19 13","chart-bar":"M3 13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm12-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM9 5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zM4 20h14","check":"m5 12l5 5L20 7","chevron-down":"m6 9l6 6l6-6","chevron-left":"m15 6l-6 6l6 6","chevron-right":"m9 6l6 6l-6 6","chevron-up":"m6 15l6-6l6 6","circle-check":"M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0|m9 12l2 2l4-4","clock":"M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0|M12 7v5l3 3","copy":"M7 9.667A2.667 2.667 0 0 1 9.667 7h8.666A2.667 2.667 0 0 1 21 9.667v8.666A2.667 2.667 0 0 1 18.333 21H9.667A2.667 2.667 0 0 1 7 18.333z|M4.012 16.737A2 2 0 0 1 3 15V5c0-1.1.9-2 2-2h10c.75 0 1.158.385 1.5 1","device-floppy":"M6 4h10l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2|M10 14a2 2 0 1 0 4 0a2 2 0 1 0-4 0m4-10v4H8V4","dots":"M4 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0m7 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0","download":"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5l5-5m-5-7v12","edit":"M7 7H6a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1|M20.385 6.585a2.1 2.1 0 0 0-2.97-2.97L9 12v3h3zM16 5l3 3","external-link":"M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6m-7 1l9-9m-5 0h5v5","eye":"M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0|M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6","eye-off":"M10.585 10.587a2 2 0 0 0 2.829 2.828|M16.681 16.673A8.7 8.7 0 0 1 12 18q-5.4 0-9-6q1.908-3.18 4.32-4.674m2.86-1.146A9 9 0 0 1 12 6q5.4 0 9 6q-1 1.665-2.138 2.87M3 3l18 18","filter":"M4 4h16v2.172a2 2 0 0 1-.586 1.414L15 12v7l-6 2v-8.5L4.52 7.572A2 2 0 0 1 4 6.227z","flag":"M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1-7 0a5 5 0 0 0-7 0zm0 16v-7","flame":"M12 10.941c2.333-3.308.167-7.823-1-8.941c0 3.395-2.235 5.299-3.667 6.706C5.903 10.114 5 12 5 14.294C5 17.998 8.134 21 12 21s7-3.002 7-6.706c0-1.712-1.232-4.403-2.333-5.588c-2.084 3.353-3.257 3.353-4.667 2.235","headphones":"M4 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm11 0a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2z|M4 15v-3a8 8 0 0 1 16 0v3","heart":"M19.5 12.572L12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 6.572","help-circle":"M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9 4v.01|M12 13a2 2 0 0 0 .914-3.782a1.98 1.98 0 0 0-2.414.483","history":"M12 8v4l2 2|M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5","home":"M5 12H3l9-9l9 9h-2M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7|M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6","info-circle":"M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m9-3h.01|M11 12h1v4h1","keyboard":"M2 8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm4 2v.01m4-.01v.01m4-.01v.01m4-.01v.01M6 14v.01M18 14v.01M10 14l4 .01","language":"M9 6.371C9 10.789 6.761 13 4 13m0-6.629h7|M5 9c0 2.144 2.252 3.908 6 4m1 7l4-9l4 9m-.9-2h-6.2M6.694 3l.793.582","link":"m9 15l6-6m-4-3l.463-.536a5 5 0 0 1 7.071 7.072L18 13m-5 5l-.397.534a5.07 5.07 0 0 1-7.127 0a4.97 4.97 0 0 1 0-7.071L6 11","list":"M9 6h11M9 12h11M9 18h11M5 6v.01M5 12v.01M5 18v.01","lock":"M5 13a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z|M11 16a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-3-5V7a4 4 0 1 1 8 0v4","menu-2":"M4 6h16M4 12h16M4 18h16","message":"M8 9h8m-8 4h6m4-9a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-5l-5 3v-3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z","microphone":"M9 5a3 3 0 0 1 3-3a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3a3 3 0 0 1-3-3z|M5 10a7 7 0 0 0 14 0M8 21h8m-4-4v4","microphone-off":"m3 3l18 18M9 5a3 3 0 0 1 6 0v5a3 3 0 0 1-.13.874m-2 2A3 3 0 0 1 9 10.002v-1|M5 10a7 7 0 0 0 10.846 5.85m2-2A6.97 6.97 0 0 0 18.998 10M8 21h8m-4-4v4","minus":"M5 12h14","moon":"M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z","palette":"M12 21a9 9 0 0 1 0-18c4.97 0 9 3.582 9 8c0 1.06-.474 2.078-1.318 2.828S17.693 15 16.5 15H14a2 2 0 0 0-1 3.75A1.3 1.3 0 0 1 12 21|M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0-2 0m4-3a1 1 0 1 0 2 0a1 1 0 1 0-2 0m4 3a1 1 0 1 0 2 0a1 1 0 1 0-2 0","pencil":"M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4","player-pause":"M6 6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm8 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1z","player-play":"M7 4v16l13-8z","player-stop":"M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z","plus":"M12 5v14m-7-7h14","refresh":"M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4","repeat":"M4 12V9a3 3 0 0 1 3-3h13m-3-3l3 3l-3 3m3 3v3a3 3 0 0 1-3 3H4m3 3l-3-3l3-3","search":"M3 10a7 7 0 1 0 14 0a7 7 0 1 0-14 0m18 11l-6-6","send":"M10 14L21 3m0 0l-6.5 18a.55.55 0 0 1-1 0L10 14l-7-3.5a.55.55 0 0 1 0-1z","settings":"M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065|M9 12a3 3 0 1 0 6 0a3 3 0 0 0-6 0","share":"M3 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m12-6a3 3 0 1 0 6 0a3 3 0 1 0-6 0m0 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0m-6.3-7.3l6.6-3.4m-6.6 6l6.6 3.4","sparkles":"M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2m0-12a2 2 0 0 1 2 2a2 2 0 0 1 2-2a2 2 0 0 1-2-2a2 2 0 0 1-2 2M9 18a6 6 0 0 1 6-6a6 6 0 0 1-6-6a6 6 0 0 1-6 6a6 6 0 0 1 6 6","star":"m12 17.75l-6.172 3.245l1.179-6.873l-5-4.867l6.9-1l3.086-6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z","sun":"M8 12a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-5 0h1m8-9v1m8 8h1m-9 8v1M5.6 5.6l.7.7m12.1-.7l-.7.7m0 11.4l.7.7m-12.1-.7l-.7.7","target":"M11 12a1 1 0 1 0 2 0a1 1 0 1 0-2 0|M7 12a5 5 0 1 0 10 0a5 5 0 1 0-10 0|M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0","text-size":"M3 7V5h13v2m-6-2v14m2 0H8m7-6v-1h6v1m-3-1v7m-1 0h2","trash":"M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3","trophy":"M8 21h8m-4-4v4M7 4h10m0 0v8a5 5 0 0 1-10 0V4M3 9a2 2 0 1 0 4 0a2 2 0 1 0-4 0m14 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0","upload":"M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 9l5-5l5 5m-5-5v12","user":"M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2","users":"M5 7a4 4 0 1 0 8 0a4 4 0 1 0-8 0M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2m1-17.87a4 4 0 0 1 0 7.75M21 21v-2a4 4 0 0 0-3-3.85","volume":"M15 8a5 5 0 0 1 0 8m2.7-11a9 9 0 0 1 0 14M6 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l3.5-4.5A.8.8 0 0 1 11 5v14a.8.8 0 0 1-1.5.5z","volume-off":"M15 8a5 5 0 0 1 1.912 4.934m-1.377 2.602A5 5 0 0 1 15 16m2.7-11a9 9 0 0 1 2.362 11.086m-1.676 2.299A9 9 0 0 1 17.7 19M9.069 5.054L9.5 4.5A.8.8 0 0 1 11 5v2m0 4v8a.8.8 0 0 1-1.5.5L6 15H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h2l1.294-1.664M3 3l18 18","wifi":"M12 18h.01m-2.838-2.828a4 4 0 0 1 5.656 0m-8.485-2.829a8 8 0 0 1 11.314 0|M3.515 9.515c4.686-4.687 12.284-4.687 17 0","wifi-off":"M12 18h.01m-2.838-2.828a4 4 0 0 1 5.656 0m-8.485-2.829a7.96 7.96 0 0 1 3.864-2.14m4.163.155a8 8 0 0 1 3.287 2M3.515 9.515A12 12 0 0 1 7.059 7.06m3.101-.92a12 12 0 0 1 10.325 3.374M3 3l18 18","x":"M18 6L6 18M6 6l12 12"};
+  /*UI-END*/
   let D = null;
-  const STOP = new Set(['a', 'an', 'the', 'to', 'of', 'is', 'am', 'are', 'my', 'your', 'our', 'his', 'her', 'its', 'this', 'that', 'it', 'and', 'or', 'in', 'on', 'at', 'for', 'with', 'be', 'do', 'does', 'i', 'you', 'we', 'he', 'she', 'they', 'me', 'us', 'them', 'let', 'lets', 'not', 'no']);
-  const clean = (g) => String(g || '').toLowerCase().replace(/\(.*?\)/g, ' ').replace(/[^a-z' ]+/g, ' ').replace(/'s\b/g, '').replace(/\s+/g, ' ').trim();
-  function use(data) { D = data && data.words ? data : null; }
+  const STROKE = 1.75;
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const inner = (data) => String(data).split('|').map((seg) => seg.charAt(0) === '!' ? '<path fill="currentColor" stroke="none" d="' + seg.slice(1) + '"/>' : '<path d="' + seg + '"/>').join('');
+  const wrap = (data, label) => '<svg class="dicon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="' + STROKE + '" stroke-linecap="round" stroke-linejoin="round" ' +
+    (label ? 'role="img" aria-label="' + esc(label) + '"' : 'aria-hidden="true"') + ' focusable="false">' + inner(data) + '</svg>';
+  const DET = new Set(['the', 'a', 'an', 'some', 'my', 'your', 'our', 'his', 'her', 'their', 'this', 'that', 'these', 'those', 'to']);
+  const NEVER = new Set(['a', 'an', 'the', 'to', 'of', 'is', 'am', 'are', 'was', 'were', 'be', 'my', 'your', 'our', 'his', 'her', 'its', 'this', 'that', 'it', 'and', 'or', 'in', 'on', 'at', 'for', 'with',
+    'do', 'does', 'i', 'you', 'we', 'he', 'she', 'they', 'me', 'us', 'them', 'let', 'lets', 'not', 'what', 'who', 'how', 'where', 'why', 'when', 'here', 'there', 'all', 'some', 'any']);
+
+  function use(data) { D = data && data.words && data.icons ? data : null; }
   async function load(url) { try { const r = await fetch(url); if (r.ok) use(await r.json()); } catch (e) { /* pictures are optional */ } return !!D; }
-  const svg = (slug) => (D && D.icons[slug]) ? '<svg class="art" viewBox="' + D.viewBox + '" aria-hidden="true">' + D.icons[slug] + '</svg>' : null;
-  function slugFor(gloss) {
-    if (!D) return null;
-    const g = clean(gloss); if (!g) return null;
-    if (D.words[g]) return D.words[g];
-    const toks = g.split(' ').filter((t) => t && !STOP.has(t));
-    for (const t of toks) { const s = D.words[t] || (t.endsWith('s') && D.words[t.slice(0, -1)]) || (t.endsWith('ing') && D.words[t.slice(0, -3)]); if (s) return s; }
+  const get = (slug) => (D && D.icons[slug]) ? wrap(D.icons[slug]) : (UI_PATHS[slug] ? wrap(UI_PATHS[slug]) : null);
+  function ui(name, opts) {
+    const slug = UI_NAMES[name] || (D && D.ui && D.ui[name]); if (!slug) return null;
+    const data = UI_PATHS[slug] || (D && D.icons[slug]); return data ? wrap(data, opts && opts.label) : null;
+  }
+
+  /* One word to one icon name. Plural and listed irregular forms are tried after the word itself. */
+  function lookup(w) {
+    const W = D.words, F = D.forms || {};
+    if (W[w] && !NEVER.has(w)) return W[w];
+    if (F[w] && W[F[w]]) return W[F[w]];
+    const cands = [];
+    if (/ies$/.test(w)) cands.push(w.slice(0, -3) + 'y');
+    if (/(ses|xes|ches|shes)$/.test(w)) cands.push(w.slice(0, -2));
+    if (/s$/.test(w) && !/ss$/.test(w)) cands.push(w.slice(0, -1));
+    for (const c of cands) if (c.length > 2 && W[c] && !NEVER.has(c)) return W[c];
     return null;
   }
-  const find = (gloss) => { const s = slugFor(gloss); return s ? svg(s) : null; };
-  const api = { use, load, find, get: svg, slugFor, get ready() { return !!D; } };
+  /* Clean a gloss into synonym alternatives ("house/home", "take / taking"); each alternative is a short noun phrase or a single word. */
+  function alternatives(gloss) {
+    const g = String(gloss || '').toLowerCase().replace(/\(.*?\)/g, ' ').replace(/[?!.,:]+/g, ' ').replace(/[^a-z0-9'\/; ]+/g, ' ').replace(/'s\b/g, '');
+    return g.split(/[\/;]/).map((a) => a.trim().split(/\s+/).filter(Boolean)).filter((t) => t.length);
+  }
+  function slugFor(gloss) {
+    if (!D) return null;
+    for (const toks of alternatives(gloss)) {
+      let t = toks.slice(); while (t.length && DET.has(t[0]) && !(t.length === 1 && D.words[t[0]])) t.shift();
+      if (!t.length || t.length > 2) continue;                          // sentences and long phrases never get a picture
+      if (t.length === 1) { const s = lookup(t[0]); if (s) return s; continue; }
+      const phrase = t.join(' '); if (D.words[phrase]) return D.words[phrase];
+      const last = t[0] + ' ' + (lookup(t[1]) ? t[1].replace(/s$/, '') : t[1]); if (D.words[last]) return D.words[last];
+    }
+    return null;
+  }
+  const find = (gloss) => { const s = slugFor(gloss); return s ? get(s) : null; };
+  const api = { use, load, find, get, ui, slugFor, get ready() { return !!D; } };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.DadiIcons = api;
 })(typeof self !== 'undefined' ? self : this);

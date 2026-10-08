@@ -39,3 +39,10 @@ Three engines, one choice in Me > Voice (Automatic, Device voice, Clear voice, D
 2. A clear offline voice (eSpeak NG compiled to WebAssembly, downloaded once, about 18 MB).
 3. Dadi's built-in synthesizer, rendered at the device's own sample rate so the browser never resamples it.
 All three are approximations until real recordings exist. No online speech service is used: free public text-to-speech services do not offer a siṭaiṅga voice, require sign-ups or keys, or send what people type to a third party.
+
+## Update 2026-10-08: learning journey and restyle
+- **Learn** now follows `LEARNING_DESIGN.md`: units from `website/data/themes.json` (hand-set `frequency_rank`, not a corpus count), a session builder (reviews due first, at most 5 new items, new items paused above 25 due), lesson steps (preview, meaning match, picture match or gloss-to-form, tap-to-build or typing, delayed retrieval, interleaved review), tolerant answer matching in `js/learn.js`, and the feedback wording of section 5. There are no streaks, points, hearts or timers.
+- **Progress** (Learn, then Progress and history; also Me) shows counts, a weekly recall figure, a strength estimate per unit, the verification mix and session history. Notes ("This differs in my family") and suggested spellings are stored locally, exported from Me, and included in backups.
+- **Storage** is additive: `state.learn` is added to older saved states on load; the review log is a separate append-only key included in export; import merges.
+- **Look**: flat surfaces, one accent, no gradients, mascot or illustrations. Tab bar icons carry text labels; list rows use Tabler icons; concept pictures appear only for strict icon matches. Device audio is labelled "Device voice (may be inaccurate)" and is off in lessons by default.
+- **Not built yet** (no data or recordings): listening and ear-training exercises, per-unit Watch slot, example-sentence input step, noticing question, odd one out, speed round, read-aloud check.

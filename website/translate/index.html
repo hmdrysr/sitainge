@@ -1,45 +1,55 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src https: 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https: 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
-<title>Translate to siṭaiṅga</title>
-<meta name="description" content="Draft English to siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. Unverified. Runs in your browser.">
+<meta name="color-scheme" content="light dark">
+<title>Translator · siṭaiṅge</title>
+<meta name="description" content="A draft English to siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. The output is unverified. It runs in the browser.">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../site.css">
 <link rel="stylesheet" href="translate.css">
 </head>
 <body>
-<main class="wrap tr">
-<p><a href="../">siṭaiṅga project</a> &middot; <a href="../dadi/">Dadi</a></p>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="../">siṭaiṅge</a>
+    <nav class="nav" aria-label="Site">
+      <a href="../dictionary/">Dictionary</a><a href="./" aria-current="page">Translator</a><a href="../contribute.html">Contribute</a><a href="../dadi/">Dadi</a>
+    </nav>
+  </div>
+</header>
+<main id="main" tabindex="-1" class="wrap page tr">
 <h1>English to siṭaiṅga</h1>
-<p class="lead">A word-for-word draft using only words the project already holds. It looks meanings up; it does not do grammar, and it invents nothing. Words it does not know stay in English.</p>
+<p class="lede">A word-for-word draft that uses only words already in the project dictionary. The tool looks up meanings; it applies no grammar and adds no words. Words that are not in the dictionary stay in English.</p>
 <div class="panes">
   <section aria-labelledby="l-in"><h2 id="l-in">English</h2>
-    <textarea id="in" rows="8" spellcheck="true" autocomplete="off" placeholder="Type or paste English here" aria-describedby="cov"></textarea></section>
+    <textarea id="in" rows="8" spellcheck="true" autocomplete="off" placeholder="Type or paste English text" aria-describedby="cov"></textarea></section>
   <section aria-labelledby="l-out"><h2 id="l-out">siṭaiṅga (draft)</h2>
     <div id="out" class="out" lang="ctg" aria-live="polite"></div></section>
 </div>
-<p id="cov" class="cov" role="status">Type something to begin.</p>
+<p id="cov" class="cov" role="status">Enter text to see a draft.</p>
 <div id="detail" class="detail" hidden></div>
 <div class="row">
   <button id="copy" class="btn primary" type="button">Copy</button>
-  <button id="listen" class="btn" type="button">Listen</button>
+  <button id="listen" class="btn" type="button">Play approximate sound</button>
   <a id="suggest" class="btn" href="https://github.com/hmdrysr/sitainge/issues/new" target="_blank" rel="noopener noreferrer">Suggest a missing word</a>
 </div>
-<p id="tts" class="note"></p>
-<p class="note">Highlighted dotted words were found; tap one to see the English original, its source entry and its evidence level. Words with a red wavy underline were not found. Every level here is unverified unless the project has assessed it. AI output is never counted as evidence.</p>
+<p id="tts" class="note" hidden></p>
+<p class="note">Words with a dotted underline were found in the dictionary. Select one to see the English original, its source entry and its evidence level. Words with a red wavy underline were not found. Every level shown is unverified unless the project has assessed it. AI output is not counted as evidence.</p>
 
-<h2>Translate a web page</h2>
-<p>This page cannot fetch other websites for you: browsers block it, and nothing you read should pass through a server anyway. Two ways that keep the text on your device:</p>
-<ul>
-<li><strong>Extension</strong> (Chrome, Edge, Firefox): <a href="../downloads/sitainge-translator-extension-0.1.0.zip">download the extension (.zip)</a>. It is not yet in any store; the <a href="../docs/browser-extension.md">install notes</a> explain how to load it.</li>
-<li><strong>Bookmarklet</strong>: drag <a id="bm" class="btn" href="#">siṭaiṅga page</a> to your bookmarks bar, then click it on any page. It may be blocked on sites with a strict security policy. Or copy the code: <button id="bmcopy" class="btn" type="button">Copy bookmarklet</button></li>
+<h2 id="extension">Translate a web page</h2>
+<p>This page cannot fetch other websites. Browsers block it, and page text should not pass through a server. Two options keep the text on the device.</p>
+<ul class="plain">
+<li><b>Extension</b> (Chrome, Edge, Firefox): <a href="../downloads/sitainge-translator-extension-0.1.0.zip">download the extension (.zip)</a>. It is not yet in any store. The <a href="https://github.com/hmdrysr/sitainge/blob/main/docs/browser-extension.md">installation notes</a> explain how to load it.</li>
+<li><b>Bookmarklet</b>: drag <a id="bm" class="btn" href="#">siṭaiṅga page</a> to the bookmarks bar, then select it on any page. Sites with a strict security policy may block it. The code can also be copied: <button id="bmcopy" class="btn" type="button">Copy bookmarklet</button></li>
 </ul>
-<p id="src" class="note"></p>
-<p class="note">CC0. No tracking, no accounts. Your text stays in this browser; only the project's public dictionary files are fetched.</p>
+<p id="src" class="small"></p>
 </main>
+<footer class="foot"><div class="wrap"><p class="small">The data is in the public domain (CC0 1.0). The page uses no tracking and no accounts. Typed text stays in the browser; only the project's public dictionary files are downloaded.</p></div></footer>
 <script src="../dadi/js/ipa-data.js"></script>
 <script src="../dadi/js/g2p.js"></script>
 <script src="../dadi/js/native-tts.js"></script>

@@ -1,58 +1,32 @@
-/* siṭaiṅga Dictionary (CC0). System fonts, uniform margins, light and dark. */
-:root{--bg:#fbfbfd;--alt:#f2f2f7;--surface:#fff;--text:#1d1d1f;--muted:#5f6368;--line:#d6d6db;--accent:#3a46c9;--on-accent:#fff;--tint:rgba(58,70,201,.10);--warn:#8a5a00;--warnbg:#fff4d6;--ok:#14663a;--okbg:#e0f4e8;--gap:clamp(16px,4vw,24px);--r:14px;
---font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Noto Sans","Helvetica Neue",Arial,sans-serif;--ipa:"Charis SIL","Gentium Plus","Noto Serif","DejaVu Serif",Georgia,serif}
-@media (prefers-color-scheme:dark){:root{--bg:#000;--alt:#111114;--surface:#1c1c1f;--text:#f5f5f7;--muted:#a1a1a6;--line:#38383c;--accent:#8e98ff;--on-accent:#000;--tint:rgba(142,152,255,.16);--warn:#ffd27a;--warnbg:#3a2c0a;--ok:#8fe0b0;--okbg:#0f2c1a}}
-*,*::before,*::after{box-sizing:border-box;min-width:0}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.5 var(--font);overflow-x:hidden}
-a{color:var(--accent)}
-h1,h2,h3,p,li,dd,dt{overflow-wrap:anywhere}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-.skip{position:absolute;left:-999px;top:0;background:var(--accent);color:var(--on-accent);padding:8px 12px;z-index:50}
-.skip:focus{left:8px;top:8px}
-.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 var(--gap)}
-.bar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
-.bar-in{max-width:880px;margin:0 auto;padding:0 var(--gap);min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px 16px;flex-wrap:wrap}
-.brand{font-family:var(--ipa);font-weight:600;font-size:1.2rem;color:var(--text);text-decoration:none}
-.brand span{font-family:var(--font);font-weight:400;color:var(--muted);font-size:.95rem}
-.bar nav{display:flex;gap:16px;font-size:.92rem}.bar nav a{color:var(--muted);text-decoration:none}
-main{padding-top:24px;padding-bottom:24px;outline:none}
-h1{font-size:clamp(1.8rem,6vw,2.4rem);line-height:1.1;letter-spacing:-.015em;margin:0 0 6px}
-h2{font-size:1.15rem;margin:28px 0 8px}
-.lede{color:var(--muted);margin:0 0 20px}
-.search{display:block;width:100%;min-height:48px;padding:10px 16px;font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
-.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
-.seg button{border:0;background:none;color:var(--text);font:inherit;font-size:.92rem;padding:8px 14px;min-height:40px;cursor:pointer}
-.seg button[aria-pressed=true]{background:var(--accent);color:var(--on-accent)}
-select{font:inherit;font-size:.92rem;min-height:40px;padding:6px 10px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;max-width:100%}
-label.f{display:flex;flex-direction:column;gap:2px;font-size:.78rem;color:var(--muted)}
-.az{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
-.az button{min-width:34px;min-height:34px;padding:0 6px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:8px;font:inherit;font-size:.88rem;cursor:pointer}
-.az button[aria-pressed=true]{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
-.az button:disabled{opacity:.35;cursor:default}
-.count{color:var(--muted);font-size:.9rem;margin:12px 0 4px}
-ul.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-ul.list li{border-bottom:1px solid var(--line)}
-ul.list a{display:block;padding:12px 2px;text-decoration:none;color:var(--text)}
-ul.list a:hover{background:var(--tint)}
-.hw{font-family:var(--ipa);font-size:1.15rem;font-weight:600}
-.gl{color:var(--muted)}
-.mini{display:inline-block;font-size:.75rem;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin-left:6px;color:var(--muted);vertical-align:middle}
-.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--accent);color:var(--on-accent);font:inherit;font-weight:600;text-decoration:none;cursor:pointer}
-.btn.alt{background:var(--tint);color:var(--accent)}
-.more{margin:16px 0}
-.empty{background:var(--alt);border-radius:var(--r);padding:20px;margin:16px 0}
-.badge{display:inline-block;border-radius:999px;padding:2px 12px;font-size:.88rem;font-weight:600}
-.badge.low{background:var(--warnbg);color:var(--warn)}.badge.mid{background:var(--tint);color:var(--accent)}.badge.high{background:var(--okbg);color:var(--ok)}
-.back{display:inline-block;margin-bottom:12px}
-.entry h1{font-family:var(--ipa)}
-.pic{width:96px;height:96px;float:right;margin:0 0 8px 12px}.pic svg{width:100%;height:100%}
-dl{margin:12px 0;display:grid;grid-template-columns:minmax(90px,150px) 1fr;gap:8px 16px}
-dt{color:var(--muted);font-size:.9rem}dd{margin:0}
-@media (max-width:420px){dl{grid-template-columns:1fr;gap:0}dd{margin-bottom:10px}}
-.ipa{font-family:var(--ipa)}
-.note{background:var(--alt);border-radius:var(--r);padding:12px 16px;font-size:.92rem;margin:12px 0;clear:both}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0;clear:both}
-.foot{padding-bottom:calc(32px + env(safe-area-inset-bottom));border-top:1px solid var(--line);padding-top:16px}
+/* Dictionary page (CC0). Shared tokens, header and controls come from ../site.css. */
+.entry h1, .hw { font-family: var(--serif); }
+.lede { margin-bottom: var(--s5); }
+.search { margin-bottom: var(--s3); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--surface); }
+.seg button { border: 0; background: none; color: var(--text); font: inherit; font-size: var(--t15); padding: 0 var(--s4); min-height: 44px; cursor: pointer; }
+.seg button[aria-pressed=true] { background: var(--accent); color: var(--on-accent); }
+label.f { display: flex; flex-direction: column; gap: var(--s1); font-size: var(--t13); color: var(--muted); }
+.az { display: flex; flex-wrap: wrap; gap: var(--s1); margin: var(--s2) 0; }
+.az button { min-width: 44px; min-height: 44px; padding: 0 var(--s1); border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 10px; font: inherit; font-size: var(--t15); cursor: pointer; }
+.az button[aria-pressed=true] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.az button:disabled { opacity: .35; cursor: default; }
+.count { color: var(--muted); font-size: var(--t15); margin: var(--s3) 0 var(--s1); }
+ul.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+ul.list li { border-bottom: 1px solid var(--line); }
+ul.list a { display: block; min-height: 44px; padding: var(--s3) var(--s1); text-decoration: none; color: var(--text); }
+ul.list a:hover { background: var(--tint); }
+.hw { font-size: var(--t20); font-weight: 600; }
+.gl { color: var(--muted); }
+.mini { display: inline-block; font-size: var(--t13); border: 1px solid var(--line); border-radius: 999px; padding: 0 var(--s2); margin-left: var(--s2); color: var(--muted); vertical-align: middle; }
+.more { margin: var(--s4) 0; }
+.empty { background: var(--alt); border-radius: var(--r); padding: var(--s5); margin: var(--s4) 0; }
+.empty p:last-child { margin-bottom: 0; }
+.badge { display: inline-block; border-radius: 999px; padding: var(--s1) var(--s3); font-size: var(--t15); font-weight: 600; }
+.badge.low { background: var(--warnbg); color: var(--warn); } .badge.mid { background: var(--tint); color: var(--accent); } .badge.high { background: var(--okbg); color: var(--ok); }
+.back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: var(--s2); }
+dl.facts { margin: var(--s4) 0; display: grid; grid-template-columns: minmax(90px, 150px) 1fr; gap: var(--s2) var(--s4); }
+dl.facts dt { color: var(--muted); font-size: var(--t15); } dl.facts dd { margin: 0; }
+@media (max-width: 420px) { dl.facts { grid-template-columns: 1fr; gap: 0; } dl.facts dd { margin-bottom: var(--s3); } }
+.ipa { font-family: var(--serif); }
+.entry .note { clear: both; }
+.actions { display: flex; flex-wrap: wrap; gap: var(--s3); margin: var(--s4) 0; }

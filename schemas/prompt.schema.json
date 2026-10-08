@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Elicitation prompt (English only)",
+  "description": "Prompts are English meanings or questions. No Chittagonian appears in prompts/.",
+  "type": "object",
+  "required": [
+    "id",
+    "set"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "meaning_en"
+      ]
+    },
+    {
+      "required": [
+        "prompt_en"
+      ]
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^PRM-[A-Z]+-[0-9]+$"
+    },
+    "set": {
+      "type": "string"
+    },
+    "rank": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "domain": {
+      "type": "string"
+    },
+    "meaning_en": {
+      "type": "string"
+    },
+    "prompt_en": {
+      "type": "string"
+    },
+    "origin": {
+      "type": "string",
+      "description": "A source id or 'project-drafted'."
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

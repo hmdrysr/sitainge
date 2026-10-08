@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Public speaker record",
+  "description": "Pseudonymous id and coarse bands only. The full register stays private, outside Git. Do not add names, contact details, exact ages or locality.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "age_band",
+    "gender",
+    "place"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^CTG-SPK-[0-9]{5}$"
+    },
+    "age_band": {
+      "enum": [
+        "under-30",
+        "30-59",
+        "60-plus",
+        "not stated"
+      ]
+    },
+    "gender": {
+      "enum": [
+        "woman",
+        "man",
+        "another description",
+        "not stated"
+      ],
+      "description": "As the speaker describes it."
+    },
+    "place": {
+      "type": "object",
+      "description": "Public place at upazila level only. Finer locality stays private and out of Git.",
+      "required": [
+        "district",
+        "upazila"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "district": {
+          "type": "string"
+        },
+        "upazila": {
+          "type": "string"
+        }
+      }
+    },
+    "languages_note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Coarse, for example 'also speaks the national standard'. No detail that could identify a person."
+    },
+    "withdrawn": {
+      "type": "boolean"
+    }
+  }
+}
