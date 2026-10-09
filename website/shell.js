@@ -26,7 +26,7 @@
     var host = bar && bar.querySelector('.bar-in');
     if (host) {
       var tg = document.createElement('button'); tg.type = 'button'; tg.className = 'theme-btn';
-      ['moon', 'sun'].forEach(function (n) { var s = document.createElement('span'); s.className = 'ti ti-' + n; s.setAttribute('data-icon', n); s.setAttribute('aria-hidden', 'true'); tg.appendChild(s); });
+      [['moon', 'dark_mode'], ['sun', 'light_mode']].forEach(function (n) { var s = document.createElement('i'); s.className = 'msi ti ti-' + n[0]; s.setAttribute('aria-hidden', 'true'); s.textContent = n[1]; tg.appendChild(s); });
       var mark = function () { tg.setAttribute('aria-pressed', String(mode === 'dark')); tg.setAttribute('aria-label', mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'); };
       onToggle = mark;
       tg.addEventListener('click', function () {
@@ -36,7 +36,6 @@
       });
       mark();
       var brand = host.querySelector('.brand'); if (brand) brand.after(tg); else host.prepend(tg);
-      if (window.SiteIcons) window.SiteIcons.draw(tg);
     }
     /* menu sheet on narrow screens */
     if (!btn || !nav) return;

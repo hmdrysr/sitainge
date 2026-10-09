@@ -10,7 +10,7 @@
 .sticky { position: sticky; top: calc(var(--bar-h) + env(safe-area-inset-top)); z-index: 20; background: var(--bg); padding: var(--s2) 0 var(--s3); margin: 0 calc(-1 * var(--gutter)); padding-left: var(--gutter); padding-right: var(--gutter); }
 .field { position: relative; display: flex; align-items: center; margin: 0 0 var(--s3); }
 .field .lead { position: absolute; left: var(--s4); color: var(--muted); pointer-events: none; }
-input.q, input.q[type=search] { -webkit-appearance: none; appearance: none; width: 100%; min-height: 52px; padding: 0 52px 0 50px; border-radius: 16px; border: 1px solid transparent; background: var(--alt); color: var(--text); font-size: 1.125rem; }
+input.q, input.q[type=search] { -webkit-appearance: none; appearance: none; width: 100%; min-height: 52px; padding: 0 var(--sp-xl) 0 var(--sp-xl); border-radius: 16px; border: 1px solid transparent; background: var(--alt); color: var(--text); font-size: 1.125rem; }
 input.q::placeholder { color: var(--muted); opacity: 1; }
 input.q::-webkit-search-cancel-button, input.q::-webkit-search-decoration { -webkit-appearance: none; display: none; }
 input.q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-color: var(--accent); background: var(--surface); }
@@ -19,13 +19,13 @@ input.q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; b
 .clear:hover { background: var(--tint); }
 
 .tools { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); flex-wrap: wrap; }
-.seg { display: inline-flex; padding: 3px; border-radius: 12px; background: var(--alt); }
+.seg { display: inline-flex; padding: var(--sp-3xs); border-radius: 12px; background: var(--alt); }
 .seg button { border: 0; background: none; color: var(--text); font: inherit; font-size: var(--t15); padding: 0 var(--s4); min-height: 44px; min-width: 44px; border-radius: 10px; cursor: pointer; }
 .seg button[aria-pressed=true] { background: var(--surface); color: var(--accent); font-weight: 600; box-shadow: 0 1px 3px rgba(15,34,54,.18); }
 .pill { display: inline-flex; align-items: center; gap: var(--s2); min-height: 44px; padding: 0 var(--s4); border: 0; border-radius: 999px; background: var(--tint); color: var(--accent); font: inherit; font-size: var(--t15); font-weight: 600; cursor: pointer; text-decoration: none; }
 .pill:hover { filter: brightness(.96); }
 .pill .ic svg { width: 20px; height: 20px; }
-.dot { min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: var(--t13); line-height: 20px; text-align: center; }
+.dot { min-width: 20px; height: 20px; padding: 0 var(--sp-3xs); border-radius: 999px; background: var(--accent); color: var(--on-accent); font-size: var(--t13); line-height: 20px; text-align: center; }
 .dot[hidden] { display: none; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -114,3 +114,9 @@ ul.rows.compact a.row { min-height: 56px; }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 }
 
+.field .lead { top: 50%; transform: translateY(-50%); z-index: 2; display: inline-grid; }
+.field .lead .msi { font-size: var(--icon-m); }
+/* Beer CSS also styles .row; keep entry rows on one line with the chevron at the end */
+ul.rows a.row { flex-wrap: nowrap; justify-content: flex-start; }
+ul.rows a.row > .rbody { flex: 1 1 auto; margin: 0; }
+ul.rows a.row > .go { flex: none; margin: 0 0 0 auto; }

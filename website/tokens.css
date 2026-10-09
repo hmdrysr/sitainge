@@ -1,0 +1,41 @@
+/* siṭaiṅge design tokens (CC0). The one place for type, spacing and icon sizes on every page, Dadi included.
+   Fluid scale in the style of Utopia (utopia.fyi): each step grows smoothly from a 360px screen to a 1280px screen.
+   Type: 16px base at 360 (ratio 1.125) to 18px base at 1280 (ratio 1.2). Space: multiples of the base size.
+   Icons are Material Symbols Outlined (Apache 2.0, vendored in vendor/beercss), one symbol per feature. */
+:root {
+  --fs-m2: clamp(0.7901rem, 0.7936rem + -0.0154vw, 0.7813rem);
+  --fs-m1: clamp(0.8889rem, 0.8699rem + 0.0845vw, 0.9375rem);
+  --fs-0: clamp(1.0000rem, 0.9511rem + 0.2174vw, 1.1250rem);
+  --fs-1: clamp(1.1250rem, 1.0370rem + 0.3913vw, 1.3500rem);
+  --fs-2: clamp(1.2656rem, 1.1270rem + 0.6163vw, 1.6200rem);
+  --fs-3: clamp(1.4238rem, 1.2203rem + 0.9046vw, 1.9440rem);
+  --fs-4: clamp(1.6018rem, 1.3158rem + 1.2713vw, 2.3328rem);
+  --fs-5: clamp(1.8020rem, 1.4118rem + 1.7345vw, 2.7994rem);
+  --fs-6: clamp(2.0273rem, 1.5061rem + 2.3164vw, 3.3592rem);
+  --sp-3xs: clamp(0.2500rem, 0.2378rem + 0.0543vw, 0.2812rem);
+  --sp-2xs: clamp(0.5000rem, 0.4755rem + 0.1087vw, 0.5625rem);
+  --sp-xs: clamp(0.7500rem, 0.7133rem + 0.1630vw, 0.8438rem);
+  --sp-s: clamp(1.0000rem, 0.9511rem + 0.2174vw, 1.1250rem);
+  --sp-m: clamp(1.5000rem, 1.4266rem + 0.3261vw, 1.6875rem);
+  --sp-l: clamp(2.0000rem, 1.9022rem + 0.4348vw, 2.2500rem);
+  --sp-xl: clamp(3.0000rem, 2.8533rem + 0.6522vw, 3.3750rem);
+  --sp-2xl: clamp(4.0000rem, 3.8043rem + 0.8696vw, 4.5000rem);
+  --sp-3xl: clamp(6.0000rem, 5.7065rem + 1.3043vw, 6.7500rem);
+  --icon-s: 1.25rem; --icon-m: 1.5rem; --icon-l: 1.75rem; --icon-xl: 3.5rem;
+  --tap: 44px;
+  /* older names kept as aliases so every stylesheet reads the same scale */
+  --s1: var(--sp-3xs); --s2: var(--sp-2xs); --s3: var(--sp-xs); --s4: var(--sp-s); --s5: var(--sp-m); --s6: var(--sp-l); --s7: var(--sp-xl);
+  --t34: var(--fs-6); --t28: var(--fs-5); --t22: var(--fs-3); --t20: var(--fs-2); --t17: var(--fs-0); --t15: var(--fs-m1); --t13: var(--fs-m2);
+  --t-title: var(--fs-6); --t-section: var(--fs-3); --t-sub: var(--fs-2); --t-body: var(--fs-0); --t-second: var(--fs-m1); --t-cap: var(--fs-m2); --t-tab: var(--fs-m2);
+  --pad: var(--sp-s);
+}
+.msi { font-family: "Material Symbols Outlined"; font-weight: normal; font-style: normal; font-size: var(--icon-m); line-height: 1; letter-spacing: normal;
+  text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-smoothing: antialiased;
+  font-feature-settings: "liga"; width: 1em; height: 1em; overflow: hidden; flex: none; vertical-align: middle; user-select: none; }
+.ic { display: inline-grid; place-items: center; flex: none; line-height: 1; }
+.ic .msi, .ti .msi { font-size: var(--icon-m); }
+.ic.s20 .msi, .pill .msi, .theme-btn .msi { font-size: var(--icon-s); }
+.ic.s28 .msi, .tool .ic .msi { font-size: var(--icon-l); }
+nav.bottom i, .tabs .msi { font-size: var(--icon-m); }
+button, .button, nav.bottom a, .tabs a, .chip, .pill { min-height: var(--tap); }
+.btn, .opt, .input, .tilebtn, .field, .q { box-sizing: border-box; max-width: 100%; }
