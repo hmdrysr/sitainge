@@ -11,7 +11,7 @@
 #app label { display: block; font-weight: 600; margin: var(--s3) 0 var(--s1); }
 #app label.choice { display: flex; gap: var(--s3); align-items: flex-start; font-weight: 400; margin: var(--s2) 0; min-height: 44px; }
 .choice input { width: 24px; height: 24px; margin-top: var(--s1); flex: none; accent-color: var(--accent); }
-#app button { font: inherit; font-weight: 600; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 0; background: var(--tint); color: var(--accent); cursor: pointer; }
+#app button { font: inherit; font-weight: 600; min-height: 44px; padding: 0 var(--sp-s); border-radius: 999px; border: 0; background: var(--tint); color: var(--accent); cursor: pointer; }
 #app button.primary { background: var(--accent); color: var(--on-accent); }
 #app button[aria-pressed=true] { background: var(--accent); color: var(--on-accent); }
 #app button:disabled { opacity: .45; cursor: not-allowed; }

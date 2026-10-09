@@ -301,7 +301,7 @@
   const itemOf = (id) => (S().learn.items[id]) || {};
   const entryName = (e) => L.display(e);
   function ico(name, size) { return h('span', { class: 'ic s' + (size || 24), 'aria-hidden': 'true', html: Icons.ui(name) || '' }); }
-  function icoSlug(slug, size) { return h('span', { class: 'ic s' + (size || 24), 'aria-hidden': 'true', html: (slug && Icons.get(slug)) || Icons.ui('book') || '' }); }
+  function icoSlug(slug, size) { return h('span', { class: 'ic s' + (size || 24), 'aria-hidden': 'true', html: (slug && Icons.get(slug)) || Icons.ui('dictionary') || '' }); }
   function teachable() {
     if (poolCache.n !== index.all.length) poolCache = { n: index.all.length, list: index.all.filter((x) => x.kind !== 'text' && !L.hasBlank(x) && L.display(x).length <= 60 && x.gloss.length <= 60) };
     return poolCache.list;

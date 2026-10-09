@@ -24,17 +24,17 @@
   const inner = (data) => String(data).split('|').map((seg) => seg.charAt(0) === '!' ? '<path fill="currentColor" stroke="none" d="' + seg.slice(1) + '"/>' : '<path d="' + seg + '"/>').join('');
   const wrap = (data, label) => '<svg class="dicon" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="' + STROKE + '" stroke-linecap="round" stroke-linejoin="round" ' +
     (label ? 'role="img" aria-label="' + esc(label) + '"' : 'aria-hidden="true"') + ' focusable="false">' + inner(data) + '</svg>';
+  /* Interface icons are Material Symbols Outlined (Apache 2.0), one symbol per feature, drawn from the vendored font (vendor/beercss). */
+  const MS = {"learn": "school", "dadi": "school", "dictionary": "menu_book", "translate": "translate", "translator": "translate", "contribute": "edit_note", "extension": "extension", "puzzle": "extension", "words": "list", "write": "keyboard", "teach": "edit", "me": "person", "play": "play_arrow", "pause": "pause", "stop": "stop", "check": "check", "x": "close", "close": "close", "search": "search", "settings": "settings", "chevron": "chevron_right", "chevron-right": "chevron_right", "chevron-left": "chevron_left", "chevron-up": "expand_less", "chevron-down": "expand_more", "back": "arrow_back", "next": "arrow_forward", "volume": "volume_up", "mute": "volume_off", "mic": "mic", "mic-off": "mic_off", "headphones": "headphones", "plus": "add", "minus": "remove", "trash": "delete", "edit": "edit", "star": "star", "bookmark": "bookmark", "home": "home", "info": "info", "warning": "warning", "error": "error", "success": "check_circle", "refresh": "refresh", "repeat": "repeat", "download": "download", "upload": "upload", "share": "share", "copy": "content_copy", "eye": "visibility", "eye-off": "visibility_off", "lock": "lock", "moon": "dark_mode", "sun": "light_mode", "theme": "dark_mode", "offline": "wifi_off", "online": "wifi", "streak": "local_fire_department", "trophy": "trophy", "calendar": "calendar_today", "clock": "schedule", "bell": "notifications", "filter": "tune", "more": "more_horiz", "menu": "menu", "undo": "undo", "redo": "redo", "help": "help", "heart": "favorite", "list": "list", "keyboard": "keyboard", "pencil": "edit", "user": "person", "book": "school", "cards": "style", "target": "target", "link": "link", "external": "open_in_new", "language": "translate", "text": "text_fields", "save": "save", "history": "history", "chart": "bar_chart", "palette": "palette", "camera": "photo_camera", "flag": "flag", "send": "send", "message": "chat", "users": "group", "sparkle": "auto_awesome"};
+  const msi = (n, label) => '<i class="msi" ' + (label ? 'role="img" aria-label="' + esc(label) + '"' : 'aria-hidden="true"') + '>' + n + '</i>';
   const DET = new Set(['the', 'a', 'an', 'some', 'my', 'your', 'our', 'his', 'her', 'their', 'this', 'that', 'these', 'those', 'to']);
   const NEVER = new Set(['a', 'an', 'the', 'to', 'of', 'is', 'am', 'are', 'was', 'were', 'be', 'my', 'your', 'our', 'his', 'her', 'its', 'this', 'that', 'it', 'and', 'or', 'in', 'on', 'at', 'for', 'with',
     'do', 'does', 'i', 'you', 'we', 'he', 'she', 'they', 'me', 'us', 'them', 'let', 'lets', 'not', 'what', 'who', 'how', 'where', 'why', 'when', 'here', 'there', 'all', 'some', 'any']);
 
   function use(data) { D = data && data.words && data.icons ? data : null; }
   async function load(url) { try { const r = await fetch(url); if (r.ok) use(await r.json()); } catch (e) { /* pictures are optional */ } return !!D; }
-  const get = (slug) => (D && D.icons[slug]) ? wrap(D.icons[slug]) : (UI_PATHS[slug] ? wrap(UI_PATHS[slug]) : null);
-  function ui(name, opts) {
-    const slug = UI_NAMES[name] || (D && D.ui && D.ui[name]); if (!slug) return null;
-    const data = UI_PATHS[slug] || (D && D.icons[slug]); return data ? wrap(data, opts && opts.label) : null;
-  }
+  const get = (slug) => (D && D.icons[slug]) ? wrap(D.icons[slug]) : (MS[slug] ? msi(MS[slug]) : null);
+  function ui(name, opts) { const n = MS[name] || MS[UI_NAMES[name]]; return n ? msi(n, opts && opts.label) : null; }
 
   /* One word to one icon name. Plural and listed irregular forms are tried after the word itself. */
   function lookup(w) {

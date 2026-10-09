@@ -1,0 +1,3 @@
+material-symbols-outlined.woff2 is Material Symbols Outlined by Google, licensed under the Apache License, Version 2.0
+(https://www.apache.org/licenses/LICENSE-2.0). Source: https://github.com/google/material-design-icons. Shipped with Beer CSS 5.0.3.
+It is the single interface icon set for every page (tokens.css, .msi class). Not subset: the full ligature set keeps every icon name usable offline.
