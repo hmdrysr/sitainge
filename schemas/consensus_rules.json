@@ -25,7 +25,8 @@
   "min_form_length": "Forms shorter than this (after normalisation) are never matched, so single letters cannot agree by chance.",
   "fuzzy_min_length": "Forms shorter than this must be identical after normalisation. With a 0.85 threshold, one edit needs at least 7 letters in any case, so words of 3 to 6 letters must also be identical.",
   "sentence_min_tokens": "A form with at least this many words, or a record whose form_note says sentence, is matched exactly only.",
-  "contested_agreement": "Contested when voters >= min_voters and agreement <= this value."
+  "contested_agreement": "Contested when voters >= min_voters and agreement <= this value.",
+  "attestation": "Attestation rule (EVIDENCE_POLICY.md): an identical form from at least 3 independent source groups on at least 2 distinct dates is the preferred form of its variant group; otherwise the form attested by the most groups; ties are broken by spelling votes, else left open for review."
  },
  "source_groups": {
   "SRC-IPA-CHATGAIYYA-BENCH": "compiled-chatgaiyya-benchmark",
@@ -129,7 +130,9 @@
   "SRC-PTR-REGSPEECH12": "solo-ptr-regspeech12",
   "SRC-PTR-BANGLALP-2025-26": "solo-ptr-banglalp-2025-26",
   "SRC-CTG-EBIBLE-INDEX-NEG": "solo-ctg-ebible-index-neg",
-  "SRC-CTG-TATOEBA-FLORES-NEG": "solo-ctg-tatoeba-flores-neg"
+  "SRC-CTG-TATOEBA-FLORES-NEG": "solo-ctg-tatoeba-flores-neg",
+  "SRC-NATIVE-HY-2026-10-10": "owner-speaker",
+  "SRC-NEWS-LATIN-2026-10-10": "solo-news-latin-deyang"
  },
  "group_notes": {
   "compiled-chatgaiyya-benchmark": "One compiled benchmark. Vashantor, ONUBAD, BD-Dialect and ChatgaiyyaAlap were read as copies inside the ChatgaiyyaBench repository, and the grouped IPA upload credits the benchmark and its corpus jointly. The ResearchGate dictionary is listed by the same upload and no entry is attributed to it, so it is grouped here to stay conservative. The Safin thesis dataset (SRC-CTG-SIHABSAFIN-THESIS) is grouped here too, because about half of its Chittagonian sentences also occur in the ChatgaiyyaBench data and its other sources are not named.",
@@ -143,5 +146,9 @@
   "wikivoyage": "Wikivoyage phrasebook and its Sygic Travel republication.",
   "solo-*": "Every group named solo-<source> is a source judged independent of all others: a different publication, website, dataset or person. This is a judgement from the source metadata and can be wrong.",
   "shobuz-nsu-dialect": "Mahedi Hasan Shobuz's North South University project spreadsheet. No overlap with the Safin thesis dataset was found (0 of 936 Chittagonian sentences), but its own origin is undocumented."
+ },
+ "attestation": {
+  "preferred_min_independent_groups": 3,
+  "preferred_min_distinct_dates": 2
  }
 }
