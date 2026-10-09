@@ -3,19 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data: https://upload.wikimedia.org https://i.ytimg.com; connect-src 'self' https://raw.githubusercontent.com https://api.github.com; manifest-src 'self'; form-action 'none'; base-uri 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://upload.wikimedia.org https://i.ytimg.com; connect-src 'self' https://raw.githubusercontent.com https://api.github.com; manifest-src 'self'; form-action 'none'; base-uri 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
 <title>siṭaiṅge: documenting the Chittagonian language</title>
 <meta name="description" content="siṭaiṅge is an open project that documents siṭaiṅga, the language called Chittagonian in English (ISO 639-3: ctg). It publishes a learning app, a dictionary, a translator and a browser extension, all built from a single public repository.">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="vendor/noto-sans/noto-sans.css">
+<link rel="stylesheet" href="vendor/beercss/beer.min.css">
+<link rel="stylesheet" href="beer-theme.css">
 <link rel="stylesheet" href="site.css">
 <script src="shell.js"></script>
 </head>
 <body>
 <a class="skip" href="#top">Skip to content</a>
-<header class="bar">
+<header class="bar surface">
   <div class="bar-in">
     <a class="brand" href="./" aria-current="page">siṭaiṅge</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-ic" aria-hidden="true"></span>Menu</button>
@@ -150,6 +153,8 @@
     <p class="small" id="credits">Where sources disagree, figures are given as ranges. Population figures follow Wikipedia's reading of the 2022 census and have not been verified against the census tables.</p>
   </div>
 </footer>
+<nav class="bottom s site-tabs" aria-label="Tools"><a href="dictionary/"><i aria-hidden="true">search</i><span>Dictionary</span></a><a href="translate/"><i aria-hidden="true">translate</i><span>Translator</span></a><a href="contribute.html"><i aria-hidden="true">edit_note</i><span>Contribute</span></a><a href="dadi/"><i aria-hidden="true">school</i><span>Dadi</span></a></nav>
+
 <noscript><p class="wrap">The map, statistics and videos require JavaScript. The rest of this page works without it.</p></noscript>
 <script src="dadi/js/icons.js"></script>
 <script src="ui-icons.js"></script>

@@ -3,20 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src https: 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; font-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https: 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
 <title>Translator · siṭaiṅge</title>
 <meta name="description" content="A draft English-to-siṭaiṅga (Chittagonian) translator that uses only words held in the open project dictionary. The output is unverified, and the tool runs in the browser.">
 <link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../vendor/noto-sans/noto-sans.css">
+<link rel="stylesheet" href="../vendor/beercss/beer.min.css">
+<link rel="stylesheet" href="../beer-theme.css">
 <link rel="stylesheet" href="../site.css">
 <script src="../shell.js"></script>
 <link rel="stylesheet" href="translate.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="bar">
+<header class="bar surface">
   <div class="bar-in">
     <a class="brand" href="../">siṭaiṅge</a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><span class="menu-ic" aria-hidden="true"></span>Menu</button>
@@ -52,6 +55,8 @@
 </main>
 <footer class="foot"><div class="wrap"><p class="small">The data is in the public domain (CC0 1.0). This page uses no tracking and requires no account. Typed text stays in the browser; only the project's public dictionary files are downloaded.</p>
 </div></footer>
+<nav class="bottom s site-tabs" aria-label="Tools"><a href="../dictionary/"><i aria-hidden="true">search</i><span>Dictionary</span></a><a href="../translate/" aria-current="page"><i aria-hidden="true">translate</i><span>Translator</span></a><a href="../contribute.html"><i aria-hidden="true">edit_note</i><span>Contribute</span></a><a href="../dadi/"><i aria-hidden="true">school</i><span>Dadi</span></a></nav>
+
 <script src="../dadi/js/ipa-data.js"></script>
 <script src="../dadi/js/g2p.js"></script>
 <script src="../dadi/js/native-tts.js"></script>
