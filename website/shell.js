@@ -7,8 +7,10 @@
   function saved() { try { var v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : null; } catch (e) { return null; } }
   function system() { return mq && mq.matches ? 'dark' : 'light'; }
   var chosen = saved(), mode = chosen || system();
+  /* Beer CSS reads its light and dark schemes from a class on <body> */
+  function syncBody() { var b = document.body; if (b) { b.classList.toggle('dark', mode === 'dark'); b.classList.toggle('light', mode !== 'dark'); } }
   function apply(m) {
-    mode = m; root.setAttribute('data-theme', m);
+    mode = m; root.setAttribute('data-theme', m); syncBody();
     var metas = document.querySelectorAll('meta[name="theme-color"]');
     if (metas.length) { for (var i = 1; i < metas.length; i++) metas[i].remove(); metas[0].removeAttribute('media'); metas[0].setAttribute('content', m === 'dark' ? '#14243a' : '#ffffff'); }
   }
@@ -18,6 +20,7 @@
   if (mq && mq.addEventListener) mq.addEventListener('change', function () { if (!chosen) { apply(system()); if (onToggle) onToggle(); } });
 
   function ready() {
+    syncBody();
     var bar = document.querySelector('.bar'), btn = bar && bar.querySelector('.menu-btn'), nav = bar && bar.querySelector('.nav');
     /* day and night toggle */
     var host = bar && bar.querySelector('.bar-in');

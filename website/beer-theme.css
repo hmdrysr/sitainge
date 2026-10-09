@@ -1,0 +1,31 @@
+/* Bridge between Beer CSS (vendor/beercss, MIT) and the siṭaiṅge colour tokens in site.css (CC0).
+   Load order: vendor/noto-sans/noto-sans.css, vendor/beercss/beer.min.css, this file, then the page's own stylesheets. */
+:root, body.light, body.dark {
+  --font: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --primary: var(--accent, #0b5fae); --on-primary: var(--on-accent, #fff);
+  --primary-container: var(--tint, #e3effa); --on-primary-container: var(--text, #0f2236);
+  --secondary-container: var(--tint, #e3effa); --on-secondary-container: var(--text, #0f2236);
+  --surface: var(--bg, #fff); --on-surface: var(--text, #0f2236); --on-surface-variant: var(--muted, #47596b);
+  --surface-container: var(--alt, #eff6fc); --surface-container-low: var(--alt, #eff6fc); --surface-container-high: var(--alt, #eff6fc);
+  --outline: var(--line, #cddae7); --outline-variant: var(--line, #cddae7);
+  --background: var(--bg, #fff); --on-background: var(--text, #0f2236);
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); }
+/* Beer styles bare elements; keep the site's own layout for the shared header, main and footer */
+header.bar, header.bar nav, footer.foot, main { height: auto; min-block-size: 0; }
+header.bar { padding-block: env(safe-area-inset-top) 0; padding-inline: 0; }
+header.bar nav.nav { margin: 0; }
+h1, h2, h3, h4 { font-family: var(--font); }
+/* bottom navigation (Beer nav.bottom), shown on narrow screens only */
+nav.bottom.site-tabs { display: none; }
+@media (max-width: 759px) {
+  .js nav.bottom.site-tabs { display: flex; position: fixed; inset: auto 0 0 0; z-index: 40; justify-content: space-around; gap: 0; padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); min-block-size: 64px; block-size: auto; background: var(--bg); border-top: 1px solid var(--line); box-shadow: none; }
+  .js body:has(nav.bottom.site-tabs) { padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  nav.bottom.site-tabs a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 52px; padding: 4px 2px; border-radius: 16px; color: var(--muted); font-size: .75rem; text-decoration: none; }
+  nav.bottom.site-tabs a[aria-current="page"] { color: var(--accent); font-weight: 600; }
+  nav.bottom.site-tabs a[aria-current="page"] i { background: var(--tint); border-radius: 999px; }
+  nav.bottom.site-tabs i { inline-size: 56px; block-size: 28px; display: grid; place-items: center; font-size: 22px; color: inherit; }
+}
+/* Beer's .page class is a hidden-until-active transition page; on this site .page is a plain layout wrapper */
+.page, .page:not(.active) { display: block; opacity: 1; transform: none; animation: none; position: static; inset: auto; }
+body { display: block; }

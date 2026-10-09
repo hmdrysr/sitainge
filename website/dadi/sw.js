@@ -1,7 +1,7 @@
 /* Dadi offline cache: the app's own files only. It never stores or sends contributions or sign-in tokens.
    Network first (so updates arrive), cache as the fallback (so it works offline). */
-const CACHE = 'dadi-v8';
-const FILES = ['./', './index.html', './style.css', './config.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './data/seed.json', './data/glossary.json', '../data/videos.json', '../data/themes.json',
+const CACHE = 'dadi-v9';
+const FILES = ['../vendor/beercss/beer.min.css', '../vendor/beercss/material-symbols-outlined.woff2', '../vendor/noto-sans/noto-sans.css', '../beer-theme.css', '../vendor/noto-sans/noto-sans-latin-400-normal.woff2', '../vendor/noto-sans/noto-sans-latin-700-normal.woff2', '../vendor/noto-sans/noto-sans-latin-ext-400-normal.woff2', '../vendor/noto-sans/noto-sans-latin-ext-700-normal.woff2', './', './index.html', './style.css', './config.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './data/seed.json', './data/glossary.json', '../data/videos.json', '../data/themes.json',
   './js/ipa-data.js', './js/synth.js', './js/native-tts.js', './js/espeak.js', './js/translate.js', './js/ai.js', './js/g2p.js', './js/audio.js', './js/keyboard.js', './js/fsrs.umd.js', './js/srs.js', './js/store.js', './js/data.js',
   './js/github.js', './js/submit.js', './js/icons.js', './js/learn.js', './js/chart.js', './data/icons.json', './js/app.js', '../core.js', '../items.js'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => Promise.all(FILES.map((f) => c.add(f).catch(() => null)))).then(() => self.skipWaiting())); });
