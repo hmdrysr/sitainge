@@ -9,7 +9,7 @@ Records added:
 
 Spelling:
 - `reference_form` is a search fold to the core layer: ŧ>t, đ>d, ş>sh, ʒ>zh, and diacritics, ~ and ` dropped.
-- AI transliteration follows the news-text conventions: ত/থ>ŧ, দ/ধ>đ, ট/ঠ>t, ড/ঢ>d, শ/ষ/স>ş, চ/ছ>s, জ/ঝ/য>z, খ>h, প/ফ>f, ৱ>w, য়>y, ঁ>tilde on the vowel. The inherent vowel is o, dropped word-finally and in some clusters. The source's ~ (length) is kept.
+- AI transliteration follows the news-text conventions: ŧ and đ for dental t and d; t and d for retroflex; ş for the sibilants; s for the c/ch series; z for j, jh and y; h for kh; f for p and ph; w; y; and a tilde on nasalized vowels. The inherent vowel is o, dropped word-finally and in some clusters. The source's ~ (length) is kept. The full rule table is in the off-repo script translit.py.
 
 Every record is RAW, unassessed and ai_assisted. Every gloss is a working gloss. "(needs gloss)" marks a form the source gave no meaning for.
 
