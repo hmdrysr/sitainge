@@ -1,1 +1,2 @@
 - 2026-10-10: native-input batch 1 filed (504 Latin forms, 139 romanized forms, 48 sentences, 2 sources). See docs/research-gaps/native-input-2026-10-10.md. Next: owner reviews transliterations and adds glosses.
+- 2026-10-10: Rohingya variety merge (4,708 records, CTG-LEX-RAW-10001..14708), 31 native-input attestation records (CTG-LEX-RAW-08300..08330), attestation rule in consensus.py, dictionary variants and vote links. Branch variants-merge-2026-10-10, not pushed. Next: owner review; merge PR #11 first (shared source rows).
