@@ -103,7 +103,8 @@
       example: rec.example_sentence || null, region: rec.region || null, state, level: rec.evidence_level || 'unassessed',
       confidence: rec.confidence || '', ai: !!rec.ai_assisted, consent, source: rec.source || '', notes: rec.notes || '',
       ipa: rec.ipa || null, ipaStatus: rec.ipa ? (rec.ipa_status || 'unknown') : 'none', ipaSource: rec.ipa_source || null,
-      recording: rec.recording && rec.recording !== 'none' ? rec.recording : null, path: path || ''
+      recording: rec.recording && rec.recording !== 'none' ? rec.recording : null, path: path || '',
+      variety: rec.variety || null, variantOf: rec.variant_of || null, attests: Array.isArray(rec.attests) ? rec.attests : []
     };
   }
 
