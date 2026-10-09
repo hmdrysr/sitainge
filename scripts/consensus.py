@@ -140,13 +140,13 @@ def record_forms(r):
 
 
 class Item:
-    __slots__ = ("id", "group", "source", "gloss", "forms")
+    __slots__ = ("id", "group", "source", "gloss", "forms", "date")
 
 
 def build_items(recs, rules, unmapped):
     a = rules["auto"]; sg = rules["source_groups"]; items = []
     for r in recs:
-        it = Item(); it.id = r["id"]; it.source = r.get("source") or ""
+        it = Item(); it.id = r["id"]; it.source = r.get("source") or ""; it.date = (r.get("provenance") or {}).get("date_submitted") or ""
         if it.source in sg: it.group = sg[it.source]
         else: it.group = "solo-unmapped-" + it.source; unmapped.add(it.source)
         it.gloss = gloss_key(r.get("english_gloss"), a["gloss_strip_prefixes"])
@@ -238,9 +238,40 @@ def auto_results(recs, rules):
         shared = sorted({f for f in used if len(keyg[fuzzy_key(f)]) > 1})
         sources = sorted({m.source for m in members})
         a = {"status": "auto-confirmed", "basis": "source-consensus", "groups": groups, "sources": sources, "cluster": cid, "agreeing_forms": forms[:10]}
+        a.update(attestation(members, rules))
         for m in members: entries[m.id] = a
         info.append({"cluster": cid, "gloss": gk, "ids": [m.id for m in members], "groups": groups, "sources": sources, "forms": forms, "shared": shared})
     return entries, info, unmapped
+
+
+def attestation(members, rules):
+    """Attestation rule (EVIDENCE_POLICY.md): count independent source groups and distinct dates per identical form
+    (NFC, case-folded, whitespace-collapsed; diacritics kept). A form with >= min groups on >= min dates is preferred;
+    otherwise the uniquely most-attested form; a tie is left for spelling votes (preferred_basis 'tie')."""
+    t = rules.get("attestation") or {}; ng = t.get("preferred_min_independent_groups", 3); nd = t.get("preferred_min_distinct_dates", 2)
+    att = collections.defaultdict(lambda: [set(), set(), None])
+    for m in members:
+        for f, _ex, _fz, _s in m.forms:
+            k = spelling_group_key(f); e = att[k]; e[0].add(m.group)
+            if m.date: e[1].add(m.date)
+            if e[2] is None: e[2] = f
+    rows = sorted(((v[2], len(v[0]), len(v[1])) for v in att.values()), key=lambda x: (-x[1], -x[2], x[0]))
+    out = {"attestation": [{"form": f, "groups": g, "dates": d} for f, g, d in rows[:10]], "preferred_form": None, "preferred_basis": None}
+    if not rows: return out
+    top = rows[0]
+    if top[1] >= ng and top[2] >= nd: out["preferred_form"], out["preferred_basis"] = top[0], "attested-%d-sources" % ng
+    elif len(rows) == 1 or top[1] > rows[1][1]: out["preferred_form"], out["preferred_basis"] = top[0], "most-attested"
+    else: out["preferred_basis"] = "tie"
+    return out
+
+
+def apply_vote_tiebreak(entries, comm):
+    """Votes break attestation ties (or inform review): a community preferred spelling on any member settles a tied cluster."""
+    for eid, a in entries.items():
+        if a and a.get("preferred_basis") == "tie":
+            for mid, c in comm.items():
+                if c.get("preferred_spelling") and entries.get(mid) is a:
+                    a["preferred_form"], a["preferred_basis"] = c["preferred_spelling"], "votes"; break
 
 
 # ---------- votes ----------
@@ -373,6 +404,7 @@ def compute(root):
     auto, info, unmapped = auto_results(recs, rules)
     votes, excl, ignored = read_votes(root)
     comm, vcounts = community_results(votes, excl, rules, {r["id"] for r in recs})
+    apply_vote_tiebreak(auto, comm)
     entries = {}
     for eid in sorted(set(auto) | set(comm)):
         entries[eid] = {"auto": auto.get(eid), "community": comm.get(eid)}

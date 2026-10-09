@@ -53,3 +53,6 @@ Every record is `RAW`, evidence level `unassessed`, consent `research-only`, and
 python3 scripts/validate.py
 python3 scripts/tests/test_rohingya_corpus.py
 ```
+
+## Merged into the lexicon (2026-10-10)
+All records here are also in `lexicon/raw/2026-10-10-rohingya-variety-merge.jsonl` as `variety: rohingya` records (CTG-LEX-RAW-10001 onward), each with `variant_of` pointing back here. These files are kept unchanged as the originals. See `docs/decisions/rohingya-merge.md`.

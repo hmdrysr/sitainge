@@ -1,6 +1,6 @@
 # Consensus report
 
-Generated 2026-10-08T06:22:34Z by `scripts/consensus.py` (rules version 1). Do not edit by hand; rerun the script.
+Generated 2026-10-09T22:16:36Z by `scripts/consensus.py` (rules version 1). Do not edit by hand; rerun the script.
 
 Consensus is a machine-computed label. It is not verification, it is not endorsement, and it never changes an evidence level, a state or an IPA status. See `docs/protocols/voting-and-consensus.md`.
 
@@ -8,10 +8,10 @@ Consensus is a machine-computed label. It is not verification, it is not endorse
 
 | Measure | Count |
 |---|---|
-| Records read | 2845 |
+| Records read | 7584 |
 | Records skipped (archived, private, withdrawn or restricted) | 0 |
-| Clusters auto-confirmed | 8 |
-| Entries auto-confirmed by consensus | 17 |
+| Clusters auto-confirmed | 51 |
+| Entries auto-confirmed by consensus | 112 |
 | Entries with at least one counted vote | 0 |
 | Community status: collecting | 0 |
 | Community status: community consensus | 0 |
@@ -33,26 +33,58 @@ Consensus is a machine-computed label. It is not verification, it is not endorse
 
 | Groups | Clusters |
 |---|---|
+| rhg:gatitos + solo-ipa-langmap | 10 |
+| rhg:gatitos + rhg:learnrohingya | 9 |
+| rhg:gatitos + wikivoyage | 7 |
+| rhg:gatitos + solo-ipa-rjoe | 4 |
+| owner-speaker + rhg:gatitos | 2 |
+| rhg:wikipedia-article + wikipedia | 2 |
 | solo-ipa-kaikki + wikipedia | 2 |
-| hamid-yasir-2019-list + solo-ipa-langmap | 1 |
+| compiled-chatgaiyya-benchmark + rhg:learnrohingya | 1 |
+| hamid-yasir-2019-list + rhg:gatitos + rhg:learnrohingya | 1 |
+| hamid-yasir-2019-list + rhg:gatitos + solo-ipa-langmap | 1 |
+| hamid-yasir-2019-list + rhg:learnrohingya | 1 |
+| hoque-2015 + rhg:gatitos | 1 |
+| owner-speaker + rhg:gatitos + wikipedia | 1 |
+| rhg:gatitos + rhg:learnrohingya + solo-ipa-langmap | 1 |
+| rhg:gatitos + solo-ipa-langmap + wikivoyage | 1 |
+| rhg:gatitos + wikipedia + wikivoyage | 1 |
+| rhg:learnrohingya + solo-ipa-langmap | 1 |
+| rhg:learnrohingya + solo-ipa-langmap + wikipedia | 1 |
+| rhg:learnrohingya + solo-ipa-rjoe | 1 |
+| rhg:learnrohingya + wikipedia | 1 |
 | solo-ipa-kaikki + solo-ipa-langmap | 1 |
 | solo-ipa-kaikki + wikipedia + wikivoyage | 1 |
-| solo-ipa-langmap + wikipedia | 1 |
-| solo-ipa-langmap + wikivoyage | 1 |
-| wikipedia + wikivoyage | 1 |
 
 ## Largest clusters
 
 | Cluster | Gloss | Groups | Records | Forms (shared by several groups in bold) |
 |---|---|---|---|---|
+| CTG-CLU-1dc2bc29 | mother | rhg:gatitos, rhg:learnrohingya, solo-ipa-langmap | 3 | **ma**, **maa** |
 | CTG-CLU-6ba6b1c4 | my | solo-ipa-kaikki, wikipedia, wikivoyage | 3 | **ãr** |
-| CTG-CLU-115d13db | i | solo-ipa-langmap, wikipedia | 2 | **Aááí**, **ãi** |
-| CTG-CLU-4ba8c49e | he | solo-ipa-kaikki, wikipedia | 2 | **Ité**, **itẽ** |
-| CTG-CLU-77f08cbf | red | solo-ipa-langmap, wikivoyage | 2 | **Lal**, **lal** |
-| CTG-CLU-9b6a1802 | and | wikipedia, wikivoyage | 2 | **ar** |
-| CTG-CLU-9ccc3446 | we | solo-ipa-kaikki, solo-ipa-langmap | 2 | **ara**, **ãra** |
-| CTG-CLU-c31f1d1e | name | hamid-yasir-2019-list, solo-ipa-langmap | 2 | **Namm**, **nam** |
-| CTG-CLU-e18545e9 | she | solo-ipa-kaikki, wikipedia | 2 | **Ití**, **itĩ** |
+| CTG-CLU-80896186 | what | hamid-yasir-2019-list, rhg:gatitos, rhg:learnrohingya | 3 | **Ki**, **ki**, **kí** |
+| CTG-CLU-ab66f106 | name | hamid-yasir-2019-list, rhg:gatitos, solo-ipa-langmap | 3 | **Namm**, **nam** |
+| CTG-CLU-ba6620a2 | rice | owner-speaker, rhg:gatitos, wikipedia | 3 | **bát** |
+| CTG-CLU-ce517835 | and | rhg:gatitos, wikipedia, wikivoyage | 3 | **ar** |
+| CTG-CLU-d653fa61 | red | rhg:gatitos, solo-ipa-langmap, wikivoyage | 3 | **Lal**, **lal** |
+| CTG-CLU-df756818 | i | rhg:learnrohingya, solo-ipa-langmap, wikipedia | 3 | **Aááí**, **ãi** |
+| CTG-CLU-86dda4e4 | im | rhg:gatitos, wikivoyage | 3 | **Añi ______**, **Añí** |
+| CTG-CLU-a0a7126f | you | rhg:learnrohingya, solo-ipa-langmap | 3 | **tui**, **tũi** |
+| CTG-CLU-03fef49d | hand | rhg:gatitos, solo-ipa-langmap | 2 | **at**, **át** |
+| CTG-CLU-04ba549d | star | rhg:gatitos, solo-ipa-langmap | 2 | **tara** |
+| CTG-CLU-08e1980f | sleepy | rhg:gatitos, rhg:learnrohingya | 2 | **zurar**, **zúrar** |
+| CTG-CLU-0a4e57b6 | wednesday | rhg:gatitos, wikivoyage | 2 | Buidbar, Buitbar |
+| CTG-CLU-0edaec71 | those | rhg:gatitos, rhg:learnrohingya | 2 | **uin**, **uiín** |
+| CTG-CLU-113b1c7a | house home | hamid-yasir-2019-list, rhg:learnrohingya | 2 | **Gor**, **gór** |
+| CTG-CLU-16d6e2ed | water | rhg:gatitos, solo-ipa-langmap | 2 | **fani**, **faní** |
+| CTG-CLU-1f5c2b19 | one | rhg:gatitos, solo-ipa-rjoe | 2 | **uggwá**, **ugwa** |
+| CTG-CLU-20543ecf | salt | rhg:gatitos, solo-ipa-langmap | 2 | **nun** |
+| CTG-CLU-219ac378 | wire | rhg:wikipedia-article, wikipedia | 2 | **Tar gán** |
+| CTG-CLU-21f0ded6 | house | rhg:gatitos, solo-ipa-langmap | 2 | **gor**, **gór** |
+| CTG-CLU-259e814d | not | owner-speaker, rhg:gatitos | 2 | **no** |
+| CTG-CLU-2835b08e | father | rhg:gatitos, solo-ipa-langmap | 2 | **baf** |
+| CTG-CLU-28f3d709 | forbidden | rhg:gatitos, wikivoyage | 2 | **Mana**, **maná** |
+| CTG-CLU-3123243b | please | rhg:gatitos, wikivoyage | 2 | Mērbani gori, meérbanigorí |
 
 ## Caveats
 

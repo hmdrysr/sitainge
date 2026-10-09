@@ -27,3 +27,9 @@ This repository documents siṭaiṅga (the Chittagonian language). It is in the
 - `node scripts/tests/dadi_unit_test.js` and `node scripts/tests/dadi_translate_test.js` pass if `website/dadi/` was changed.
 - If words were changed, run `node scripts/build_dadi_seed.js` so the app's offline copy updates.
 - The description states what was done, what was not verified and what comes next.
+
+## Varieties and preferred forms (2026-10-10)
+- siṭaiṅga and Rohingya are recorded as one language with varieties (steward decision, `docs/decisions/rohingya-merge.md`). Tag every record's `variety` (`chittagong` or `rohingya`) and keep its `source`. Merged records point to their original with `variant_of`; attestation records point to the entries they repeat with `attests`.
+- Record every variant form and spelling. Never skip a duplicate: a repeated form is a new attestation, not noise.
+- **Attestation rule:** if the same form appears identically in three distinct, independent sources at different times, it becomes the preferred form. Among variants, the most-attested form is preferred. Votes break ties or inform review. `scripts/consensus.py` computes this; see `EVIDENCE_POLICY.md`.
+
