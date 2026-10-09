@@ -1,0 +1,1 @@
+- 2026-10-10: native-input batch 1 filed (504 Latin forms, 139 romanized forms, 48 sentences, 2 sources). See docs/research-gaps/native-input-2026-10-10.md. Next: owner reviews transliterations and adds glosses.
