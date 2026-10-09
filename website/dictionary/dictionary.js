@@ -24,6 +24,27 @@
 
   /* ---------- data ---------- */
   const when = (iso) => { try { return new Date(iso).toLocaleString('en-CA', { dateStyle: 'long', timeStyle: 'short' }); } catch (e) { return iso; } };
+  // Variant groups and the attestation rule come from website/data/consensus.json (scripts/consensus.py). Best effort only.
+  S.cons = {};
+  fetch('../data/consensus.json').then((r) => r.ok ? r.json() : null).then((j) => { if (j && j.entries) S.cons = j.entries; }).catch(() => {});
+  const VARIETY = { rohingya: 'Rohingya variety', chittagong: 'Chittagong variety' };
+  function voteHref(e, kind, spelling) {
+    const b = { entry_id: e.id, kind, spelling: kind === 'spelling' ? spelling : null, region: null };
+    return 'https://github.com/' + REPO + '/issues/new?title=' + encodeURIComponent('[Vote] ' + e.id) + '&body=' + encodeURIComponent('A vote is a signal, not evidence. You may add your region inside the block.\n\n```json\n' + JSON.stringify(b, null, 1) + '\n```\n');
+  }
+  function variantsBox(e, hd) {
+    const c = S.cons[e.id] && S.cons[e.id].auto, kids = [h('h3', { text: 'Variants' })];
+    if (c && c.attestation && c.attestation.length) {
+      kids.push(h('p', { class: 'small', text: c.preferred_form ? 'Preferred form: ' + c.preferred_form + ' (' + ({ 'most-attested': 'attested by the most independent sources', votes: 'chosen by spelling votes' }[c.preferred_basis] || 'attested identically by three independent sources at different times') + ').' : 'No preferred form yet: the variants are tied. Your vote helps break the tie.' }));
+      kids.push(h('ul', { class: 'altl' }, c.attestation.map((a) => h('li', {}, [h('span', { text: a.form + ' · ' + a.groups + (a.groups === 1 ? ' source' : ' independent sources') + (a.form === c.preferred_form ? ' · preferred' : '') + ' ' }), h('a', { class: 'pill', rel: 'noopener', href: voteHref(e, 'spelling', a.form), text: 'Vote for this spelling' })]))));
+    } else {
+      kids.push(h('p', { class: 'small', text: 'No other source records this word yet.' }));
+      kids.push(h('a', { class: 'pill', rel: 'noopener', href: voteHref(e, 'spelling', hd), text: 'Vote for ' + hd }));
+    }
+    kids.push(h('p', {}, [h('a', { class: 'pill', rel: 'noopener', href: voteHref(e, 'agree'), text: 'I use this' }), ' ', h('a', { class: 'pill', rel: 'noopener', href: voteHref(e, 'disagree'), text: 'I do not use this' })]));
+    kids.push(h('p', { class: 'small', text: 'Votes are counted per GitHub account. They inform review and break ties between equally attested variants; they are not evidence.' }));
+    return h('div', { class: 'variants' }, kids);
+  }
   function setStatus(msg) { statusEl.textContent = msg; }
   function load(data, live) {
     const entries = (data.entries || []).filter((e) => e && e.state !== 'ARCHIVED');
@@ -260,6 +281,9 @@
       fact(dl, 'Example', e.example);
       fact(dl, 'Part of speech', e.pos);
       fact(dl, 'Form note', e.formNote);
+      if (e.variety) fact(dl, 'Variety', VARIETY[e.variety] || e.variety);
+      if (e.variantOf) fact(dl, 'Original record', e.variantOf);
+      if (e.attests && e.attests.length) fact(dl, 'Attests', e.attests.join(', '));
       fact(dl, 'Region', e.region || 'Not recorded');
       fact(dl, 'Source', e.source || 'Not recorded');
       fact(dl, 'Evidence', levelText(e.level));
@@ -290,6 +314,7 @@
       const r = String(e.recording), url = /^(https:\/\/|\.{0,2}\/)/.test(r);
       kids.push(h('div', { class: 'rec' }, [h('p', { class: 'small', text: 'Recording of a speaker' }), url ? h('audio', { controls: true, preload: 'none', src: r }) : h('p', { text: 'Listed as ' + r + '; it cannot be played here yet.' })]));
     }
+    kids.push(variantsBox(e, hd));
     kids.push(dl);
     const rel = relatedTo(e);
     if (rel.length) kids.push(h('div', { class: 'rel' }, [h('h3', { text: 'Related entries' }), h('ul', { class: 'rows compact' }, rel.map((r) => h('li', {}, [h('a', { class: 'row', href: '#/e/' + encodeURIComponent(r.id) }, [h('span', { class: 'rbody' }, [h('span', { class: 'rtop' }, [h('span', { class: 'hw' + (isLong(r) ? ' long' : ''), text: headword(r) })]), h('span', { class: 'gl', text: r.gloss })]), icon('chevron-right', 'go')])])))]));
