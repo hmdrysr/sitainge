@@ -4,7 +4,7 @@
   'use strict';
   const D = window.DadiData, FZ = window.DictFuzzy, REPO = 'hmdrysr/sitainge', CACHE_KEY = 'sitainge-dictionary-v1', PAGE = 40;
   const view = document.getElementById('view'), statusEl = document.getElementById('status');
-  const S = { lang: 'ctg', ctg: null, rhg: null, index: null, fz: null, q: '', kind: '', level: '', region: '', sort: 'best', letter: '', shown: PAGE, list: [], fuzzy: false, sugg: null, open: null, pushed: false, facets: null };
+  const S = { index: null, fz: null, q: '', kind: '', level: '', region: '', sort: 'best', letter: '', shown: PAGE, list: [], fuzzy: false, sugg: null, open: null, pushed: false, facets: null };
   const el = {};
 
   /* ---------- tiny DOM helper ---------- */
@@ -32,32 +32,6 @@
     S.fz = FZ.create(S.index.all);
     S.live = live; S.built = data.fetchedAt || data.builtAt || '';
     S.facets = null;
-    S.ctg = { index: S.index, fz: S.fz };
-    if (S.lang === 'rhg' && S.rhg) { S.index = S.rhg.index; S.fz = S.rhg.fz; }
-  }
-  /* Rohingya (rhg) is a separate language layer. It is searched on its own and never mixed into siṭaiṅga results. */
-  async function loadRhg() {
-    let d = null;
-    try { const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 6000); try { const r = await fetch('https://raw.githubusercontent.com/' + REPO + '/main/website/data/rohingya-seed.json', { signal: ctl.signal }); if (r.ok) d = await r.json(); } finally { clearTimeout(timer); } } catch (e) { d = null; }
-    if (!d || !d.entries) { const r = await fetch('../data/rohingya-seed.json'); if (!r.ok) throw new Error('HTTP ' + r.status); d = await r.json(); }
-    const recs = d.entries.map((e) => ({ id: e.id, state: 'RAW', form_as_submitted: e.form, spellings: [e.form], english_gloss: e.gloss || 'No English translation is given in the source', unit: e.unit, source: e.source,
-      evidence_level: 'unassessed', consent: 'research-only', ai_assisted: false, confidence: 'From a published source; not verified by a speaker', form_note: e.unit === 'sentence' ? 'Sentence-level record' : null }));
-    const entries = recs.map((r) => D.normalize(r, '')).filter(Boolean);
-    const index = D.buildIndex(entries);
-    index.all.forEach((e) => { e._gk = glossKeys(e.gloss); e._hw = fold(e.spellings[0] || e.form); e._en = fold(e.gloss); });
-    S.rhg = { index, fz: FZ.create(index.all), n: entries.length };
-  }
-  async function setLang(l) {
-    S.lang = l; S.q = ''; el.input.value = ''; el.toggleClear(); S.kind = ''; S.letter = ''; S.shown = PAGE; S.facets = null; S.region = ''; S.level = '';
-    el.lang.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.getAttribute('data-l') === l ? 'true' : 'false'));
-    const rhg = l === 'rhg';
-    el.note.hidden = !rhg; el.lede.textContent = rhg ? 'Romanized Rohingya words and sentences drawn from published sources.' : 'Words and sentences in siṭaiṅga (Chittagonian), drawn from contributor records.';
-    el.input.placeholder = rhg ? 'Search in Rohingya or English' : 'Search in siṭaiṅga or English';
-    if (rhg) {
-      if (!S.rhg) { setStatus('Loading the Rohingya records…'); try { await loadRhg(); } catch (e) { setStatus('The Rohingya records could not be loaded.'); S.lang = 'ctg'; return setLang('ctg'); } }
-      S.index = S.rhg.index; S.fz = S.rhg.fz; setStatus(nf(S.rhg.n) + (S.rhg.n === 1 ? ' Rohingya record, which is unverified.' : ' Rohingya records, all unverified.'));
-    } else if (S.ctg) { S.index = S.ctg.index; S.fz = S.ctg.fz; setStatus('Showing the siṭaiṅga records.'); }
-    refresh();
   }
   function readCache() { try { const c = JSON.parse(localStorage.getItem(CACHE_KEY)); return c && c.entries && c.entries.length ? c : null; } catch (e) { return null; } }
   function writeCache(d) { try { localStorage.setItem(CACHE_KEY, JSON.stringify({ entries: d.entries, files: d.files, fetchedAt: d.fetchedAt })); } catch (e) { /* storage may be blocked */ } }
@@ -157,9 +131,6 @@
       h('button', { type: 'button', 'data-k': k, 'aria-pressed': S.kind === k ? 'true' : 'false', text: t, onclick: () => { S.kind = k; S.letter = ''; S.shown = PAGE; refresh(); } })));
     const filterBtn = h('button', { type: 'button', class: 'pill', 'aria-haspopup': 'dialog', onclick: openFilters }, [icon('filter'), h('span', { text: 'Filter' }), h('span', { class: 'dot', hidden: true })]);
     const count = h('p', { class: 'count', role: 'status', 'aria-live': 'polite' });
-    const lang = h('div', { class: 'seg lang', role: 'group', 'aria-label': 'Language' }, [['ctg', 'Chittagonian'], ['rhg', 'Rohingya']].map(([k, t]) =>
-      h('button', { type: 'button', 'data-l': k, 'aria-pressed': S.lang === k ? 'true' : 'false', text: t, onclick: () => setLang(k) })));
-    const note = h('p', { class: 'lang-note', hidden: true, text: 'Rohingya (ISO 639-3 rhg) is a different language from siṭaiṅga. These records are unverified: they come from published sources, the spellings are the compilers\' own, and no speaker has checked them.' });
     const browse = h('div', { class: 'browse' });
     const out = h('div', { class: 'out' });
 
@@ -170,10 +141,10 @@
     fsheet.addEventListener('click', (ev) => { if (ev.target === fsheet) fsheet.close(); });
 
     view.replaceChildren(
-      h('div', { class: 'head' }, [h('h1', { text: 'Dictionary' }), h('p', { class: 'lede', text: 'Words and sentences in siṭaiṅga (Chittagonian), drawn from contributor records.' }), lang, note]),
+      h('div', { class: 'head' }, [h('h1', { text: 'Dictionary' }), h('p', { class: 'lede', text: 'Words and sentences in siṭaiṅga (Chittagonian), drawn from contributor records.' })]),
       h('div', { class: 'sticky' }, [field, h('div', { class: 'tools' }, [seg, filterBtn])]),
       count, browse, out, sheet, fsheet);
-    Object.assign(el, { lang, note, lede: view.querySelector('.lede'), input, clear, seg, filterBtn, count, browse, out, sheet, fsheet, toggleClear });
+    Object.assign(el, { input, clear, seg, filterBtn, count, browse, out, sheet, fsheet, toggleClear });
     if (window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches) input.focus();
     draw(view); wireSheet();
   }
