@@ -122,7 +122,7 @@ main { outline: none; }
 
 /* landing */
 .hero { padding: var(--s5) 0 var(--s5); background: var(--alt); border-bottom: 1px solid var(--line); }
-.kicker { display: inline-block; margin: 0 0 var(--s3); padding: 2px var(--s3); border-radius: 999px; background: var(--hi); color: var(--on-hi); font-weight: 600; font-size: var(--t13); }
+.kicker { display: inline-block; margin: 0 0 var(--s3); padding: var(--hair-2) var(--s3); border-radius: 999px; background: var(--hi); color: var(--on-hi); font-weight: 600; font-size: var(--t13); }
 .hero h1 { font-size: clamp(var(--t34), 9vw, 3rem); margin: 0 0 var(--s2); }
 .lead { font-size: var(--t17); line-height: 1.45; max-width: 40em; margin-bottom: var(--s2); }
 @media (min-width: 640px) { .lead { font-size: var(--t20); } }

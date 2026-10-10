@@ -6,7 +6,7 @@
 .tr h2#extension { font-size: var(--t22); color: var(--text); margin-top: var(--s6); }
 .tr textarea, .out { width: 100%; min-height: 180px; padding: var(--s4); border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--text); font: 400 var(--t20)/1.5 var(--font); resize: vertical; }
 .out { white-space: pre-wrap; overflow-wrap: anywhere; font-family: var(--serif); }
-.hit, .miss { display: inline; block-size: auto; min-block-size: 0; line-height: inherit; vertical-align: baseline; border-radius: 0; border: 0; background: none; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; }
+.hit, .miss { font: inherit; display: inline; block-size: auto; min-block-size: 0; line-height: inherit; vertical-align: baseline; border-radius: 0; border: 0; background: none; padding: 0; margin: 0; color: inherit; cursor: pointer; }
 .hit { text-decoration: underline dotted; text-underline-offset: 4px; color: var(--accent); }
 .miss { text-decoration: underline wavy var(--err); text-underline-offset: 4px; cursor: default; }
 .cov { font-weight: 600; font-size: var(--t15); margin: var(--s3) 0; }
