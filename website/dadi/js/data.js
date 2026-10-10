@@ -96,7 +96,7 @@
     const variants = (rec.variants || []).map(nfc).filter(Boolean);
     const spellings = Array.from(new Set(((rec.spellings && rec.spellings.length) ? rec.spellings : [form].concat(variants)).map(nfc).filter(Boolean)));
     const tokens = form.split(/\s+/).filter(Boolean).length;
-    const sentenceLike = rec.unit === 'sentence' || /sentence/i.test(rec.form_note || '') || tokens >= 5 || (tokens >= 3 && /[.?!]$/.test(form));
+    const sentenceLike = rec.unit === 'sentence' || /sentence/i.test(rec.form_note || '') || tokens >= 3 || /[.?!]$/.test(form);
     const kind = isText ? ((rec.type && rec.type !== 'sentence') || rec.original_text_verbatim ? 'text' : 'sentence') : (sentenceLike ? 'sentence' : 'word');
     return {
       id: rec.id, kind, form, spellings, gloss, pos: rec.part_of_speech || null, formNote: rec.form_note || null,
