@@ -239,3 +239,6 @@ main { outline: none; }
 .vid .thumb.nothumb .tt { position: relative; font-size: var(--t15); font-weight: 600; }
 .vid .meta { padding: var(--s3) var(--s4); } .vid .meta b { display: block; font-size: var(--t15); } .vid .meta span { color: var(--muted); font-size: var(--t13); }
 .vid .rep { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--t13); }
+
+/* Beer CSS turns any classless div holding an input after other content into an inline-flex row (squashed sheets/forms). Keep such wrappers as normal blocks. */
+:is(div:not([class]),div[class=active]):has(>:not(.responsive)~:is(menu,.tooltip,input)){display:block}
