@@ -1,7 +1,7 @@
 /* siṭaiṅge design tokens (CC0). The one place for type, spacing and icon sizes on every page, Dadi included.
    Fluid scale in the style of Utopia (utopia.fyi): each step grows smoothly from a 360px screen to a 1280px screen.
    Type: 16px base at 360 (ratio 1.125) to 18px base at 1280 (ratio 1.2). Space: multiples of the base size.
-   Icons are Material Symbols Outlined (Apache 2.0, vendored in vendor/beercss), one symbol per feature. */
+   Icons are Lucide (ISC, inline SVG, see vendor/lucide/LICENSE), stroke 2, one icon per feature. */
 :root {
   --fs-m2: clamp(0.7901rem, 0.7936rem + -0.0154vw, 0.7813rem);
   --fs-m1: clamp(0.8889rem, 0.8699rem + 0.0845vw, 0.9375rem);
@@ -31,9 +31,9 @@
   --t-title: var(--fs-6); --t-section: var(--fs-3); --t-sub: var(--fs-2); --t-body: var(--fs-0); --t-second: var(--fs-m1); --t-cap: var(--fs-m2); --t-tab: var(--fs-m2);
   --pad: var(--sp-s);
 }
-.msi { font-family: "Material Symbols Outlined", sans-serif; font-weight: normal; font-style: normal; font-size: var(--icon-m); line-height: 1; letter-spacing: normal;
-  text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-smoothing: antialiased;
-  font-feature-settings: "liga"; width: 1em; height: 1em; overflow: hidden; flex: none; vertical-align: middle; user-select: none; }
+.msi { font-style: normal; font-size: var(--icon-m); line-height: 1; display: inline-grid; place-items: center; width: 1em; height: 1em; flex: none; vertical-align: middle; user-select: none; }
+.msi .lu, i > svg.lu { width: 1em; height: 1em; display: block; fill: none !important; stroke: currentColor; stroke-width: 2; }
+.msi .msi { font-size: inherit; }
 .ic { display: inline-grid; place-items: center; flex: none; line-height: 1; }
 .ic .msi, .ti .msi { font-size: var(--icon-m); }
 .ic.s20 .msi, .pill .msi, .theme-btn .msi { font-size: var(--icon-s); }
