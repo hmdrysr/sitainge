@@ -29,3 +29,8 @@ nav.bottom.site-tabs { display: none; }
 }
 /* Beer's .page class is a hidden-until-active transition page; on this site .page is a plain layout wrapper */
 .page, .page:not(.active) { display: block; opacity: 1; transform: none; animation: none; position: static; inset: auto; }
+@media (max-width: 839px) {
+  nav.bottom.site-tabs a > i { display: flex !important; align-items: center; justify-content: center; text-align: center; }
+  nav.bottom.site-tabs a > i > svg { display: block; flex: none; inline-size: 24px; block-size: 24px; margin: 0 auto; position: static; transform: none; }
+  nav.bottom.site-tabs a > span { display: block; inline-size: 100%; text-align: center; }
+}
