@@ -858,7 +858,7 @@
       box.textContent = '';
       const a = myVote(e, 'agree'), d = myVote(e, 'disagree'), sp = myVote(e, 'spelling');
       const mk = (label, on, fn) => h('button', { type: 'button', 'aria-pressed': String(!!on), onclick: () => { fn(); draw(); if (onChange) onChange(); } }, label);
-      put(box, h('p', { class: 'kind' }, e.kind === 'word' ? 'Do you say it this way?' : 'Would you say this sentence this way?'),
+      put(box, h('p', { class: 'kind' }, (e.kind === 'word' ? 'Word. ' : 'Sentence. ') + (e.kind === 'word' ? 'Do you say it this way?' : 'Would you say this sentence this way?')),
         h('div', { class: 'segc', role: 'group', 'aria-label': 'Your vote' }, mk('Yes, we say it this way', a && a.status === 'queued' || a && a.status === 'sent', () => castVote(e, 'agree')), mk('We say it differently', d, () => castVote(e, 'disagree'))));
       if (e.spellings.length > 1) put(box, h('p', { class: 'kind', style: 'margin-top:12px' }, 'Which spelling do you use?'),
         h('div', { class: 'chips' }, e.spellings.map((s) => h('button', { class: 'chip', type: 'button', 'aria-pressed': String(!!sp && sp.spelling === s), onclick: () => { castVote(e, 'spelling', s); draw(); if (onChange) onChange(); } }, s))));
@@ -912,8 +912,8 @@
     function draw() {
       box.textContent = '';
       const seg = h('div', { class: 'segc', role: 'group', 'aria-label': 'Kind of prompt' },
-        h('button', { type: 'button', 'aria-pressed': String(disc.mode === 'check'), onclick: () => { disc.mode = 'check'; cur = null; draw(); } }, 'Vote on a word'),
-        h('button', { type: 'button', 'aria-pressed': String(disc.mode === 'add'), onclick: () => { disc.mode = 'add'; cur = null; draw(); } }, 'Add a word'));
+        h('button', { type: 'button', 'aria-pressed': String(disc.mode === 'check'), onclick: () => { disc.mode = 'check'; cur = null; draw(); } }, 'Vote'),
+        h('button', { type: 'button', 'aria-pressed': String(disc.mode === 'add'), onclick: () => { disc.mode = 'add'; cur = null; draw(); } }, 'Add'));
       put(box, h('div', { class: 'sh' }, h('h2', null, 'Help build the word list'), h('button', { class: 'link small', type: 'button', onclick: () => { cur = null; draw(); } }, ico('refresh', 18), ' Another')), seg);
       if (disc.mode === 'check') {
         cur = cur || discoverCheck();
