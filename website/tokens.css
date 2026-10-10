@@ -39,3 +39,12 @@
 nav.bottom i, .tabs .msi { font-size: var(--icon-m); }
 button, .button, nav.bottom a, .tabs a, .chip, .pill { min-height: var(--tap); }
 .btn, .opt, .input, .tilebtn, .field, .q { box-sizing: border-box; max-width: 100%; }
+
+/* Beer CSS defaults that clash with the site's own components (root causes of cut-off text, overflow and overlap):
+   - Beer buttons are content-box with a fixed 2.5rem height, so width:100% plus padding spilled past the screen and two-line labels were clipped.
+   - Beer's main clips its overflow, which cut wide rows instead of letting them wrap.
+   Here every button is border-box, grows with its text, and keeps the 44 px touch minimum. */
+button, .button { box-sizing: border-box; block-size: auto; min-block-size: var(--tap); line-height: 1.2; }
+main { overflow: visible; }
+/* Beer makes every link inline-flex, so a link inside a sentence could not wrap and became a tiny box. Plain links in running text are inline again. */
+:where(p, li, dd, dt, td, small, label, figcaption, .small, .muted, .lede, .note, .sub) a:not([class]) { display: inline; }
