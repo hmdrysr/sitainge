@@ -242,3 +242,7 @@ main { outline: none; }
 
 /* Beer CSS turns any classless div holding an input after other content into an inline-flex row (squashed sheets/forms). Keep such wrappers as normal blocks. */
 :is(div:not([class]),div[class=active]):has(>:not(.responsive)~:is(menu,.tooltip,input)){display:block}
+
+/* Beer CSS gives header a grid/flex layout and nav a top margin: that shrank .bar-in to its content (header cluster centred on phones) and pushed the desktop links 16px below the brand. Pin both. */
+.bar > .bar-in { width: 100%; box-sizing: border-box; }
+.bar .bar-in > nav.nav, #site-nav { margin: 0; }
