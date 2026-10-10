@@ -162,8 +162,9 @@
 
   /* ---- scrape ---- */
   async function scrape(opts) {
-    const o = Object.assign({ repo: 'hmdrysr/sitainge', branch: 'main', fetch: (typeof fetch !== 'undefined' ? fetch : null), token: null }, opts || {});
+    const o = Object.assign({ repo: 'hmdrysr/sitainge', branch: 'main', fetch: (typeof fetch !== 'undefined' ? fetch.bind(globalThis) : null), token: null }, opts || {});
     if (!o.fetch) throw new Error('no fetch available');
+    const f0 = o.fetch; o.fetch = (...a) => f0.apply(globalThis, a);
     const hdr = { Accept: 'application/vnd.github+json' };
     if (o.token) hdr.Authorization = 'Bearer ' + o.token;
     const tr = await o.fetch('https://api.github.com/repos/' + o.repo + '/git/trees/' + o.branch + '?recursive=1', { headers: hdr });
