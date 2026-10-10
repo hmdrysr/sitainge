@@ -1093,6 +1093,15 @@
     }
   }
 
+  /* Prefilled issue link: same title and body the signed-in path sends, so dadi-tools.yml ingests it. Over ~8000 chars, copy the body and open a blank issue. */
+  const URL_MAX = 8000;
+  function issueUrl(b) { const u = CFG.repoUrl + '/issues/new?title=' + encodeURIComponent(b.title) + '&body=' + encodeURIComponent(DadiSubmit.issueBody(b)); return u.length <= URL_MAX ? u : null; }
+  function issueLink(b, label) {
+    const u = issueUrl(b);
+    if (u) return h('a', { class: 'btn block', target: '_blank', rel: 'noopener noreferrer', href: u, 'data-issue': '1' }, label);
+    return h('button', { class: 'btn block', type: 'button', 'data-issue': '1', onclick: async () => { try { await navigator.clipboard.writeText(DadiSubmit.issueBody(b)); toast('Text copied. Paste it into the issue and keep the title starting with [Dadi].'); } catch (e) { toast('Copy the text below, then paste it into the issue.'); } window.open(CFG.repoUrl + '/issues/new?title=' + encodeURIComponent(b.title), '_blank', 'noopener'); } }, label + ' (copy text)');
+  }
+
   /* No GitHub account (or not signed in): export the same text by copy, file, email or share. */
   function exportSheet(batches) {
     const text = batches.map((b) => b.text).join('\n');
@@ -1101,8 +1110,10 @@
     const ta = h('textarea', { class: 'input', readonly: true, rows: '6', 'aria-label': 'Your contribution text' }, text);
     const mark = async () => { if (await ask('Mark as sent?', h('p', null, 'Mark the contribution as sent only if you have emailed, shared or posted the text. Otherwise it remains in the queue.'), 'Mark as sent', 'Not yet')) { Store.update((st) => { st.queue.forEach((q) => { if (batches.some((b) => b.ids.includes(q.id))) { q.status = 'exported'; q.sentAt = new Date().toISOString(); } }); }, 'queue-exported', 'marked as sent outside GitHub'); closeSheet(); route(); } };
     const s = sheet(h('div', null, h('h2', null, 'Send another way'),
-      h('p', null, gh.configured ? 'You are not signed in. Sign in to send directly, or use one of the options below.' : 'GitHub sign-in is not set up in this copy of Dadi. Use one of the options below. The text shown is the complete contribution.'),
+      h('p', null, gh.configured ? 'You are not signed in. Sign in to send directly, or use one of the options below.' : 'Open your contribution as a prefilled GitHub issue (needs a free GitHub account), then select Submit new issue. You can also copy, email or share the text. The text shown is the complete contribution.'),
       gh.configured ? h('button', { class: 'btn block', type: 'button', onclick: signInSheet, style: 'margin-bottom:10px' }, 'Sign in with GitHub') : null,
+      h('div', { class: 'stack', style: 'margin-bottom:10px' }, batches.map((b, i) => issueLink(b, batches.length > 1 ? 'Open as GitHub issue (' + (i + 1) + ' of ' + batches.length + ')' : 'Open as GitHub issue')),
+        batches.length > 1 ? h('button', { class: 'btn block tint', type: 'button', onclick: () => batches.forEach((b) => window.open(issueUrl(b) || CFG.repoUrl + '/issues/new', '_blank', 'noopener')) }, 'Open all as GitHub issues') : null),
       h('div', { class: 'row' },
         h('button', { class: 'btn small', type: 'button', onclick: async () => { try { await navigator.clipboard.writeText(text); toast('Copied.'); } catch (e) { ta.select(); toast('Select the text and copy it manually.'); } } }, 'Copy'),
         h('button', { class: 'btn small', type: 'button', onclick: download }, 'Save as file'),
@@ -1120,7 +1131,7 @@
   function signInSheet() {
     closeSheet();
     if (!gh.configured) {
-      sheet(h('div', null, h('h2', null, 'Sign-in is not set up'), h('p', null, 'This copy of Dadi has no GitHub sign-in connected. Lessons, the word list and contribution drafts still work. To send a contribution, copy the text, email it or share it.'),
+      sheet(h('div', null, h('h2', null, 'Sign-in is not set up'), h('p', null, 'This copy of Dadi has no GitHub sign-in connected. Lessons, the word list and contribution drafts still work. To send a contribution, open it as a prefilled GitHub issue (needs a free GitHub account) and select Submit new issue. You can also copy the text, email it or share it.'),
         h('p', { class: 'small muted' }, 'Project owners: see docs/dadi/AUTH_SETUP.md.'), h('button', { class: 'btn', type: 'button', onclick: closeSheet }, 'Close')), { label: 'Sign-in not set up' });
       return;
     }
