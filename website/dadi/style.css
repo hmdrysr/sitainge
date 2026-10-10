@@ -28,7 +28,7 @@ body { margin: 0; background: var(--bg); color: var(--text); font: var(--t-body)
 body.kb-open { padding-bottom: var(--kb-h); }
 body.kb-open .tabs, body.focus .tabs { display: none; }
 body.focus { padding-bottom: env(safe-area-inset-bottom); }
-h1, h2, h3, p, li, label, summary, dt, dd, .btn { overflow-wrap: anywhere; }
+h1, h2, h3, p, li, label, summary, dt, dd, .btn { overflow-wrap: break-word; }
 h1, h2, h3 { margin: 0; line-height: 1.2; letter-spacing: -.01em; }
 p { margin: 0 0 var(--s3); max-width: 65ch; }
 a { color: var(--accent); }

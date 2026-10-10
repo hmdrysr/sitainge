@@ -26,7 +26,7 @@
     var host = bar && bar.querySelector('.bar-in');
     if (host) {
       var tg = document.createElement('button'); tg.type = 'button'; tg.className = 'theme-btn';
-      [['moon', 'dark_mode'], ['sun', 'light_mode']].forEach(function (n) { var s = document.createElement('i'); s.className = 'msi ti ti-' + n[0]; s.setAttribute('aria-hidden', 'true'); s.textContent = n[1]; tg.appendChild(s); });
+      [['moon', '<svg class="lu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg>'], ['sun', '<svg class="lu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="4" /> <path d="M12 2v2" /> <path d="M12 20v2" /> <path d="m4.93 4.93 1.41 1.41" /> <path d="m17.66 17.66 1.41 1.41" /> <path d="M2 12h2" /> <path d="M20 12h2" /> <path d="m6.34 17.66-1.41 1.41" /> <path d="m19.07 4.93-1.41 1.41" /></svg>']].forEach(function (n) { var s = document.createElement('i'); s.className = 'msi ti ti-' + n[0]; s.setAttribute('aria-hidden', 'true'); s.innerHTML = n[1]; tg.appendChild(s); });
       var mark = function () { tg.setAttribute('aria-pressed', String(mode === 'dark')); tg.setAttribute('aria-label', mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'); };
       onToggle = mark;
       tg.addEventListener('click', function () {
