@@ -254,3 +254,6 @@ body.sheet-open .kbdock { visibility: hidden; }
 .vlabel.contested { border-color: var(--alert); color: var(--alert); }
 .vote { margin: var(--s4) 0; } .vote .segc button { min-height: 44px; border: 0; background: none; border-radius: 8px; color: var(--text); font: inherit; font-size: var(--t-second); padding: 0 var(--s2); }
 .cellwrap > .row > b { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; } .cellwrap > .row > span { flex: none; } /* progress rows: the long title wraps, the percentage stays on screen */
+
+/* Beer CSS turns any classless div holding an input after other content into an inline-flex row (squashed sheets/forms). Keep such wrappers as normal blocks. */
+:is(div:not([class]),div[class=active]):has(>:not(.responsive)~:is(menu,.tooltip,input)){display:block}
