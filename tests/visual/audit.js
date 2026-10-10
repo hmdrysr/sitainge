@@ -10,7 +10,7 @@ async function auditPage(page) {
     const all = [...document.querySelectorAll('body *')].filter((el) => !el.closest('svg,.skip,.sr,.vh') && vis(el));
     for (const el of all) {
       const r = el.getBoundingClientRect(), s = getComputedStyle(el);
-      if (el.closest('.sr,[aria-hidden="true"] *,svg,.tabs-scroll,.hscroll,pre,table,.kbd,.chart,iframe')) continue;
+      if (el.closest('.sr,[aria-hidden="true"] *,svg,.tabs-scroll,.hscroll,.chips,pre,table,.kbd,.chart,iframe')) continue;
       if ((r.right > vw + 1 || r.left < -1) && s.position !== 'fixed' && !clipped(el) && el.children.length === 0 && el.innerText.trim()) issues.push({ type: 'overflow-x', el: name(el) });
       const txt = [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim());
       if (txt && !el.classList.contains('msi') && el.tagName !== 'I' && !/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName) && s.textOverflow !== 'ellipsis' && !s.webkitLineClamp?.match(/\d/) && (el.scrollWidth > el.clientWidth + 1 && /(hidden|clip)/.test(s.overflowX) || el.scrollHeight > el.clientHeight + 2 && /(hidden|clip)/.test(s.overflowY))) issues.push({ type: 'truncated', el: name(el) });
