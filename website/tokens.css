@@ -1,7 +1,7 @@
 /* siṭaiṅge design tokens (CC0). The one place for type, spacing and icon sizes on every page, Dadi included.
    Fluid scale in the style of Utopia (utopia.fyi): each step grows smoothly from a 360px screen to a 1280px screen.
    Type: 16px base at 360 (ratio 1.125) to 18px base at 1280 (ratio 1.2). Space: multiples of the base size.
-   Icons are Lucide (ISC, inline SVG, see vendor/lucide/LICENSE), stroke 2, one icon per feature. */
+   Icons are Tabler Icons (MIT, outline, inline SVG, see vendor/tabler/LICENSE), stroke 2, one icon per feature. */
 :root {
   --fs-m2: clamp(0.7901rem, 0.7936rem + -0.0154vw, 0.7813rem);
   --fs-m1: clamp(0.8889rem, 0.8699rem + 0.0845vw, 0.9375rem);
