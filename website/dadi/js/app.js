@@ -383,7 +383,7 @@
   }
   function learnView(root) {
     const st = S(), plan = makePlan(null), todo = plan.reviews.length + plan.fresh.length;
-    put(root, h('p', { class: 'eyebrow' }, 'siṭaiṅge'), h('h1', { class: 'title' }, 'Learn'), h('p', { class: 'lede' }, 'Practise siṭaiṅga in sessions of 8 to 10 minutes. Reviews come first, followed by up to five new items.'));
+    put(root, h('p', { class: 'eyebrow brand' }, ico('dadi', 20), h('span', {}, 'Dadi · siṭaiṅge')), h('h1', { class: 'title' }, 'Learn'), h('p', { class: 'lede' }, 'Practise siṭaiṅga in sessions of 8 to 10 minutes. Reviews come first, followed by up to five new items.'));
     const vsec = h('section', { class: 'sec', style: 'margin-top:0', hidden: true }); root.append(vsec);
     loadVideos().then((vs) => {
       if (!vsec.isConnected || !vs.length) return; vsec.hidden = false; vsec.textContent = '';
@@ -1277,7 +1277,7 @@
       h('div', { class: 'group' },
         goCell('Show the tour', { icon: 'help', onclick: () => tour(0) }),
         goCell('Report a problem with content', { icon: 'flag', onclick: () => reportSheet({ kind: 'content', id: '', label: '' }) }),
-        goCell('About Dadi', { icon: 'info', onclick: () => nav('#/about') })));
+        goCell('About Dadi', { icon: 'dadi', onclick: () => nav('#/about') })));
   }
   const applyTheme = () => applyLook();
 

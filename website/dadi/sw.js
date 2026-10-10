@@ -1,6 +1,6 @@
 /* Dadi offline cache: the app's own files only. It never stores or sends contributions or sign-in tokens.
    Network first (so updates arrive), cache as the fallback (so it works offline). */
-const CACHE = 'dadi-v11';
+const CACHE = 'dadi-v12';
 const FILES = ['../vendor/beercss/beer.min.css', '../vendor/noto-sans/noto-sans.css', '../beer-theme.css', '../tokens.css', '../vendor/noto-sans/noto-sans-latin-400-normal.woff2', '../vendor/noto-sans/noto-sans-latin-700-normal.woff2', '../vendor/noto-sans/noto-sans-latin-ext-400-normal.woff2', '../vendor/noto-sans/noto-sans-latin-ext-700-normal.woff2', './', './index.html', './style.css', './config.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './data/seed.json', './data/glossary.json', '../data/videos.json', '../data/themes.json',
   './js/ipa-data.js', './js/synth.js', './js/native-tts.js', './js/espeak.js', './js/translate.js', './js/ai.js', './js/g2p.js', './js/audio.js', './js/keyboard.js', './js/fsrs.umd.js', './js/srs.js', './js/store.js', './js/data.js',
   './js/github.js', './js/submit.js', './js/icons.js', './js/learn.js', './js/chart.js', './data/icons.json', './js/app.js', '../core.js', '../items.js'];
