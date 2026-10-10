@@ -129,7 +129,7 @@ main { outline: none; }
 .hero .small { max-width: var(--read); margin-bottom: 0; }
 .quick { list-style: none; margin: var(--s4) 0 0; padding: 0; display: grid; gap: var(--s2); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 640px) { .quick { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s3); } }
-.quick a { display: flex; align-items: center; gap: var(--s3); min-height: 56px; padding: var(--s2) var(--s3); border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--text); text-decoration: none; }
+.quick a { display: flex; align-items: center; justify-content: flex-start; text-align: left; gap: var(--s3); min-height: 56px; padding: var(--s2) var(--s3); border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--text); text-decoration: none; }
 .quick a:hover { border-color: var(--accent); }
 .quick .ic { flex: none; width: 24px; height: 24px; color: var(--accent); }
 .quick .ic svg { width: 24px; height: 24px; }
