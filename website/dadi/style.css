@@ -257,3 +257,4 @@ body.sheet-open .kbdock { visibility: hidden; }
 
 /* Beer CSS turns any classless div holding an input after other content into an inline-flex row (squashed sheets/forms). Keep such wrappers as normal blocks. */
 :is(div:not([class]),div[class=active]):has(>:not(.responsive)~:is(menu,.tooltip,input)){display:block}
+.eyebrow.brand { display: flex; align-items: center; gap: var(--s1); color: var(--fg, inherit); font-weight: 600; }
