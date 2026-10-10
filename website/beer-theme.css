@@ -10,7 +10,7 @@
   --outline: var(--line, #cddae7); --outline-variant: var(--line, #cddae7);
   --background: var(--bg, #fff); --on-background: var(--text, #0f2236);
 }
-body { font-family: var(--font); background: var(--bg); color: var(--text); }
+body { font-family: var(--font); background: var(--bg); color: var(--text); display: block; }
 /* Beer styles bare elements; keep the site's own layout for the shared header, main and footer */
 header.bar, header.bar nav, footer.foot, main { height: auto; min-block-size: 0; }
 header.bar { padding-block: env(safe-area-inset-top) 0; padding-inline: 0; }
@@ -22,11 +22,10 @@ nav.bottom.site-tabs { display: none; }
 @media (max-width: 759px) {
   .js nav.bottom.site-tabs { display: flex; position: fixed; inset: auto 0 0 0; z-index: 40; box-sizing: border-box; justify-content: space-around; gap: 0; padding: var(--sp-3xs) var(--sp-3xs) calc(var(--sp-3xs) + env(safe-area-inset-bottom)); min-block-size: 0; block-size: calc(var(--site-tabs-h) + env(safe-area-inset-bottom)); align-items: center; background: var(--bg); border-top: 1px solid var(--line); box-shadow: none; }
   .js body:has(nav.bottom.site-tabs) { padding-bottom: calc(var(--site-tabs-h) + env(safe-area-inset-bottom)); }
-  nav.bottom.site-tabs a { inline-size: auto; min-inline-size: 0; flex: 1 1 0; justify-content: center; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 52px; padding: var(--sp-3xs) 2px; border-radius: 16px; color: var(--muted); font-size: .75rem; text-decoration: none; }
+  nav.bottom.site-tabs a { inline-size: auto; min-inline-size: 0; flex: 1 1 0; justify-content: center; display: flex; flex-direction: column; align-items: center; gap: 2px; min-height: 52px; padding: var(--sp-3xs) var(--hair-2); border-radius: 16px; color: var(--muted); font-size: .75rem; text-decoration: none; }
   nav.bottom.site-tabs a[aria-current="page"] { color: var(--accent); font-weight: 600; }
   nav.bottom.site-tabs a[aria-current="page"]:not(.button, .chip) > i { background: var(--tint); border-radius: 999px; }
   nav.bottom.site-tabs a:not(.button, .chip) > i { box-sizing: border-box; margin: 0 auto; padding: 0; inline-size: 56px; max-inline-size: 100%; block-size: 28px; display: grid; place-items: center; font-size: var(--fs-3); color: inherit; }
 }
 /* Beer's .page class is a hidden-until-active transition page; on this site .page is a plain layout wrapper */
 .page, .page:not(.active) { display: block; opacity: 1; transform: none; animation: none; position: static; inset: auto; }
-body { display: block; }
