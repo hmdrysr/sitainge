@@ -2,18 +2,39 @@ name: Deploy site
 on:
   push:
     branches: [main]
-    paths: ['website/**']
+    paths: ['website/**', 'tests/visual/**', '.github/workflows/main.yml', 'lighthouserc.json', '.stylelintrc.json']
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  deploy:
+  gate:
+    name: Quality gate
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Stylelint (no px in font-size/padding/margin)
+        working-directory: tests/visual
+        run: npm ci && npx stylelint --config ../../.stylelintrc.json --ignore-pattern "**/vendor/**" "../../website/**/*.css"
+      - name: Playwright layout + axe
+        working-directory: tests/visual
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright test layout.spec.js a11y.spec.js --reporter=line
+      - name: Lighthouse CI
+        run: npx -y @lhci/cli@0.14 autorun
+  deploy:
+    needs: gate
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
