@@ -132,7 +132,15 @@
   "SRC-CTG-EBIBLE-INDEX-NEG": "solo-ctg-ebible-index-neg",
   "SRC-CTG-TATOEBA-FLORES-NEG": "solo-ctg-tatoeba-flores-neg",
   "SRC-NATIVE-HY-2026-10-10": "owner-speaker",
-  "SRC-NEWS-LATIN-2026-10-10": "solo-news-latin-deyang"
+  "SRC-NEWS-LATIN-2026-10-10": "solo-news-latin-deyang",
+  "SRC-WIKT-CTG-2026-10-30": "solo-ipa-kaikki",
+  "SRC-WIKT-RHG-2026-10-30": "rhg:wiktionary",
+  "SRC-RHG-RLORG-500": "rhg:rohingyalanguage-org",
+  "SRC-RHG-RLORG-FULL": "rhg:rohingyalanguage-org",
+  "SRC-CTG-ZENODO-18399046": "solo-ctg-zenodo-18399046",
+  "SRC-CTG-MDC-DRAMA-CORPUS": "solo-ctg-mdc-drama-corpus",
+  "SRC-RHG-IOM-DICTIONARY": "rhg:iom-dictionary",
+  "SRC-WIKIDATA-LEXEMES-CTG-RHG": "solo-wikidata-lexemes"
  },
  "group_notes": {
   "compiled-chatgaiyya-benchmark": "One compiled benchmark. Vashantor, ONUBAD, BD-Dialect and ChatgaiyyaAlap were read as copies inside the ChatgaiyyaBench repository, and the grouped IPA upload credits the benchmark and its corpus jointly. The ResearchGate dictionary is listed by the same upload and no entry is attributed to it, so it is grouped here to stay conservative. The Safin thesis dataset (SRC-CTG-SIHABSAFIN-THESIS) is grouped here too, because about half of its Chittagonian sentences also occur in the ChatgaiyyaBench data and its other sources are not named.",
