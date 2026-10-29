@@ -1,6 +1,6 @@
 # Consensus report
 
-Generated 2026-10-09T22:58:52Z by `scripts/consensus.py` (rules version 1). Do not edit by hand; rerun the script.
+Generated 2026-10-29T20:38:16Z by `scripts/consensus.py` (rules version 1). Do not edit by hand; rerun the script.
 
 Consensus is a machine-computed label. It is not verification, it is not endorsement, and it never changes an evidence level, a state or an IPA status. See `docs/protocols/voting-and-consensus.md`.
 
@@ -8,10 +8,10 @@ Consensus is a machine-computed label. It is not verification, it is not endorse
 
 | Measure | Count |
 |---|---|
-| Records read | 8227 |
+| Records read | 8973 |
 | Records skipped (archived, private, withdrawn or restricted) | 0 |
-| Clusters auto-confirmed | 57 |
-| Entries auto-confirmed by consensus | 127 |
+| Clusters auto-confirmed | 241 |
+| Entries auto-confirmed by consensus | 534 |
 | Entries with at least one counted vote | 0 |
 | Community status: collecting | 0 |
 | Community status: community consensus | 0 |
@@ -33,28 +33,43 @@ Consensus is a machine-computed label. It is not verification, it is not endorse
 
 | Groups | Clusters |
 |---|---|
-| rhg:gatitos + rhg:learnrohingya | 9 |
-| rhg:gatitos + solo-ipa-langmap | 9 |
-| owner-speaker + rhg:gatitos | 7 |
-| rhg:gatitos + wikivoyage | 7 |
+| rhg:gatitos + rhg:wiktionary | 88 |
+| rhg:gatitos + rhg:rohingyalanguage-org | 72 |
+| rhg:gatitos + rhg:rohingyalanguage-org + rhg:wiktionary | 9 |
+| rhg:gatitos + rhg:learnrohingya | 8 |
+| rhg:gatitos + rhg:wiktionary + solo-ipa-langmap | 8 |
+| rhg:gatitos + wikivoyage | 6 |
+| rhg:learnrohingya + rhg:wiktionary | 5 |
+| rhg:rohingyalanguage-org + rhg:wiktionary | 5 |
+| owner-speaker + rhg:gatitos | 4 |
 | rhg:gatitos + solo-ipa-rjoe | 4 |
+| owner-speaker + rhg:gatitos + rhg:rohingyalanguage-org | 2 |
 | rhg:wikipedia-article + wikipedia | 2 |
 | compiled-chatgaiyya-benchmark + rhg:learnrohingya | 1 |
-| hamid-yasir-2019-list + rhg:gatitos + rhg:learnrohingya | 1 |
-| hamid-yasir-2019-list + rhg:gatitos + solo-ipa-langmap | 1 |
+| hamid-yasir-2019-list + rhg:gatitos + rhg:learnrohingya + rhg:wiktionary | 1 |
+| hamid-yasir-2019-list + rhg:gatitos + rhg:wiktionary + solo-ipa-langmap | 1 |
 | hamid-yasir-2019-list + rhg:learnrohingya | 1 |
+| hamid-yasir-2019-list + rhg:rohingyalanguage-org + rhg:wiktionary | 1 |
+| hamid-yasir-2019-list + rhg:wiktionary | 1 |
 | hoque-2015 + rhg:gatitos | 1 |
+| owner-speaker + rhg:gatitos + rhg:wiktionary | 1 |
+| owner-speaker + rhg:gatitos + rhg:wiktionary + wikipedia | 1 |
 | owner-speaker + rhg:gatitos + solo-ipa-langmap | 1 |
-| owner-speaker + rhg:gatitos + wikipedia | 1 |
+| owner-speaker + rhg:learnrohingya + solo-ipa-kaikki + solo-ipa-langmap + wikipedia | 1 |
 | owner-speaker + solo-ipa-kaikki + wikipedia | 1 |
+| rhg:gatitos + rhg:learnrohingya + rhg:wiktionary | 1 |
 | rhg:gatitos + rhg:learnrohingya + solo-ipa-langmap | 1 |
-| rhg:gatitos + solo-ipa-langmap + wikivoyage | 1 |
+| rhg:gatitos + rhg:rohingyalanguage-org + rhg:wiktionary + solo-ipa-langmap + wikivoyage | 1 |
+| rhg:gatitos + rhg:rohingyalanguage-org + rhg:wiktionary + wikivoyage | 1 |
+| rhg:gatitos + rhg:rohingyalanguage-org + solo-ipa-langmap | 1 |
 | rhg:gatitos + solo-news-latin-deyang | 1 |
 | rhg:gatitos + wikipedia + wikivoyage | 1 |
-| rhg:learnrohingya + solo-ipa-langmap | 1 |
-| rhg:learnrohingya + solo-ipa-langmap + wikipedia | 1 |
-| rhg:learnrohingya + solo-ipa-rjoe | 1 |
+| rhg:learnrohingya + rhg:wiktionary + solo-ipa-langmap | 1 |
+| rhg:learnrohingya + rhg:wiktionary + solo-ipa-rjoe | 1 |
 | rhg:learnrohingya + wikipedia | 1 |
+| rhg:rohingyalanguage-org + wikivoyage | 1 |
+| rhg:wiktionary + solo-ipa-kaikki | 1 |
+| rhg:wiktionary + solo-ipa-langmap | 1 |
 | solo-ipa-kaikki + solo-ipa-langmap | 1 |
 | solo-ipa-kaikki + wikipedia | 1 |
 | solo-ipa-kaikki + wikipedia + wikivoyage | 1 |
@@ -63,31 +78,31 @@ Consensus is a machine-computed label. It is not verification, it is not endorse
 
 | Cluster | Gloss | Groups | Records | Forms (shared by several groups in bold) |
 |---|---|---|---|---|
-| CTG-CLU-b4aa4cc9 | rice | owner-speaker, rhg:gatitos, wikipedia | 4 | **bat**, **bát** |
+| CTG-CLU-37f8fc2d | red | rhg:gatitos, rhg:rohingyalanguage-org, rhg:wiktionary, solo-ipa-langmap, wikivoyage | 5 | **Lal**, **lal** |
+| CTG-CLU-4a49dd82 | i | owner-speaker, rhg:learnrohingya, solo-ipa-kaikki, solo-ipa-langmap, wikipedia | 5 | **Aááí**, **ãi** |
+| CTG-CLU-926f90d9 | rice | owner-speaker, rhg:gatitos, rhg:wiktionary, wikipedia | 5 | **bat**, **bát** |
+| CTG-CLU-041b7370 | name | hamid-yasir-2019-list, rhg:gatitos, rhg:wiktionary, solo-ipa-langmap | 4 | **Namm**, **nam** |
+| CTG-CLU-3f5f4fa9 | what | hamid-yasir-2019-list, rhg:gatitos, rhg:learnrohingya, rhg:wiktionary | 4 | **Ki**, **ki**, **kí** |
+| CTG-CLU-a6b1a3ed | black | rhg:gatitos, rhg:rohingyalanguage-org, rhg:wiktionary, wikivoyage | 4 | **Hala**, **hala** |
+| CTG-CLU-56f6d028 | he | owner-speaker, solo-ipa-kaikki, wikipedia | 4 | **Ité**, **ite**, **itẽ** |
+| CTG-CLU-aa8884f4 | my | solo-ipa-kaikki, wikipedia, wikivoyage | 4 | **ãr** |
+| CTG-CLU-f3903df1 | you | rhg:learnrohingya, rhg:wiktionary, solo-ipa-langmap | 4 | **tui**, **tũi** |
+| CTG-CLU-03b9411a | sour | owner-speaker, rhg:gatitos, rhg:rohingyalanguage-org | 3 | **horo**, **hóro**, **hõ~ro~** |
+| CTG-CLU-1c6dc09c | nose | rhg:gatitos, rhg:wiktionary, solo-ipa-langmap | 3 | **nak** |
 | CTG-CLU-1dc2bc29 | mother | rhg:gatitos, rhg:learnrohingya, solo-ipa-langmap | 3 | **ma**, **maa** |
-| CTG-CLU-6ba6b1c4 | my | solo-ipa-kaikki, wikipedia, wikivoyage | 3 | **ãr** |
+| CTG-CLU-2a9f76b7 | house | rhg:gatitos, rhg:wiktionary, solo-ipa-langmap | 3 | **gor**, **gór** |
+| CTG-CLU-37aa3c3d | who | owner-speaker, rhg:gatitos, rhg:wiktionary | 3 | **hon** |
+| CTG-CLU-398456d8 | knife | rhg:gatitos, rhg:rohingyalanguage-org, rhg:wiktionary | 3 | **súri** |
+| CTG-CLU-46471f44 | mouse | rhg:gatitos, rhg:rohingyalanguage-org, rhg:wiktionary | 3 | **undur** |
+| CTG-CLU-4876c812 | tree | rhg:gatitos, rhg:rohingyalanguage-org, rhg:wiktionary | 3 | **gas** |
+| CTG-CLU-5a51e2dd | three | rhg:gatitos, rhg:wiktionary, solo-ipa-langmap | 3 | **tin** |
+| CTG-CLU-5b1d91ab | she | owner-speaker, rhg:gatitos, rhg:rohingyalanguage-org | 3 | **iba**, **ibá**, **íba** |
+| CTG-CLU-6db9c9b8 | come | hamid-yasir-2019-list, rhg:rohingyalanguage-org, rhg:wiktionary | 3 | **Ai**, **ai** |
+| CTG-CLU-6e38b1c4 | salt | rhg:gatitos, rhg:wiktionary, solo-ipa-langmap | 3 | **nun** |
 | CTG-CLU-79717b9e | hand | owner-speaker, rhg:gatitos, solo-ipa-langmap | 3 | **at**, **át** |
-| CTG-CLU-7d7b291e | he | owner-speaker, solo-ipa-kaikki, wikipedia | 3 | **Ité**, **ite**, **itẽ** |
-| CTG-CLU-80896186 | what | hamid-yasir-2019-list, rhg:gatitos, rhg:learnrohingya | 3 | **Ki**, **ki**, **kí** |
-| CTG-CLU-ab66f106 | name | hamid-yasir-2019-list, rhg:gatitos, solo-ipa-langmap | 3 | **Namm**, **nam** |
-| CTG-CLU-ce517835 | and | rhg:gatitos, wikipedia, wikivoyage | 3 | **ar** |
-| CTG-CLU-d653fa61 | red | rhg:gatitos, solo-ipa-langmap, wikivoyage | 3 | **Lal**, **lal** |
-| CTG-CLU-df756818 | i | rhg:learnrohingya, solo-ipa-langmap, wikipedia | 3 | **Aááí**, **ãi** |
-| CTG-CLU-86dda4e4 | im | rhg:gatitos, wikivoyage | 3 | **Añi ______**, **Añí** |
-| CTG-CLU-a0a7126f | you | rhg:learnrohingya, solo-ipa-langmap | 3 | **tui**, **tũi** |
-| CTG-CLU-04ba549d | star | rhg:gatitos, solo-ipa-langmap | 2 | **tara** |
-| CTG-CLU-06d51565 | she | owner-speaker, rhg:gatitos | 2 | **iba**, **íba** |
-| CTG-CLU-08e1980f | sleepy | rhg:gatitos, rhg:learnrohingya | 2 | **zurar**, **zúrar** |
-| CTG-CLU-0a4e57b6 | wednesday | rhg:gatitos, wikivoyage | 2 | Buidbar, Buitbar |
-| CTG-CLU-0edaec71 | those | rhg:gatitos, rhg:learnrohingya | 2 | **uin**, **uiín** |
-| CTG-CLU-113b1c7a | house home | hamid-yasir-2019-list, rhg:learnrohingya | 2 | **Gor**, **gór** |
-| CTG-CLU-16d6e2ed | water | rhg:gatitos, solo-ipa-langmap | 2 | **fani**, **faní** |
-| CTG-CLU-1f5c2b19 | one | rhg:gatitos, solo-ipa-rjoe | 2 | **uggwá**, **ugwa** |
-| CTG-CLU-20543ecf | salt | rhg:gatitos, solo-ipa-langmap | 2 | **nun** |
-| CTG-CLU-219ac378 | wire | rhg:wikipedia-article, wikipedia | 2 | **Tar gán** |
-| CTG-CLU-21f0ded6 | house | rhg:gatitos, solo-ipa-langmap | 2 | **gor**, **gór** |
-| CTG-CLU-259e814d | not | owner-speaker, rhg:gatitos | 2 | **no** |
-| CTG-CLU-2835b08e | father | rhg:gatitos, solo-ipa-langmap | 2 | **baf** |
+| CTG-CLU-84e4edb9 | father | rhg:gatitos, rhg:rohingyalanguage-org, solo-ipa-langmap | 3 | **baf** |
+| CTG-CLU-8ac9fbe1 | book | rhg:gatitos, rhg:learnrohingya, rhg:wiktionary | 3 | **kitab**, **kítab** |
+| CTG-CLU-9c79166f | seven | rhg:gatitos, rhg:rohingyalanguage-org, rhg:wiktionary | 3 | **háñt** |
 
 ## Caveats
 
