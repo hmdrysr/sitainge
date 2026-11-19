@@ -1,0 +1,35 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "website",
+      "url": [
+        "/index.html",
+        "/contribute.html",
+        "/dadi/index.html"
+      ],
+      "numberOfRuns": 1,
+      "settings": {
+        "onlyCategories": [
+          "accessibility",
+          "best-practices"
+        ]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": [
+          "error",
+          {
+            "minScore": 0.9
+          }
+        ],
+        "target-size": "error",
+        "content-width": "error"
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lhci"
+    }
+  }
+}
